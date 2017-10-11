@@ -1,10 +1,18 @@
-\documentclass{tufte-book-acf} % Use the tufte-book class which in turn uses the tufte-common class
+\documentclass{tufte-book} % Use the tufte-book class which in turn uses the tufte-common class
 
 \hypersetup{colorlinks} % Comment this line if you don't wish to have colored links
 \usepackage{microtype} % Improves character and word spacing
 \usepackage{booktabs} % Better horizontal rules in tables
 
-\usepackage{lipsum}
+\usepackage{texnames}
+\usepackage{epigraph}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{bm,bbm}
+
+\usepackage{listings}
+\lstset{language=R}
+\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
+\lstset{framextopmargin=50pt,frame=bottomline}
 
 \usepackage{graphicx} % Needed to insert images into the document
 \graphicspath{{./Figures/}} % Sets the default location of pictures
@@ -118,52 +126,48 @@ Dedicated to my husband, my family, and my friends. They are the salt of my life
 %----------------------------------------------------------------------------------------
 
 \cleardoublepage
-\chapter*{Introduction} % The asterisk leaves out this chapter from the table of contents
+\chapter*{Foreword} % The asterisk leaves out this chapter from the table of contents
 
-Citation example \cite{Tufte2001}, notice how the citation is in the margin. This is an example of how to add something to the index at the end of the document.\index{citation}
+I have been thinking of writing this book for a long time now.
+My first experience with such a challenge dates back to the eighties, with my then (and forever) advisor Prof.\ Oscar Bustos, at IMPA (\textit{Instituto de Matem\'atica Pura e Aplicada}, at Rio de Janeiro).
+I learned with him the necessary mindset for writing a long piece of scientific work, and the outcome had a warm reception\cite{BustosFrery:92:ABE}.
 
-\newthought{Example of} the \texttt{newthought} command for starting new sections. Typography examples: \allcaps{all caps} and \smallcaps{small caps}.
+I jumped into my second experience, during a post-doc back at IMPA, about twenty years later.
+It was a completely different challenge: producing the second, and enlarged, edition of an already successful book, also with a very nice outcome\cite{IPVG:2008}.
+While working on this book I started feeling the need of some kind of control version for a collaborative work.
 
-%------------------------------------------------
+Writing this second book I noticed that the information about image processing with \texttt R\cite{Rmanual} was scattered in half a dozen libraries, and that the experienced gained with the book might deserve writing a book, albeit a short one.
+The opportunity came with a generous offer from Springer to write our \textit{Introduction to Image Processing with \texttt R: Learning by Examples}\cite{IntroImageProcessingR}.
 
-\section{Figures}
+One year before that book I received an invitation to contribute with a chapter for the book \textit{Digital Document Analysis and Processing}\cite{DigitalDocumentAnalysisProcessing}.
+This challenge brought me back to the need to collaborate in a remote fashion, but this time with a team of more than twenty authors.
 
-\lipsum[1] 
+So I was invited this year to give a twenty-hour course on statistical tools for Synthetic Aperture Radar -- SAR imagery analysis at CONAE -- \textit{Comisi\'on Nacional de Actividades Espaciales}, Argentina.
+I wanted to make a course that would leave a positive residue:
+students would have the chance to learn and practice, and in order to do that I decided to use and share all the contents in \texttt{RMarkdown}.
+It was a nice experience, but I felt limitations (mostly mine) with such platform.
+When I was later invited to produce material for a sixty-hour distance education course, my first challenge was deciding the format.
+After pondering a couple of possibilities, I opted for a classical book.
 
-\lipsum[2]
+One of the books that exerted the strongest influence in my career was \textit{The Visual Display of Quantitative Information}\cite{Tufte01}.
+The choice of style was obvious after knowing that there was one inspired by Edward Tufte's ideas and guidelines, and implemented in \LaTeX.
+The patient reader that reached this point has an example of his recommendations put to work.
+
+Writing a book is a frightening task, but I have learned a few lessons from the past, among them:
+\begin{itemize}
+\item Reading with the eyes of the public helps staying focused.
+\item Using \LaTeX\ and \BibTeX\ is absolutely mandatory for quality results.
+\item Control version (Git in this case) is a safety net.
+\end{itemize}
+
+So here we go with this book.
+I hope it will be helpful to those that have the curiosity to browse through its pages.
+
+\vskip5em
+\epigraph{Alejandro C.\ Frery}{Macei\'o 10 October 2017}
 
 
-\lipsum[3]
 
-%------------------------------------------------
-
-\section{Tables} \marginnote{This is a random margin note. Notice that there isn't a number preceding the note, and there is no number in the main text where this note was written. Use \texttt{sidenote} to use a number.}
-
-\lipsum[4]
-
-\begin{table} % Add the following just after the closing bracket on this line to specify a position for the table on the page: [h], [t], [b] or [p] - these mean: here, top, bottom and on a separate page, respectively
-\centering % Centers the table on the page, comment out to left-justify
-\begin{tabular}{l c c c c c} % The final bracket specifies the number of columns in the table along with left and right borders which are specified using vertical bars (|); each column can be left, right or center-justified using l, r or c. To specify a precise width, use p{width}, e.g. p{5cm}
-\toprule % Top horizontal line
-& \multicolumn{5}{c}{Growth Media} \\ % Amalgamating several columns into one cell is done using the \multicolumn command as seen on this line
-\cmidrule(l){2-6} % Horizontal line spanning less than the full width of the table - you can add (r) or (l) just before the opening curly bracket to shorten the rule on the left or right side
-Strain & 1 & 2 & 3 & 4 & 5\\ % Column names row
-\midrule % In-table horizontal line
-GDS1002 & 0.962 & 0.821 & 0.356 & 0.682 & 0.801\\ % Content row 1
-NWN652 & 0.981 & 0.891 & 0.527 & 0.574 & 0.984\\ % Content row 2
-PPD234 & 0.915 & 0.936 & 0.491 & 0.276 & 0.965\\ % Content row 3
-JSB126 & 0.828 & 0.827 & 0.528 & 0.518 & 0.926\\ % Content row 4
-JSB724 & 0.916 & 0.933 & 0.482 & 0.644 & 0.937\\ % Content row 5
-\midrule % In-table horizontal line
-\midrule % In-table horizontal line
-Average Rate & 0.920 & 0.882 & 0.477 & 0.539 & 0.923\\ % Summary/total row
-\bottomrule % Bottom horizontal line
-\end{tabular}
-\caption{Table caption text} % Table caption, can be commented out if no caption is required
-\label{tab:template} % A label for referencing this table elsewhere, references are used in text as \ref{label}
-\end{table}
-
-%----------------------------------------------------------------------------------------
 
 \mainmatter
 
@@ -181,7 +185,7 @@ Average Rate & 0.920 & 0.882 & 0.477 & 0.539 & 0.923\\ % Summary/total row
 %	BIBLIOGRAPHY
 %----------------------------------------------------------------------------------------
 
-\bibliography{bibliography} % Use the bibliography.bib file for the bibliography
+\bibliography{rdt,manuais,livros,art11,art12} % Use the bibliography.bib file for the bibliography
 \bibliographystyle{plainnat} % Use the plainnat style of referencing
 
 %----------------------------------------------------------------------------------------
