@@ -1,7 +1,6 @@
 \chapter{Parameter Estimation}\label{Chapter:ParameterEstimation}
 
-We have a parametric model $(\Omega, \mathcal A, \Pr)$ for real independent random  variables $X$ and $\bm X = (X_1,X_2,\dots)$.
-
+Assume we have a parametric model $(\Omega, \mathcal A, \Pr)$ for real independent random  variables $X$ and $\bm X = (X_1,X_2,\dots)$.
 The distribution of $X$ is indexed by $\bm \theta\in\bm \Theta\subset \mathbbm R^p$, where $p\geq 1$ is the dimension of the parametric space $\bm \Theta$.
 
 What can we say about $\bm \theta$ using the sample $\bm X$?
@@ -199,9 +198,9 @@ This approach is not very effective, because results in serious numerical proble
 
 \subsection{The (SAR) Gamma distribution}
 
-Using $\operatorname{E}Z=\mu$ we propose $\widehat{\mu}=n^{-1}\sum_{i=1}^n Z_i$,
+Using $\E(Z)=\mu$ we propose $\widehat{\mu}=n^{-1}\sum_{i=1}^n Z_i$,
 and with 
-$\operatorname{Var}Z=\mu^2/L$, we can estimate $\widehat L=\widehat{\mu}^2 / (n^{-1}\sum_{i=1}^n (Z_i - \widehat{\mu})^2)$.
+$\operatorname{Var}(Z)=\mu^2/L$, we can estimate $\widehat L=\widehat{\mu}^2 / (n^{-1}\sum_{i=1}^n (Z_i - \widehat{\mu})^2)$.
 This is the well-now estimator for the number of looks (equivalent number of looks) which consists of the reciprocal of the squared coefficient of variation.
 
 \section{Inference by maximum likelihood}
@@ -378,24 +377,6 @@ There are a number of excellent algorithms for the latter approach, numerical op
 
 One frequently uses an analogy estimate as the starting point for optimization techniques that seek the maximum likelihood estimate.
 
-\section{Comparison of estimators}
-
-Assume you have two estimators, say $\widehat{\theta}$ and $\widetilde{\theta}$.
-Denote any of them by $\dot\theta$.
-They can be compared according to:
-\begin{itemize}
-\item their bias $B(\dot{\theta},\theta)=\operatorname{E}\dot\theta-\theta$,
-\item their variance $\operatorname{Var}\dot{\theta}$,
-\item their mean quadratic error $\operatorname{MQE}(\dot{\theta}) = \operatorname{E}(\dot{\theta-\theta})^2$,
-\item are they fast and easy to compute?,
-\item how fast they converge to the true value?,
-\item do they converge, and how fast, to a Gaussian distribution?, and
-\item are they robust before different types of contamination?
-\end{itemize}
-See details in \citet{busto92}.
-Variance and bias should be as small as possible.
-They must always be checked, either analytically (the ideal scenario), or by a well-designed Monte Carlo study.
-
 \section{Improvement by bootstrap}
 
 Bootstrap is a resampling technique.
@@ -425,3 +406,22 @@ where $\bm X^{(r)}$ is the result of resampling $\bm X$ with replacement.
 In spite of seeming na\"ive and ad hoc, it has solid theoretical foundations and, more often than not, the bootstrap estimator is excellent, specially for relatively small samples\cite{CribariFrerySilva:CSDA,%
 VasconcellosFrerySilva:CompStat,%
 SilvaCribariFrery:ImprovedLikelihood:Environmetrics}.
+
+\section{Comparison of estimators}
+
+Assume you have two estimators, say $\widehat{\theta}$ and $\widetilde{\theta}$.
+Denote any of them by $\dot\theta$.
+They can be compared according to:
+\begin{itemize}
+\item their bias $B(\dot{\theta},\theta)=\operatorname{E}\dot\theta-\theta$,
+\item their variance $\operatorname{Var}\dot{\theta}$,
+\item their mean quadratic error $\operatorname{MQE}(\dot{\theta}) = \operatorname{E}(\dot{\theta-\theta})^2$,
+\item are they fast and easy to compute?,
+\item how fast they converge to the true value?,
+\item do they converge, and how fast, to a Gaussian distribution?, and
+\item are they robust before different types of contamination?
+\end{itemize}
+See details in \citet{busto92}.
+Variance and bias should be as small as possible.
+They must always be checked, either analytically (the ideal scenario), or by a well-designed Monte Carlo study.
+

@@ -8,6 +8,7 @@
 \usepackage{epigraph}
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage{bm,bbm}
+\usepackage[caption=false]{subfig}
 
 \usepackage{listings}
 \lstset{language=R}
@@ -24,6 +25,10 @@
 \newcommand{\hangp}[1]{\makebox[0pt][r]{(}#1\makebox[0pt][l]{)}} % New command to create parentheses around text in tables which take up no horizontal space - this improves column spacing
 \newcommand{\hangstar}{\makebox[0pt][l]{*}} % New command to create asterisks in tables which take up no horizontal space - this improves column spacing
 
+\newcommand{\E}{\operatorname{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\CV}{\operatorname{CV}}
+
 \usepackage{xspace} % Used for printing a trailing space better than using a tilde (~) using the \xspace command
 
 \newcommand{\monthyear}{\ifcase\month\or January\or February\or March\or April\or May\or June\or July\or August\or September\or October\or November\or December\fi\space\number\year} % A command to print the current month and year
@@ -37,6 +42,9 @@
 \end{doublespace}
 \end{fullwidth}
 }
+
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
 
 \newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage} % Command to insert a blank page
 
@@ -121,9 +129,6 @@ Dedicated to my husband, my family, and my friends. They are the salt of my life
 \vfill
 \vfill
 
-%----------------------------------------------------------------------------------------
-%	INTRODUCTION
-%----------------------------------------------------------------------------------------
 
 \cleardoublepage
 \chapter*{Foreword} % The asterisk leaves out this chapter from the table of contents
@@ -171,6 +176,8 @@ I hope it will be helpful to those that have the curiosity to browse through its
 
 \mainmatter
 
+
+\include{Introduction}
 \include{ElementsR}
 \include{DataFormation}
 \include{MultiplicativeModel}
@@ -185,7 +192,7 @@ I hope it will be helpful to those that have the curiosity to browse through its
 %	BIBLIOGRAPHY
 %----------------------------------------------------------------------------------------
 
-\bibliography{rdt,manuais,livros,art11,art12} % Use the bibliography.bib file for the bibliography
+\bibliography{rdt,manuais,livros,art09,art11,art12,art17} % Use the bibliography.bib file for the bibliography
 \bibliographystyle{plainnat} % Use the plainnat style of referencing
 
 %----------------------------------------------------------------------------------------

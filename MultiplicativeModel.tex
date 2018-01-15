@@ -1,1 +1,12 @@
 \chapter{The Multiplicative Model}\label{Chapter:MultiplicativeModel}
+
+The Multiplicative Model is one of the infinitely many ways to build stochastic descriptions for SAR data.
+Among its advantages we would like to mention that it can be considered an \textit{ab initio} model, and that it leads to expressive and tractable descriptions of the data.
+
+Let us recall that the basic model for multilook intensity data is the $\Gamma(\sigma^2,L)$ law whose density is
+\begin{equation}
+f_Z(z;L,\sigma^2) = \frac{L^L}{\sigma^{2L}\Gamma(L)} z^{L-1} 
+	\exp\big\{ -L z / \sigma^2
+	\big\}.
+\end{equation}
+As previously said, the Gamma distribution is scale-invariant, so we may pose this model as the product between the constant backscatter $X=\sigma^2$ and the multilook speckle $Y\sim\Gamma(1,L)$.
