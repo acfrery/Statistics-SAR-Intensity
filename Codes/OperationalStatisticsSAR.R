@@ -1,5 +1,7 @@
 require(ggplot2)
 require(ggthemes)
+source("/Users/acfrery/Dropbox (Personal)/upper_outliers/codigos/GammaSAR.R")
+source("/Users/acfrery/Documents/Programas/R/GI0Project/GI0distribution.R")
 
 ### Complex Scattering
 
@@ -34,6 +36,7 @@ ggplot(data=data.frame(x=c(0, 7)), aes(x=x)) +
   stat_function(fun=dexp, geom = "line", size=2, col="red", args = (mean=.5)) +
   stat_function(fun=dexp, geom = "line", size=2, col="blue", args = (mean=2)) +
   theme_classic() +
+  theme(text = element_text(size=20)) +
   xlab("x") + ylab("Exponential Densities")
 ggsave(file="../Figures/ExponentialDensities.pdf")  
 
@@ -42,6 +45,7 @@ ggplot(data=data.frame(x=c(0, 7)), aes(x=x)) +
   stat_function(fun=pexp, geom = "line", size=2, col="red", args = (mean=.5)) +
   stat_function(fun=pexp, geom = "line", size=2, col="blue", args = (mean=2)) +
   theme_classic() +
+  theme(text = element_text(size=20)) +
   xlab("x") + ylab("Exponential Cumulative Distribution Functions")
 ggsave(file="../Figures/ExponentialCDFs.pdf")  
 
@@ -50,6 +54,7 @@ ggplot(data=data.frame(x=c(0, 7)), aes(x=x)) +
   stat_function(fun=dexp, geom = "line", size=2, col="red", args = (mean=.5)) +
   stat_function(fun=dexp, geom = "line", size=2, col="blue", args = (mean=2)) +
   theme_classic() +
+  theme(text = element_text(size=20)) +
   xlab("x") + ylab("Exponential Densities") +
   coord_trans(y="log10")
 ggsave(file="../Figures/ExponentialDensitiesSemilog.pdf")  
@@ -62,6 +67,7 @@ ggplot(data=data.frame(x=seq(10^-3, 5, length.out = 500)), aes(x=x)) +
   stat_function(fun=dgamma, geom = "line", size=2, col="red", args = list(shape=3, scale=1/3)) +
   stat_function(fun=dgamma, geom = "line", size=2, col="blue", args = list(shape=8, scale=1/8)) +
   theme_classic() +
+  theme(text = element_text(size=20)) +
   xlab("x") + ylab("Gamma Densities")
 ggsave(file="../Figures/GammaDensities.pdf")  
 
@@ -70,6 +76,7 @@ ggplot(data=data.frame(x=seq(10^-3, 5, length.out = 500)), aes(x=x)) +
   stat_function(fun=pgamma, geom = "line", size=2, col="red", args = list(shape=3, scale=1/3)) +
   stat_function(fun=pgamma, geom = "line", size=2, col="blue", args = list(shape=8, scale=1/8)) +
   theme_classic() +
+  theme(text = element_text(size=20)) +
   xlab("x") + ylab("Gamma Cumulative Distribution Functions")
 ggsave(file="../Figures/GammaCDFs.pdf")  
 
@@ -78,7 +85,31 @@ ggplot(data=data.frame(x=seq(10^-3, 5, length.out = 500)), aes(x=x)) +
   stat_function(fun=dgamma, geom = "line", size=2, col="red", args = list(shape=3, scale=1/3)) +
   stat_function(fun=dgamma, geom = "line", size=2, col="blue", args = list(shape=8, scale=1/8)) +
   theme_classic() +
+  theme(text = element_text(size=20)) +
   xlab("x") + ylab("Gamma Densities") +
   coord_trans(y="log10")
 ggsave(file="../Figures/GammaDensitiesSemilog.pdf")  
+
+### Intensity K distributions
+
+ggplot(data=data.frame(x=seq(0.01, 7, length.out = 500)), aes(x=x)) +
+  stat_function(fun=dexp, geom = "line", size=2, col="green", args = (mean=1)) +
+  stat_function(fun=dKI, geom = "line", size=2, col="red", args = list(p_alpha=1, p_lambda=1, p_Looks=1)) +
+  stat_function(fun=dKI, geom = "line", size=2, col="blue", args = list(p_alpha=3, p_lambda=3, p_Looks=1)) +
+  stat_function(fun=dKI, geom = "line", size=2, col="black", args = list(p_alpha=8, p_lambda=8, p_Looks=1)) +
+  theme_classic() +
+  theme(text = element_text(size=20)) +
+  xlab("x") + ylab("Intensity K and Exponential Densities")
+ggsave(file="../Figures/KIDensities.pdf")  
+
+ggplot(data=data.frame(x=seq(0.01, 7, length.out = 500)), aes(x=x)) +
+  stat_function(fun=dexp, geom = "line", size=2, col="green", args = (mean=1)) +
+  stat_function(fun=dKI, geom = "line", size=2, col="red", args = list(p_alpha=1, p_lambda=1, p_Looks=1)) +
+  stat_function(fun=dKI, geom = "line", size=2, col="blue", args = list(p_alpha=3, p_lambda=3, p_Looks=1)) +
+  stat_function(fun=dKI, geom = "line", size=2, col="black", args = list(p_alpha=8, p_lambda=8, p_Looks=1)) +
+  theme_classic() +
+  theme(text = element_text(size=20)) +
+  coord_trans(y="log10") +
+  xlab("x") + ylab("Intensity K and Exponential Densities")
+ggsave(file="../Figures/KIDensitiesSemilog.pdf")  
 

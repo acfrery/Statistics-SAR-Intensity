@@ -1,4 +1,4 @@
-\documentclass{tufte-book} % Use the tufte-book class which in turn uses the tufte-common class
+\documentclass[a4paper]{tufte-book} % Use the tufte-book class which in turn uses the tufte-common class
 
 \hypersetup{colorlinks} % Comment this line if you don't wish to have colored links
 \usepackage{microtype} % Improves character and word spacing
@@ -6,10 +6,12 @@
 
 \usepackage{texnames}
 \usepackage{epigraph}
-\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
 \usepackage{bm,bbm}
 \usepackage[caption=false]{subfig}
 \usepackage{siunitx}
+
+\newtheorem{exer}{Exercise}[chapter]
 
 \usepackage{listings}
 \lstset{language=R}
@@ -193,7 +195,7 @@ I hope it will be helpful to those that have the curiosity to browse through its
 %	BIBLIOGRAPHY
 %----------------------------------------------------------------------------------------
 
-\bibliography{rdt,manuais,livros,art09,art11,art12,art17} % Use the bibliography.bib file for the bibliography
+\bibliography{rdt,manuais,livros,art76,art89,art09,art11,art12,art17} % Use the bibliography.bib file for the bibliography
 \bibliographystyle{plainnat} % Use the plainnat style of referencing
 
 %----------------------------------------------------------------------------------------

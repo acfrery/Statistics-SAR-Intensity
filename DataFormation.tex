@@ -13,11 +13,11 @@ It works in the microwaves region of the spectrum in different bands, as describ
 \begin{tabular}{ccc}
 \toprule
 \textbf{Band}	& \textbf{Frequency}			& \textbf{Wavelength} \\ \midrule
-X-band			& \SIrange{12.5}{8}{\GHz}	& \SIrange{2.4}{3.75}{\cm} \\
-C-band			& \SIrange{8}{4}{\GHz} 			& \SIrange{3.75}{7.5}{\cm}\\
-S-band			& \SIrange{4}{2}{\GHz}	& \SIrange{7.5}{15}{\cm} \\
-L-band			& \SIrange{2}{1}{\GHz}	& \SIrange{15}{30}{\cm} \\
-P-band			& \SIrange{0.999}{0.2998}{\GHz}	& \SIrange{30}{100}{\cm} \\
+X-band			& \SIrange[range-units = single]{12.5}{8}{\GHz}	& \SIrange[range-units = single]{2.4}{3.75}{\cm} \\
+C-band			& \SIrange[range-units = single]{8}{4}{\GHz} 			& \SIrange[range-units = single]{3.75}{7.5}{\cm}\\
+S-band			& \SIrange[range-units = single]{4}{2}{\GHz}	& \SIrange[range-units = single]{7.5}{15}{\cm} \\
+L-band			& \SIrange[range-units = single]{2}{1}{\GHz}	& \SIrange[range-units = single]{15}{30}{\cm} \\
+P-band			& \SIrange[range-units = single]{0.999}{0.2998}{\GHz}	& \SIrange[range-units = single]{30}{100}{\cm} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -124,6 +124,7 @@ Fig.~\ref{Fig:GammaDistribution} shows three cases of the Gamma distribution wit
 \end{figure}
 
 Fig.~\ref{Fig:GammaDistribution}\subref{Fig:DensGammaSemilog} is important, as this scale shows that the larger the number of looks, the less probable extreme events are.
+The Exponential density, being linear
 
 As we mentioned before, the intensity format is not the only possibility.
 Assume $Z\sim\Gamma(\sigma^2,L)$ and that $g\colon\mathbb R_+ \to \mathbb R$ is a monotonic function with inverse $g^{-1}$.
@@ -139,3 +140,14 @@ Some authors\cite{IterativeWeightedMaximumLikelihoodDenoising} prefer the amplit
 The model for the former is known as \textit{Square Root of Gamma} or \textit{Nakagami} distribution,
 while the one for the latter is know as the \textit{Fisher-Tippet} distribution when $L=1$.
 The reader is invited to obtain these densities using~\eqref{eq:GammmaTransformed}.
+
+\begin{exer}
+Find the densities of the Nakagami and Fisher-Tippet distributions.
+Illustrate them.
+\end{exer}
+
+\begin{exer}
+Assume $Z$ follows a Nakagami distribution.
+Find the density of $W=\log(Z+1)$ (a multilook Fisher-Tippet distribution).
+Illustrate.
+\end{exer}
