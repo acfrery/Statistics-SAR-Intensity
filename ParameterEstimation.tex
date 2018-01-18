@@ -383,6 +383,27 @@ The maximum likelihood estimator of $(L,\mu)$ is then any point in $\mathbbm R_+
 This problem can be solved in two ways: either deriving, equating to zero and solving, or by direct maximization.
 Each case must be studied from a computational viewpoint to choose the most suitable option.
 
+\section{The $\mathcal G^0$ distribution}
+
+Recall that the $\mathcal G^0$ distribution was proposed as a means to model data from textured and extremely textured areas.
+Assume that some textureless areas have been identified and that, with these data, it was possible to obtain a dependable estimate of $L$, say $\widehat L$.
+As this equivalent number of looks should be valid for the whole image, we will consider it know when fitting data from textured areas.
+
+Assume, then, that we have a sample $\bm Z = (Z_1,\dots,Z_n)$ of iid random variables that follow the $\mathcal G^0(\alpha,\gamma,\widehat L)$ distribution.
+The unknown parameter $\theta=(\alpha,\gamma)$ lies in $\Theta=\mathbbm R_- \times \mathbbm R_+$.
+
+The maximum likelihood estimator of $(\alpha,\gamma)$, is any point that maximizes the reduced log-likelihood:
+\begin{equation}
+\ell(\alpha,\gamma;\widehat L, \bm Z) = 
+\frac{\Gamma(\widehat L-\alpha)}{\gamma^\alpha \Gamma(-\alpha)} +
+\widehat L \sum_{n=1}^N \log\frac{Z_n}{\gamma+\widehat L Z_n} + 
+\alpha \sum_{n=1}^N \log(\gamma + \widehat L Z_1),
+\label{Eq:ReducedLogLikGI0}
+\end{equation}
+provided it lies in $\Theta$.
+Maximizing~\eqref{Eq:ReducedLogLikGI0} might be a difficult task, in particular in textureless areas where $\alpha\to-\infty$ and the $\mathcal G^0$ distribution becomes very close to a Gamma law.
+Small samples also pose difficult numerical problems, as $\ell$ becomes flat\cite{FreryCribariSouza:JASP:04}.
+
 \section{Analogy vs.\ Maximum Likelihood}
 
 These methods should not be seen as competitors; they are complementary.

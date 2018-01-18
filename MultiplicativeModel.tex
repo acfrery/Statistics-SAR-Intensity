@@ -51,7 +51,7 @@ In fact, \citet{frery96} prove that there is convergence in distribution of the 
 \centering
 \subfloat[Densities]{\includegraphics[width=.48\linewidth]{KIDensities}}
 \subfloat[Densities in semilog scale\label{Fig:DensKISemilog}]{\includegraphics[width=.48\linewidth]{KIDensitiesSemilog}}
-\caption{Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal K$ distributions with unitary mean ($\alpha\in\{1,3,8\}$ in red, blue, and black, resp.)}\label{Fig:KIDistribution}
+\caption[Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal K$ distributions]{Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal K$ distributions with unitary mean ($\alpha\in\{1,3,8\}$ in red, blue, and black, resp.)}\label{Fig:KIDistribution}
 \end{figure}
 
 The difference between these distributions is noteworthy, c.f.\ Fig.~\ref{Fig:KIDistribution}\subref{Fig:DensKISemilog}.
@@ -65,7 +65,7 @@ Fig.~\ref{Fig:KIDistributionLooks} shows the effect of varying the number of loo
 \centering
 \subfloat[Densities]{\includegraphics[width=.48\linewidth]{KIDensitiesLooks}}
 \subfloat[Densities in semilog scale\label{KIDensitiesSemilog}]{\includegraphics[width=.48\linewidth]{KIDensitiesSemilogLooks}}
-\caption{Densities in linear and semilogarithmic scale $\mathcal K(2,2,L)$ distributions with unitary mean and $L\in\{1,3,8\}$ in red, blue, and black, resp.)}\label{Fig:KIDistributionLooks}
+\caption[Densities in linear and semilogarithmic scale $\mathcal K(2,2,L)$ distributions with unitary mean and $L\in\{1,3,8\}$]{Densities in linear and semilogarithmic scale $\mathcal K(2,2,L)$ distributions with unitary mean and $L\in\{1,3,8\}$ in red, blue, and black, resp.)}\label{Fig:KIDistributionLooks}
 \end{figure}
 
 Notice in Fig~\ref{Fig:KIDistributionLooks}\subref{KIDensitiesSemilog} the dramatic effect multilook processing has mostly on the distribution of very small values.
@@ -114,7 +114,7 @@ Whereas the exponential distribution decreases linearly, the $\mathcal G^0$ law 
 \centering
 \subfloat[Densities]{\includegraphics[width=.48\linewidth]{GI0Densities}}
 \subfloat[Densities in semilog scale\label{Fig:DensGI0Semilog}]{\includegraphics[width=.48\linewidth]{GI0DensitiesSemilog}}
-\caption{Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal G^0$ distributions with unitary mean ($\alpha\in\{-1.5,-3,-8\}$ in red, blue, and black, resp.)}\label{Fig:GI0Distribution}
+\caption[Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal G^0$ distributions with unitary mean]{Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal G^0$ distributions with unitary mean ($\alpha\in\{-1.5,-3,-8\}$ in red, blue, and black, resp.)}\label{Fig:GI0Distribution}
 \end{figure}
 
 Fig.~\ref{Fig:GI0DistributionLooks} shows the effect of varying the number of looks, for the same $\alpha=5$ and $\gamma=4$.
@@ -126,12 +126,12 @@ This, along with the reduced probability very large values have with multilook p
 \centering
 \subfloat[Densities]{\includegraphics[width=.48\linewidth]{GI0DensitiesLooks}}
 \subfloat[Densities in semilog scale\label{GI0DensitiesSemilog}]{\includegraphics[width=.48\linewidth]{GI0DensitiesSemilogLooks}}
-\caption{Densities in linear and semilogarithmic scale $\mathcal G^0(-5,4,L)$ distributions with unitary mean and $L\in\{1,3,8\}$ in red, blue, and black, resp.)}\label{Fig:GI0DistributionLooks}
+\caption[Densities in linear and semilogarithmic scale $\mathcal G^0(-5,4,L)$ distributions with unitary mean and $L\in\{1,3,8\}$]{Densities in linear and semilogarithmic scale $\mathcal G^0(-5,4,L)$ distributions with unitary mean and $L\in\{1,3,8\}$ in red, blue, and black, resp.)}\label{Fig:GI0DistributionLooks}
 \end{figure}
 
 The $\mathcal{G}^0$ distribution has the same number of parameters as the $\mathcal{K}$ law, but it has been shown to be more apt at modeling return with extreme variability.
 Moreover, it is also able to describe the same kind of return from textured areas for which the latter was proposed; \citet{MejailJacoboFreryBustos:IJRS} showed that, with proper choices of parameters, the $\mathcal G^0$ law can approximate with any error any $\mathcal K$ distribution.
-For these reasons, the $\mathcal G^0$ distribution is called \textit{Universal Model} for SAR data.
+For these reasons, the $\mathcal G^0$ distribution is called \textit{Universal Model} for SAR data; see Exercise~\ref{Ex:ApproximationKGI0}.
 
 
 \section*{Exercises}
@@ -176,7 +176,7 @@ Compute its moments.
 Illustrate.
 \end{exer}
 
-\begin{exer}
+\begin{exer}\label{Ex:ApproximationKGI0}
 Propose a measure of the difference between $Z_1\sim\mathcal K(\alpha_1,\lambda^*, L)$ and $Z_2\sim\mathcal G^0(\alpha_2,\gamma^*, L)$ (consider, for instance, the Hellinger distances between distributions with positive support $d_{\text{H}}(Z_1,Z_2)=1-\int_{\mathbbm R_+}\sqrt{f_{Z_1} f_{Z_2}})$.
 Describe this difference for a number of values of $\alpha_1$ and $\alpha_2$, for $L\in\{1,3,8\}$.
 For each $\alpha_1$, find the value of $\alpha_2$ which yields the closest $\mathcal K$ and $\mathcal G^0$ random variables\cite{mejailfreryjacobobustos2001}.
