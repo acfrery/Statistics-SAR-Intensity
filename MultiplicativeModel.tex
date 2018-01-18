@@ -23,7 +23,7 @@ If, for instance, we are dealing with a \SI{1x1}{\meter} resolution image, we ma
 but if the target is a forest, this assumption may be unrealistic.
 
 \citet{JakemanPusey76} were among the first who tackled this problem.
-Assuming that the number of elementary backscatterers $N$ fluctuates according to a Negative Binomial distribution, they obtained a closed-form density which characterizes the $\mathcal K$ distribution:
+Assuming that the number of elementary backscatterers $N$ fluctuates according to a Negative Binomial distribution (see Section~\ref{Sec:NegativeBinomial}), they obtained a closed-form density which characterizes the $\mathcal K$ distribution:
 \begin{equation}
 f_Z(z;\alpha,\lambda,L) =
 \frac{2\lambda L}{\Gamma(\alpha)\Gamma(L)} (\lambda L z)^{\frac{\alpha+L}{2}-1} K_{\alpha-L}(2\sqrt{\lambda L z}),
@@ -69,6 +69,70 @@ Fig.~\ref{Fig:KIDistributionLooks} shows the effect of varying the number of loo
 \end{figure}
 
 Notice in Fig~\ref{Fig:KIDistributionLooks}\subref{KIDensitiesSemilog} the dramatic effect multilook processing has mostly on the distribution of very small values.
+This, along with the reduced probability very large values have with multilook processing, yields less contrasted images.
+
+Although the basic construction, and physical explanation, of the $\mathcal K$ distribution stems from letting fluctuate the number of elementary backscatters, we are interested in an equivalent derivation.
+
+As previously said, the basic model for observations without roughness is~\eqref{eq:SARGammaDensity}.
+The mean $X=\sigma^2$ can be seen as multiplying $Y$, a $\Gamma(1,L)$ random variable, which describes the speckle.
+As we are interested in letting the mean fluctuate, $X$ can be described by any distribution with positive support.
+If we choose a Gamma random variable with mean $\alpha/\lambda>0$ and shape parameter $\alpha>0$, i.e., $Y\sim\Gamma(\alpha/\lambda,\alpha)$, and further assume that $X$ and $Y$ are independent, then the product $Z=XY$ follows a $\mathcal{K}(\alpha,\lambda,L)$ distribution with density~\eqref{Eq:DensKI}.
+This \textit{multiplicative} construction is not only useful for sampling from this distribution\cite{IGARSSChan2017}, but also for obtaining other models for the return.
+
+In this line, \citet{frery96} noticed that the $\mathcal{K}$ distribution failed at describing data from extremely textured areas as, for instance, urban targets.
+The authors then proposed a different model for the backscatter $X$: the Inverse Gaussian distribution.
+
+We say that $X\sim\text{IG}(\alpha,\gamma)$, with $\alpha<0$ and $\gamma>0$ follows an Inverse Gaussian distribution is characterized by the density
+\begin{equation}
+f_X(x;\alpha,\gamma) = \frac{1}{\gamma^\alpha} x^{\alpha-1} \exp\{-\gamma/x\},
+\label{Eq:IGdensity}
+\end{equation}
+for $x>0$ and zero otherwise.
+
+Now introducing the Inverse Gaussian model for the backscatter in the multiplicative model, i.e. by multiplying the independent random variables $X\sim\text{IG}(\alpha,\gamma)$ and $Y\sim\Gamma(1,L)$, one obtains the $\mathcal{G}^0$ distribution for the return $Z=XY$, which is characterized by the density
+\begin{equation}
+f_Z(z; \alpha,\gamma,L) = \frac{L^L \Gamma(L-\alpha)}{\gamma^\alpha \Gamma(L)\Gamma(-\alpha)} \frac{z^{L-1}}{(\gamma+L z)^{L-\alpha}},
+\label{Eq:DensGI0}
+\end{equation}
+where $\alpha<0$, and $\gamma,z>0$.
+It is noteworthy that, differently from~\eqref{Eq:DensKI}, this density does not involve Bessel functions.
+
+We denote $Z\sim \mathcal G^0(\alpha,\gamma,L)$ the situation of $Z$ following the distribution characterized by~\eqref{Eq:DensGI0}.
+The $k$-order moments of $Z$ are
+\begin{equation}
+E(Z^k) = (\gamma / L)^{k} \frac{\Gamma(L+k)\Gamma(-\alpha-k)}{\Gamma(L)\Gamma(-\alpha)},
+\label{Eq:MomentGI0}
+\end{equation}
+provided $-\alpha>k$, and infinite otherwise.
+Eq.~\eqref{Eq:MomentGI0} is useful, among other applications, for finding $\gamma^*=-\alpha-1$, the scale parameter that yields a unitary mean distribution for each $\alpha$ and any $L$.
+
+Fig.~\ref{Fig:GI0Distribution} shows the $\text{E}(1)$ and $\mathcal G^0(\alpha,\gamma^*, 1)$ densities.
+The differences in tail behavior are clearly exhibited in the semilogarithmic scale; cf.\ Fig.~\ref{Fig:GI0Distribution}\subref{Fig:DensGI0Semilog}.
+Whereas the exponential distribution decreases linearly, the $\mathcal G^0$ law assigns more probability to larger events increasing, thus, the variability of the return.
+
+\begin{figure}[hbt]
+\centering
+\subfloat[Densities]{\includegraphics[width=.48\linewidth]{GI0Densities}}
+\subfloat[Densities in semilog scale\label{Fig:DensGI0Semilog}]{\includegraphics[width=.48\linewidth]{GI0DensitiesSemilog}}
+\caption{Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal G^0$ distributions with unitary mean ($\alpha\in\{-1.5,-3,-8\}$ in red, blue, and black, resp.)}\label{Fig:GI0Distribution}
+\end{figure}
+
+Fig.~\ref{Fig:GI0DistributionLooks} shows the effect of varying the number of looks, for the same $\alpha=5$ and $\gamma=4$.
+
+Notice, again, in Fig~\ref{Fig:GI0DistributionLooks}\subref{GI0DensitiesSemilog} the effect multilook processing has mostly on the distribution of very small values.
+This, along with the reduced probability very large values have with multilook processing, yields less contrasted images.
+
+\begin{figure}[hbt]
+\centering
+\subfloat[Densities]{\includegraphics[width=.48\linewidth]{GI0DensitiesLooks}}
+\subfloat[Densities in semilog scale\label{GI0DensitiesSemilog}]{\includegraphics[width=.48\linewidth]{GI0DensitiesSemilogLooks}}
+\caption{Densities in linear and semilogarithmic scale $\mathcal G^0(-5,4,L)$ distributions with unitary mean and $L\in\{1,3,8\}$ in red, blue, and black, resp.)}\label{Fig:GI0DistributionLooks}
+\end{figure}
+
+The $\mathcal{G}^0$ distribution has the same number of parameters as the $\mathcal{K}$ law, but it has been shown to be more apt at modeling return with extreme variability.
+Moreover, it is also able to describe the same kind of return from textured areas for which the latter was proposed; \citet{MejailJacoboFreryBustos:IJRS} showed that, with proper choices of parameters, the $\mathcal G^0$ law can approximate with any error any $\mathcal K$ distribution.
+For these reasons, the $\mathcal G^0$ distribution is called \textit{Universal Model} for SAR data.
+
 
 \section*{Exercises}
 
@@ -82,7 +146,38 @@ Illustrate the dependence of the density of the $\mathcal K$ distribution with r
 \end{exer}
 
 \begin{exer}
+Obtain samples from iid $\mathcal{K}(\alpha,\lambda,L)$ random variables.
+Produce histograms, and draw the theoretical densities over them for a variety of parameters.
+\end{exer}
+
+\begin{exer}
 Obtain the expression of the density of $\mathcal K$-distributed amplitude data via the transformation $Z_A=\sqrt{Z_I}$.
 Compute its moments.
 Illustrate.
+\end{exer}
+
+\begin{exer}
+Using~\eqref{Eq:MomentGI0}, compute the skewness and kurtosis of the $\mathcal G^0(\alpha,\gamma,L)$ distribution.
+Illustrate how they vary with the parameters.
+\end{exer}
+
+\begin{exer}
+Illustrate the dependence of the density of the $\mathcal G^0$ distribution with respect to the scale parameter $\gamma$.
+\end{exer}
+
+\begin{exer}
+Obtain samples from iid $\mathcal{G}^0(\alpha,\gamma,L)$ random variables.
+Produce histograms, and draw the theoretical densities over them for a variety of parameters.
+\end{exer}
+
+\begin{exer}
+Obtain the expression of the density of $\mathcal G^0$-distributed amplitude data via the transformation $Z_A=\sqrt{Z_I}$.
+Compute its moments.
+Illustrate.
+\end{exer}
+
+\begin{exer}
+Propose a measure of the difference between $Z_1\sim\mathcal K(\alpha_1,\lambda^*, L)$ and $Z_2\sim\mathcal G^0(\alpha_2,\gamma^*, L)$ (consider, for instance, the Hellinger distances between distributions with positive support $d_{\text{H}}(Z_1,Z_2)=1-\int_{\mathbbm R_+}\sqrt{f_{Z_1} f_{Z_2}})$.
+Describe this difference for a number of values of $\alpha_1$ and $\alpha_2$, for $L\in\{1,3,8\}$.
+For each $\alpha_1$, find the value of $\alpha_2$ which yields the closest $\mathcal K$ and $\mathcal G^0$ random variables\cite{mejailfreryjacobobustos2001}.
 \end{exer}

@@ -31,6 +31,25 @@ In general, $\operatorname{E}X^k\neq (\operatorname{E}X)^k$.
 \section{Models}
 
 We will use a few models as examples.
+The interested reader is referred to, among other references, to the books by \citet{johnson_discrete} for discrete distributions, and by \citet{johnson_continuous2} for continuous random variables.
+
+\subsection{The Bernoulli distribution}\label{Sec:Bernoulli}
+
+This is the basic discrete distribution.
+It models the outcome of a dichotomic random experiment, i.e., with only two possible outcomes: failure ($0$) or success ($1$).
+Denote $N\sim\text{Be}(p)$ a random variable with Bernoulli distribution and probability $0\leq p\leq 1$.
+The vector of probabilities is $(1-p,p)$.
+
+\subsection{The Negative Binomial distribution}\label{Sec:NegativeBinomial}
+
+This discrete distribution is basilar in the construction of the $\mathcal K$ law.
+We say that $N\sim\text{NB}(r,p)$ has negative binomial distribution if its vector of probabilities is given by
+$$
+\Pr(N=n) = {{k+r-1}\choose{k}} p^k (1-p)^r,
+$$
+com $0<p<1$ and $1\leq n\leq k$.
+
+This is the distribution that models the probability of having to wait until the $n$th Bernoulli trial with probability $p$ of success until we observe exactly $r$ failures.
 
 \subsection{The Uniform distribution}
 We say that $X\sim\mathcal U_{(0,\theta)}$, $\theta>0$ has uniform distribution on the interval $(0,\theta)$ when its density is
