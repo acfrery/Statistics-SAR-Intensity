@@ -101,6 +101,7 @@ The Gamma distribution, in the usual parametrization for SAR data $Z\sim\Gamma(L
 f_\Gamma(z;L,\mu) = \frac{L^L}{\mu^{L}\Gamma(L)} z^{L-1} 
 	\exp\big\{ -L z / \mu
 	\big\}.
+\label{eq:SARGammaDensity}
 \end{equation}
 With this, the first- and second-order moments of $Z$ are
 $\operatorname{E}Z=\mu$,
@@ -425,3 +426,47 @@ See details in \citet{busto92}.
 Variance and bias should be as small as possible.
 They must always be checked, either analytically (the ideal scenario), or by a well-designed Monte Carlo study.
 
+\section*{Exercises}
+
+All exercises must be solved as a report including a theoretical discussion, implementation details, careful (and visually appealing) plots, and conclusions.
+
+\begin{exer}\label{Ex:Uiid}
+Consider $\bm U=(U_1,\dots,U_n)$, a sample of iid $\mathcal U_{(0,\theta)}$ random variables with $\theta>0$ unknown.
+Obtain at least three estimators for $\theta$ by the method of moments.
+Compare them, in terms of bias and mean quadratic error, with respect to the maximum likelihood estimator.
+Use a variety of sample sizes and true values of $\theta$.
+\end{exer}
+
+\begin{exer}
+Improve all estimators obtained in Exercise~\ref{Ex:Uiid} by bootstrap.
+Experiment with different bootstrap replications.
+Consider also execution times.
+\end{exer}
+
+\begin{exer}
+Consider the model given in~\eqref{eq:DensMixtureGaussian} such that $p=2$, $\mu_1=-1$, $\mu_2=1$, $\sigma_1^2=\sigma_2=1$, and $p_1=1/2$.
+Write a routine for sampling from this model.
+Now work with three situations of unknown means and variances:
+(i)~one component, (ii)~two components, and (iii)~three components.
+Assess the BIC of each situation by means of a Monte Carlo experiment, varying the sample size; you may use \num{1000} replications for each situation.
+\end{exer}
+
+\begin{exer}\label{Ex:Gammaiid}
+Compare the maximum likelihood and a moment estimator for the model given in~\eqref{eq:SARGammaDensity} by means of a Monte Carlo experiment, using the bias and the mean quadratic error as measures of quality.
+Consider a variety of true parameters and sample sizes.
+\end{exer}
+
+\begin{exer}
+Extend Exercise~\ref{Ex:Gammaiid} by including bootstrap-improved estimators.
+Make a global comparison.
+\end{exer}
+
+\begin{exer}\label{Ex:KIiid}
+Find at least two estimators for the model given by~\eqref{Eq:DensKI}.
+Compare them for a variety of parameters.
+\end{exer}
+
+\begin{exer}
+Extend Exercise~\ref{Ex:KIiid} by including bootstrap-improved estimators.
+Make a global comparison.
+\end{exer}
