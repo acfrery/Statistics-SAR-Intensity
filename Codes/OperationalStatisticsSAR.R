@@ -113,3 +113,64 @@ ggplot(data=data.frame(x=seq(0.01, 7, length.out = 500)), aes(x=x)) +
   xlab("x") + ylab("Intensity K and Exponential Densities")
 ggsave(file="../Figures/KIDensitiesSemilog.pdf")  
 
+ggplot(data=data.frame(x=seq(0.01, 7, length.out = 500)), aes(x=x)) +
+  stat_function(fun=dKI, geom = "line", size=2, col="red", args = list(p_alpha=2, p_lambda=2, p_Looks=1)) +
+  stat_function(fun=dKI, geom = "line", size=2, col="blue", args = list(p_alpha=2, p_lambda=2, p_Looks=3)) +
+  stat_function(fun=dKI, geom = "line", size=2, col="black", args = list(p_alpha=2, p_lambda=2, p_Looks=8)) +
+  theme_classic() +
+  theme(text = element_text(size=20)) +
+  xlab("x") + ylab("Intensity K densities with varying Looks ")
+ggsave(file="../Figures/KIDensitiesLooks.pdf")  
+
+ggplot(data=data.frame(x=seq(0.01, 7, length.out = 500)), aes(x=x)) +
+  stat_function(fun=dKI, geom = "line", size=2, col="red", args = list(p_alpha=2, p_lambda=2, p_Looks=1)) +
+  stat_function(fun=dKI, geom = "line", size=2, col="blue", args = list(p_alpha=2, p_lambda=2, p_Looks=3)) +
+  stat_function(fun=dKI, geom = "line", size=2, col="black", args = list(p_alpha=2, p_lambda=2, p_Looks=8)) +
+  theme_classic() +
+  theme(text = element_text(size=20)) +
+  coord_trans(y="log10") +
+  xlab("x") + ylab("Intensity K Densities with varying Looks")
+ggsave(file="../Figures/KIDensitiesSemilogLooks.pdf")  
+
+
+### Intensity GI0 distributions
+
+ggplot(data=data.frame(x=seq(0.01, 10, length.out = 500)), aes(x=x)) +
+  stat_function(fun=dexp, geom = "line", size=2, col="green", args = (mean=1)) +
+  stat_function(fun=dGI0, geom = "line", size=2, col="red", args = list(p_alpha=-1.5, p_gamma=.5, p_Looks=1)) +
+  stat_function(fun=dGI0, geom = "line", size=2, col="blue", args = list(p_alpha=-3, p_gamma=2, p_Looks=1)) +
+  stat_function(fun=dGI0, geom = "line", size=2, col="black", args = list(p_alpha=-8, p_gamma=7, p_Looks=1)) +
+  theme_classic() +
+  theme(text = element_text(size=20)) +
+  xlab("x") + ylab("Intensity G0 and Exponential Densities")
+ggsave(file="../Figures/GI0Densities.pdf")  
+
+ggplot(data=data.frame(x=seq(0.01, 10, length.out = 500)), aes(x=x)) +
+  stat_function(fun=dexp, geom = "line", size=2, col="green", args = (mean=1)) +
+  stat_function(fun=dGI0, geom = "line", size=2, col="red", args = list(p_alpha=-1.5, p_gamma=.5, p_Looks=1)) +
+  stat_function(fun=dGI0, geom = "line", size=2, col="blue", args = list(p_alpha=-3, p_gamma=2, p_Looks=1)) +
+  stat_function(fun=dGI0, geom = "line", size=2, col="black", args = list(p_alpha=-8, p_gamma=7, p_Looks=1)) +
+  theme_classic() +
+  theme(text = element_text(size=20)) +
+  coord_trans(y="log10") +
+  xlab("x") + ylab("Intensity G0 and Exponential Densities")
+ggsave(file="../Figures/GI0DensitiesSemilog.pdf")  
+
+ggplot(data=data.frame(x=seq(0.01, 10, length.out = 500)), aes(x=x)) +
+  stat_function(fun=dGI0, geom = "line", size=2, col="red", args = list(p_alpha=-5, p_gamma=4, p_Looks=1)) +
+  stat_function(fun=dGI0, geom = "line", size=2, col="blue", args = list(p_alpha=-5, p_gamma=4, p_Looks=3)) +
+  stat_function(fun=dGI0, geom = "line", size=2, col="black", args = list(p_alpha=-5, p_gamma=4, p_Looks=8)) +
+  theme_classic() +
+  theme(text = element_text(size=20)) +
+  xlab("x") + ylab("Intensity G0 densities with varying Looks ")
+ggsave(file="../Figures/GI0DensitiesLooks.pdf")  
+
+ggplot(data=data.frame(x=seq(0.01, 10, length.out = 500)), aes(x=x)) +
+  stat_function(fun=dGI0, geom = "line", size=2, col="red", args = list(p_alpha=-5, p_gamma=4, p_Looks=1)) +
+  stat_function(fun=dGI0, geom = "line", size=2, col="blue", args = list(p_alpha=-5, p_gamma=4, p_Looks=3)) +
+  stat_function(fun=dGI0, geom = "line", size=2, col="black", args = list(p_alpha=-5, p_gamma=4, p_Looks=8)) +
+  theme_classic() +
+  theme(text = element_text(size=20)) +
+  coord_trans(y="log10") +
+  xlab("x") + ylab("Intensity G0 Densities with varying Looks")
+ggsave(file="../Figures/GI0DensitiesSemilogLooks.pdf")  
