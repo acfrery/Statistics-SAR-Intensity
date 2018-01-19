@@ -397,12 +397,15 @@ The maximum likelihood estimator of $(\alpha,\gamma)$, is any point that maximiz
 \ell(\alpha,\gamma;\widehat L, \bm Z) = 
 \frac{\Gamma(\widehat L-\alpha)}{\gamma^\alpha \Gamma(-\alpha)} +
 \widehat L \sum_{n=1}^N \log\frac{Z_n}{\gamma+\widehat L Z_n} + 
-\alpha \sum_{n=1}^N \log(\gamma + \widehat L Z_1),
+\alpha \sum_{n=1}^N \log(\gamma + \widehat L Z_n),
 \label{Eq:ReducedLogLikGI0}
 \end{equation}
 provided it lies in $\Theta$.
 Maximizing~\eqref{Eq:ReducedLogLikGI0} might be a difficult task, in particular in textureless areas where $\alpha\to-\infty$ and the $\mathcal G^0$ distribution becomes very close to a Gamma law.
 Small samples also pose difficult numerical problems, as $\ell$ becomes flat\cite{FreryCribariSouza:JASP:04}.
+
+Most algorithms for maximizing~\eqref{Eq:ReducedLogLikGI0} require a starting point.
+A good solution consists in using estimates obtained with the method of moments, i.e.\ by forming a system of two equations with suitable different values of $k$ in~\eqref{Eq:MomentGI0}.
 
 \section{Analogy vs.\ Maximum Likelihood}
 
