@@ -63,7 +63,7 @@ ggsave(file="../Figures/ExponentialDensitiesSemilog.pdf")
 ### Gamma Distributions
 
 ggplot(data=data.frame(x=seq(10^-3, 5, length.out = 500)), aes(x=x)) +
-  stat_function(fun=dgamma, geom = "line", size=2, col="black", args = list(shape=1, scale=1)) +
+  stat_function(fun=dgamma, geom = "line", size=2, col="q", args = list(shape=1, scale=1)) +
   stat_function(fun=dgamma, geom = "line", size=2, col="red", args = list(shape=3, scale=1/3)) +
   stat_function(fun=dgamma, geom = "line", size=2, col="blue", args = list(shape=8, scale=1/8)) +
   theme_classic() +

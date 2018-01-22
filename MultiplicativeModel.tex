@@ -84,16 +84,17 @@ This \textit{multiplicative} construction is not only useful for sampling from t
 \section{The $\mathcal G^0$ distribution}
 
 In this line, \citet{frery96} noticed that the $\mathcal{K}$ distribution failed at describing data from extremely textured areas as, for instance, urban targets.
-The authors then proposed a different model for the backscatter $X$: the Inverse Gaussian distribution.
+The authors then proposed a different model for the backscatter $X$: the Reciprocal Gamma distribution.
 
-We say that $X\sim\text{IG}(\alpha,\gamma)$, with $\alpha<0$ and $\gamma>0$ follows an Inverse Gaussian distribution is characterized by the density
+We say that $X\sim{\Gamma^{-1}}(\alpha,\gamma)$, with $\alpha<0$ and $\gamma>0$ follows a 
+Reciprocal Gamma distribution is characterized by the density
 \begin{equation}
 f_X(x;\alpha,\gamma) = \frac{1}{\gamma^\alpha} x^{\alpha-1} \exp\{-\gamma/x\},
 \label{Eq:IGdensity}
 \end{equation}
 for $x>0$ and zero otherwise.
 
-Now introducing the Inverse Gaussian model for the backscatter in the multiplicative model, i.e. by multiplying the independent random variables $X\sim\text{IG}(\alpha,\gamma)$ and $Y\sim\Gamma(1,L)$, one obtains the $\mathcal{G}^0$ distribution for the return $Z=XY$, which is characterized by the density
+Now introducing the Reciprocal Gamma model for the backscatter in the multiplicative model, i.e. by multiplying the independent random variables $X\sim{\Gamma^{-1}}(\alpha,\gamma)$ and $Y\sim\Gamma(1,L)$, one obtains the $\mathcal{G}^0$ distribution for the return $Z=XY$, which is characterized by the density
 \begin{equation}
 f_Z(z; \alpha,\gamma,L) = \frac{L^L \Gamma(L-\alpha)}{\gamma^\alpha \Gamma(L)\Gamma(-\alpha)} \frac{z^{L-1}}{(\gamma+L z)^{L-\alpha}},
 \label{Eq:DensGI0}
@@ -118,7 +119,7 @@ Whereas the exponential distribution decreases linearly, the $\mathcal G^0$ law 
 \centering
 \subfloat[Densities]{\includegraphics[width=.48\linewidth]{GI0Densities}}
 \subfloat[Densities in semilog scale\label{Fig:DensGI0Semilog}]{\includegraphics[width=.48\linewidth]{GI0DensitiesSemilog}}
-\caption[Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal G^0$ distributions with unitary mean]{Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal G^0$ distributions with unitary mean ($\alpha\in\{-1.5,-3,-8\}$ in red, blue, and black, resp.)}\label{Fig:GI0Distribution}
+\caption[Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal G^0$ distributions with unitary mean]{Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal G^0$ distributions with unitary mean and $\alpha\in\{-1.5,-3,-8\}$ in red, blue, and black, resp.}\label{Fig:GI0Distribution}
 \end{figure}
 
 Fig.~\ref{Fig:GI0DistributionLooks} shows the effect of varying the number of looks, for the same $\alpha=5$ and $\gamma=4$.
@@ -145,8 +146,6 @@ where $\Upsilon_{u,v}$ is the cumulative distribution function of a Fisher-Snede
 Notice that $\Upsilon$ is readily available in most software platforms for statistical computing.
 Since such platforms usually also provide implementations of the inverse of cumulative distribution functions, the Inversion Theorem can be used to sample from the $\mathcal G^0$ law.
 \citet{IGARSSChan2017} discuss other techniques for obtaining such deviates.
-
-\section{The KummerU distribution}
 
 
 \section*{Exercises}
