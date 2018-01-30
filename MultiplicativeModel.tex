@@ -145,7 +145,13 @@ F_{G^0(\alpha,\gamma,L)}(t) = \Upsilon_{2L,−2\alpha}(−\alpha t/\gamma),
 where $\Upsilon_{u,v}$ is the cumulative distribution function of a Fisher-Snedekor distribution with $u$ and $v$ degrees of freedom, and $F_{G^0(\alpha,\gamma,L)}$ is the cumulative distribution function of a $F_{G^0(\alpha,\gamma,L)}$ random variable.
 Notice that $\Upsilon$ is readily available in most software platforms for statistical computing.
 Since such platforms usually also provide implementations of the inverse of cumulative distribution functions, the Inversion Theorem can be used to sample from the $\mathcal G^0$ law.
-\citet{IGARSSChan2017} discuss other techniques for obtaining such deviates.
+
+Arguably, the most popular way of sampling from the $\mathcal G^0$ distribution is through its multiplicative nature.
+Obtaining deviates from $X\sim\Gamma(1,L)$ is immediate.
+In order to sample from $Y\sim\Gamma^{-1}(\alpha,\gamma)$, one may use the fact that if $Y'\sim\Gamma(-\alpha,\gamma)$, then $Y=1/Y'$ has $\Gamma^{-1}(\alpha,\gamma)$ distribution.
+Then, $Z=X/Y'$ has the desired $\mathcal G^0(\alpha,\gamma,L)$ distribution.
+
+\citet{IGARSSChan2017} discuss other techniques for obtaining such deviates, in particular interesting connections between the $\mathcal G^0(\alpha,\gamma,1)$ law and certain Pareto distribution.
 
 
 \section*{Exercises}
