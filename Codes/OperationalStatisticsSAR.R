@@ -2,6 +2,9 @@ require(ggplot2)
 require(ggthemes)
 source("/Users/acfrery/Dropbox (Personal)/upper_outliers/codigos/GammaSAR.R")
 source("/Users/acfrery/Documents/Programas/R/GI0Project/GI0distribution.R")
+source("/Users/acfrery/Documents/Programas/R/myread.ENVI.R")
+source("/Users/acfrery/Documents/Programas/R/imagematrix.R")
+
 
 ### Complex Scattering
 
@@ -174,3 +177,64 @@ ggplot(data=data.frame(x=seq(0.01, 10, length.out = 500)), aes(x=x)) +
   coord_trans(y="log10") +
   xlab("x") + ylab("Intensity G0 Densities with varying Looks")
 ggsave(file="../Figures/GI0DensitiesSemilogLooks.pdf")  
+
+
+
+
+### Amostras de imagens
+
+setwd("/Users/acfrery/imagens/DadosPolarimetricos/ESAR")
+HH_Complex <- myread.ENVI("ESAR97HH.DAT", 
+                          "ESAR97HH.hdr")
+HV_Complex <- myread.ENVI("ESAR97VH.DAT", 
+                          "ESAR97VH.hdr")
+VV_Complex <- myread.ENVI("ESAR97VV.DAT", 
+                          "ESAR97VV.hdr")
+dim(HV_Complex)
+typeof(HV_Complex)
+HH_Intensity <- (Mod(HH_Complex))^2
+HV_Intensity <- (Mod(HV_Complex))^2
+VV_Intensity <- (Mod(VV_Complex))^2
+rm(HH_Complex, HV_Complex, VV_Complex)
+
+Intensity_RGB <- array(data=c(HH_Intensity, HV_Intensity, VV_Intensity), dim = c(dim(HH_Intensity), 3))
+
+plot(imagematrix(equalize_indep(Intensity_RGB)))
+
+imagematrixPNG(imagematrix(equalize_indep(Intensity_RGB)), name="ESAR_RGB.png")
+
+dark <- Intensity_RGB[160:222,1350:1596,]
+
+dark_HH <- as.vector(dark[,,1])
+dark_HV <- as.vector(dark[,,2])
+dark_VV <- as.vector(dark[,,3])
+
+
+ggplot(data=data.frame(dark_HH), aes(x=dark_HH)) +
+  geom_histogram(aes(y = ..density..), bins=100, col="black", fill="white") +
+  stat_function(fun=dexp, args = list(rate=1/mean(dark_HH)), lwd=3, col="red") +
+  scale_x_continuous(limits = c(0, 4e4)) +
+  xlab("Intensities HH band") +
+  ylab("Histogram and Density") +
+  theme_few() +
+  theme(text = element_text(size=20))
+  
+ggplot(data=data.frame(dark_HV), aes(x=dark_HV)) +
+  geom_histogram(aes(y = ..density..), bins=100, col="black", fill="white") +
+  stat_function(fun=dexp, args = list(rate=1/mean(dark_HV)), lwd=3, col="red") +
+  scale_x_continuous(limits = c(0, 2500)) +
+  xlab("Intensities HV band") +
+  ylab("Histogram and Density") +
+  theme_few() +
+  theme(text = element_text(size=20))
+
+ggplot(data=data.frame(dark_VV), aes(x=dark_VV)) +
+  geom_histogram(aes(y = ..density..), bins=100, col="black", fill="white") +
+  stat_function(fun=dexp, args = list(rate=1/mean(dark_VV)), lwd=3, col="red") +
+  scale_x_continuous(limits = c(0, 2e4)) +
+  xlab("Intensities HV band") +
+  ylab("Histogram and Density") +
+  theme_few() +
+  theme(text = element_text(size=20))
+
+
