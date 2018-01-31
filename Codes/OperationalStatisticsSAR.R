@@ -183,32 +183,128 @@ ggsave(file="../Figures/GI0DensitiesSemilogLooks.pdf")
 
 ### Amostras de imagens
 
-setwd("/Users/acfrery/imagens/DadosPolarimetricos/ESAR")
-HH_Complex <- myread.ENVI("ESAR97HH.DAT", 
-                          "ESAR97HH.hdr")
-HV_Complex <- myread.ENVI("ESAR97VH.DAT", 
-                          "ESAR97VH.hdr")
-VV_Complex <- myread.ENVI("ESAR97VV.DAT", 
-                          "ESAR97VV.hdr")
+imagepath <- "/Users/acfrery/imagens/DadosPolarimetricos/ESAR/"
+HH_Complex <- myread.ENVI(paste(imagepath, "ESAR97HH.DAT", sep = ""), 
+                          paste(imagepath, "ESAR97HH.hdr", sep = ""))
+HV_Complex <- myread.ENVI(paste(imagepath, "ESAR97VH.DAT", sep = ""), 
+                          paste(imagepath, "ESAR97VH.hdr", sep = ""))
+VV_Complex <- myread.ENVI(paste(imagepath, "ESAR97VV.DAT", sep = ""), 
+                          paste(imagepath, "ESAR97VV.hdr", sep = ""))
 dim(HV_Complex)
 typeof(HV_Complex)
 HH_Intensity <- (Mod(HH_Complex))^2
 HV_Intensity <- (Mod(HV_Complex))^2
 VV_Intensity <- (Mod(VV_Complex))^2
-rm(HH_Complex, HV_Complex, VV_Complex)
 
 Intensity_RGB <- array(data=c(HH_Intensity, HV_Intensity, VV_Intensity), dim = c(dim(HH_Intensity), 3))
 
+### BEGIN Producing the PNG with annotations
+dimensions <- dim(HV_Complex)
+zero4 <- rep(0,4)
+png(file="../Figures/ESAR_RGB_Annot.png", width=dimensions[2], height=dimensions[1])
+par(mar=zero4, oma=zero4, omi=zero4)
 plot(imagematrix(equalize_indep(Intensity_RGB)))
 
-imagematrixPNG(imagematrix(equalize_indep(Intensity_RGB)), name="ESAR_RGB.png")
+# Textureless area
+lines(x=c(1350,1350,1596,1596,1350), y=c(1599-160,1599-222,1599-222,1599-160,1599-160), 
+      col="yellow", lwd=7)
+
+# Textured area
+#lines(x=c(1398,1398,1506,1506,1398), y=c(1599-1308,1599-1521,1599-1521,1599-1308,1599-1308),
+#      col="red", lwd=7)
+
+dev.off()
+### END Producing the PNG with annotations
+
+plot(imagematrix(equalize_indep(Intensity_RGB)))
 
 dark <- Intensity_RGB[160:222,1350:1596,]
+bright <- Intensity_RGB[1398:1506,1308:1521,]
 
+plot(imagematrix(equalize(bright)))
+
+#### Remover - sólo para dibujar áreas
+#dim(HH_Intensity)
+#plot(imagematrix(equalize(HH_Intensity)))
+#lines(x=c(1350,1350,1596,1596,1350), y = c(1599-160,1599-222,1599-222,1599-160,1599-160), col="yellow", lwd=3)
+#### Remover
+
+### Selected Complex Values
+dark_HH_Re <- as.vector(Re(HH_Complex[160:222,1350:1596]))
+dark_HH_Im <- as.vector(Im(HH_Complex[160:222,1350:1596]))
+dark_HV_Re <- as.vector(Re(HV_Complex[160:222,1350:1596]))
+dark_HV_Im <- as.vector(Im(HV_Complex[160:222,1350:1596]))
+dark_VV_Re <- as.vector(Re(VV_Complex[160:222,1350:1596]))
+dark_VV_Im <- as.vector(Im(VV_Complex[160:222,1350:1596]))
+
+ggplot(data=data.frame(dark_HH_Re), aes(x=dark_HH_Re)) +
+  geom_histogram(aes(y = ..density..), bins=100, col="black", fill="white") +
+  stat_function(fun=dnorm, args = list(mean=0, sd=sd(dark_HH_Re)), lwd=3, col="red") +
+  scale_x_continuous(limits = c(-300, 300)) +
+  xlab("Real HH band") +
+  ylab("Histogram and Density") +
+  theme_few() +
+  theme(text = element_text(size=20))
+ggsave(file="../Figures/dark_HH_Re.pdf")
+
+ggplot(data=data.frame(dark_HH_Im), aes(x=dark_HH_Im)) +
+  geom_histogram(aes(y = ..density..), bins=100, col="black", fill="white") +
+  stat_function(fun=dnorm, args = list(mean=0, sd=sd(dark_HH_Re)), lwd=3, col="red") +
+  scale_x_continuous(limits = c(-300, 300)) +
+  xlab("Imaginary HH band") +
+  ylab("Histogram and Density") +
+  theme_few() +
+  theme(text = element_text(size=20))
+ggsave(file="../Figures/dark_HH_Im.pdf")
+
+ggplot(data=data.frame(dark_HV_Re), aes(x=dark_HV_Re)) +
+  geom_histogram(aes(y = ..density..), bins=100, col="black", fill="white") +
+  stat_function(fun=dnorm, args = list(mean=0, sd=sd(dark_HV_Re)), lwd=3, col="red") +
+  scale_x_continuous(limits = c(-70, 70)) +
+  xlab("Real HV band") +
+  ylab("Histogram and Density") +
+  theme_few() +
+  theme(text = element_text(size=20))
+ggsave(file="../Figures/dark_HV_Re.pdf")
+
+ggplot(data=data.frame(dark_HV_Im), aes(x=dark_HV_Im)) +
+  geom_histogram(aes(y = ..density..), bins=100, col="black", fill="white") +
+  stat_function(fun=dnorm, args = list(mean=0, sd=sd(dark_HV_Im)), lwd=3, col="red") +
+  scale_x_continuous(limits = c(-70, 70)) +
+  xlab("Imaginary HV band") +
+  ylab("Histogram and Density") +
+  theme_few() +
+  theme(text = element_text(size=20))
+ggsave(file="../Figures/dark_HV_Im.pdf")
+
+ggplot(data=data.frame(dark_VV_Re), aes(x=dark_VV_Re)) +
+  geom_histogram(aes(y = ..density..), bins=100, col="black", fill="white") +
+  stat_function(fun=dnorm, args = list(mean=0, sd=sd(dark_VV_Re)), lwd=3, col="red") +
+  scale_x_continuous(limits = c(-200, 200)) +
+  xlab("Real VV band") +
+  ylab("Histogram and Density") +
+  theme_few() +
+  theme(text = element_text(size=20))
+ggsave(file="../Figures/dark_VV_Re.pdf")
+
+ggplot(data=data.frame(dark_VV_Im), aes(x=dark_VV_Im)) +
+  geom_histogram(aes(y = ..density..), bins=100, col="black", fill="white") +
+  stat_function(fun=dnorm, args = list(mean=0, sd=sd(dark_VV_Im)), lwd=3, col="red") +
+  scale_x_continuous(limits = c(-200, 200)) +
+  xlab("Imaginary VV band") +
+  ylab("Histogram and Density") +
+  theme_few() +
+  theme(text = element_text(size=20))
+ggsave(file="../Figures/dark_VV_Im.pdf")
+
+### Selected Intensities
 dark_HH <- as.vector(dark[,,1])
 dark_HV <- as.vector(dark[,,2])
 dark_VV <- as.vector(dark[,,3])
 
+bright_HH <- as.vector(brigh[,,1])
+bright_HV <- as.vector(brigh[,,2])
+bright_VV <- as.vector(brigh[,,3])
 
 ggplot(data=data.frame(dark_HH), aes(x=dark_HH)) +
   geom_histogram(aes(y = ..density..), bins=100, col="black", fill="white") +
@@ -218,7 +314,8 @@ ggplot(data=data.frame(dark_HH), aes(x=dark_HH)) +
   ylab("Histogram and Density") +
   theme_few() +
   theme(text = element_text(size=20))
-  
+ggsave(file="../Figures/darkHHfit.pdf")  
+
 ggplot(data=data.frame(dark_HV), aes(x=dark_HV)) +
   geom_histogram(aes(y = ..density..), bins=100, col="black", fill="white") +
   stat_function(fun=dexp, args = list(rate=1/mean(dark_HV)), lwd=3, col="red") +
@@ -227,6 +324,7 @@ ggplot(data=data.frame(dark_HV), aes(x=dark_HV)) +
   ylab("Histogram and Density") +
   theme_few() +
   theme(text = element_text(size=20))
+ggsave(file="../Figures/darkHVfit.pdf")  
 
 ggplot(data=data.frame(dark_VV), aes(x=dark_VV)) +
   geom_histogram(aes(y = ..density..), bins=100, col="black", fill="white") +
@@ -236,5 +334,5 @@ ggplot(data=data.frame(dark_VV), aes(x=dark_VV)) +
   ylab("Histogram and Density") +
   theme_few() +
   theme(text = element_text(size=20))
-
+ggsave(file="../Figures/darkVVfit.pdf")  
 

@@ -144,19 +144,33 @@ The reader is invited to obtain these densities using~\eqref{eq:GammmaTransforme
 In the following we illustrate the adequacy of this model with data from an actual sensor.
 
 Fig.~\ref{Im:Oberpfaffenhofen_RGB} shows a color composition of the intensity bands obtained on the surroundings of Oberpfaffenhofen by the ESAR sensor.
-The raw intensity HH, HV and VV bands were first equalized independently, and the assigned to the red, green and blue channels.
+The raw intensity HH, HV and VV bands were first equalized independently, and then assigned to the red, green and blue channels.
 
 \begin{figure*}
 \centering
-\includegraphics[width=\linewidth]{ESAR_RGB}
+\includegraphics[width=\linewidth]{ESAR_RGB_Annot}
 \caption{Color composition of the equalized intensity bands of an ESAR image over Oberpfaffenhofen}\label{Im:Oberpfaffenhofen_RGB}
 \end{figure*}
 
 The image shown in Fig.~\ref{Im:Oberpfaffenhofen_RGB} has $1599\times4000$ pixels.
-We selected $15561$ positions within the dark area in the upper part of the image, and extracted the observations in the intensity channels (without equalization).
+We selected $15561$ positions within the dark area in the upper part of the image, and extracted the observations both in the complex and intensity channels (without equalization).
+This area, which is shown as a yellow rectangle, was chosen because there is no visual clue of texture in it.
+
+Fig.~\ref{Fig:FittedDarkRegion_Complex} shows the histograms and fitted Gaussian densities of the six data sets corresponding to the real and imaginary parts of each polarization.
+Notice that there is no evidence of either skewnees or lack/excess of dispersion with respect to the hypothesized model.
+
+\begin{figure*}
+\centering
+\includegraphics[width=.32\linewidth]{dark_HH_Re}
+\includegraphics[width=.32\linewidth]{dark_HH_Im}
+\includegraphics[width=.32\linewidth]{dark_HV_Re}
+\includegraphics[width=.32\linewidth]{dark_HV_Im}
+\includegraphics[width=.32\linewidth]{dark_VV_Re}
+\includegraphics[width=.32\linewidth]{dark_VV_Im}
+\caption{Histograms and fitted Gaussian densities over the dark region of Fig.~\ref{Im:Oberpfaffenhofen_RGB}}\label{Fig:FittedDarkRegion_Complex}
+\end{figure*}
+
 Fig.~\ref{Fig:FittedDarkRegion} shows the histograms and fitted Exponential densities of these three data sets.
-The quality of the fit is remarkable, in particular for such large number of observations.
-This is an empirical indication that the model we are considering is adequate.
 
 \begin{figure*}
 \centering
@@ -166,7 +180,13 @@ This is an empirical indication that the model we are considering is adequate.
 \caption{Histograms and fitted Exponential densities over the dark region of Fig.~\ref{Im:Oberpfaffenhofen_RGB}}\label{Fig:FittedDarkRegion}
 \end{figure*}
 
+The quality of the fit is remarkable, in particular for such large number of observations.
+This is an empirical indication that the model we are considering is adequate.
+
+
 %%%% Exercises
+
+\section*{Excercises}
 
 \begin{exer}
 Find the densities of the Nakagami and Fisher-Tippet distributions.
