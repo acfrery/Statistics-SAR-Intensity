@@ -1,5 +1,6 @@
 require(ggplot2)
 require(ggthemes)
+require(reshape2)
 source("/Users/acfrery/Dropbox (Personal)/upper_outliers/codigos/GammaSAR.R")
 source("/Users/acfrery/Documents/Programas/R/GI0Project/GI0distribution.R")
 source("/Users/acfrery/Documents/Programas/R/myread.ENVI.R")
@@ -219,7 +220,9 @@ dev.off()
 plot(imagematrix(equalize_indep(Intensity_RGB)))
 
 dark <- Intensity_RGB[160:222,1350:1596,]
+save(file="../Data/dark.Rdata", dark)
 bright <- Intensity_RGB[1398:1506,1308:1521,]
+save(file="../Data/bright.Rdata", bright)
 
 plot(imagematrix(equalize(bright)))
 
@@ -336,3 +339,20 @@ ggplot(data=data.frame(dark_VV), aes(x=dark_VV)) +
   theme(text = element_text(size=20))
 ggsave(file="../Figures/darkVVfit.pdf")  
 
+### Descriptive statistics
+
+dark_data.frame <-data.frame(HH=as.vector(dark[,,1]), HV=as.vector(dark[,,2]), VV=as.vector(dark[,,3]))
+summary(dark_data.frame)
+
+dark_DF <- melt(dark_data.frame)
+ggplot(dark_DF, aes(x=variable, y=value)) + 
+  geom_boxplot(notch = TRUE) + 
+  coord_trans(y="log") + 
+  xlab("Bands") +
+  ylab("Observations in Logarithmic Scale") + 
+  theme_few() +
+  theme(text = element_text(size=20))
+ggsave(file="../Figures/BoxPlotdark.pdf")  
+
+       
+       
