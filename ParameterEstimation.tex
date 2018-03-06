@@ -54,7 +54,8 @@ com $0<p<1$ and $1\leq n\leq k$.
 
 This is the distribution that models the probability of having to wait until the $n$th Bernoulli trial with probability $p$ of success until we observe exactly $r$ failures.
 
-\subsection{The Uniform distribution}
+\subsection{The Uniform distribution}\label{Sec:UnifDistribution}
+
 We say that $X\sim\mathcal U_{(0,\theta)}$, $\theta>0$ has uniform distribution on the interval $(0,\theta)$ when its density is
 \begin{equation}
 f_U(u;\theta) = \frac{1}{\theta} \mathbbm 1_{(0,\theta)} (u).
@@ -73,7 +74,7 @@ Its cumulative distribution function is
 F_U(u;\theta) = 
 	\begin{cases}
 	0 				& \text{if } u\leq 0,\\
-	\theta^{-1} 	& \text{if } 0< u < \theta,\\
+	u/\theta 	& \text{if } 0< u < \theta,\\
 	1 				& \text{otherwise.}
 	\end{cases}
 \label{eq:CDFUniform}
@@ -267,6 +268,32 @@ whose maximum is at $U_{n:n}$, so
 $\widehat{\theta}_{\text{ML}}=\max \{U_1,U_2,\dots,U_n\}$.
 
 This is quite different from any analogy estimator, and the estimator by maximum likelihood is always admissible.
+
+\subsection{Beta distribution}\label{Sec:BetaDistribution}
+
+Closely related to the Uniform distribution is the Beta law\cite{devro86}.
+We say that $B$ follows a Beta distribution with shape parameters $a,b>0$ if its density is given by
+\begin{equation}
+f_B(u;p,q) = \frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)} u^{a-1} (1-u)^{b-1} \mathbbm 1_{(0,1)} (u).
+	\label{eq:BetaDensity}
+\end{equation}
+We denote this situation as $B\sim\mathcal B(a,b)$.
+Its expected value and variance are given by:
+$$
+\operatorname{E}(B) = \frac{a}{a+b} \text{ and }
+\operatorname{Var}(B) = \frac{ab}{(a+b)^2(a+b+1)}.
+$$
+
+It is noteworthy that $\mathcal B(1,1)$ is the Uniform distribution, and that if $a=b$ the density is symmetric around $1/2$.
+If $a=b>1$ the unique mode is at $1/2$, otherwise there are two modes at $0$ and $1$.
+Fig.~\ref{Fig:BetaDensities} illustrates three of these situations.
+
+\begin{marginfigure}
+\centering
+\includegraphics[width=\linewidth]{SymmetricBetaDensities}
+\caption{Beta densities with $a=b\in \{0.7,2,8 \}$ (black, red, blue).}
+\label{Fig:BetaDensities}
+\end{marginfigure}
 
 \subsection{The Gaussian distribution}
 

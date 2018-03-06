@@ -179,7 +179,15 @@ ggplot(data=data.frame(x=seq(0.01, 10, length.out = 500)), aes(x=x)) +
   xlab("x") + ylab("Intensity G0 Densities with varying Looks")
 ggsave(file="../Figures/GI0DensitiesSemilogLooks.pdf")  
 
-
+### Beta distributions
+ggplot(data=data.frame(x=seq(0.001, 1, length.out = 500)), aes(x=x)) +
+  stat_function(fun=dbeta, geom = "line", size=2, col="red", args = list(shape1=2, shape2=2)) +
+  stat_function(fun=dbeta, geom = "line", size=2, col="blue", args = list(shape1=8, shape2=8)) +
+  stat_function(fun=dbeta, geom = "line", size=2, col="black", args = list(shape1=.7, shape2=.7)) +
+  theme_classic() +
+  theme(text = element_text(size=20)) +
+  xlab("u") + ylab("Symmetric Beta densities")
+ggsave(file="../Figures/SymmetricBetaDensities.pdf")  
 
 
 ### Amostras de imagens
@@ -354,5 +362,52 @@ ggplot(dark_DF, aes(x=variable, y=value)) +
   theme(text = element_text(size=20))
 ggsave(file="../Figures/BoxPlotdark.pdf")  
 
-       
-       
+### Introduction to R
+
+# Histogram equalization
+set.seed(1234567890, kind="Mersenne-Twister")
+
+Z <- sample(as.vector(Re(HH_Complex)), size = 100, replace = FALSE)
+W <- ecdf(Z)(Z)
+
+HistogramEqualization <- data.frame(Z,W)
+ 
+ggplot(data=HistogramEqualization, aes(x=Z)) +
+  geom_histogram(aes(y = ..density..), col="black", fill="white") +
+  xlab("Observations") +
+  ylab("Histogram") + 
+  theme_few() +
+  theme(text = element_text(size=20))
+ggsave(file="../Figures/Histogram.pdf")  
+
+ggplot(data=HistogramEqualization, aes(x=Z)) +
+  stat_ecdf(geom="step", pad=FALSE) +
+  xlab("Observations") +
+  ylab("Empirical Function") + 
+  theme_few() +
+  theme(text = element_text(size=20))
+ggsave(file="../Figures/ECDF.pdf")  
+
+ggplot(data=HistogramEqualization, aes(x=W)) +
+  geom_histogram(aes(y = ..density..), col="black", fill="white") +
+  xlab("Equalized Observations") +
+  ylab("Histogram") + 
+  theme_few() +
+  theme(text = element_text(size=20))
+ggsave(file="../Figures/EqualizedHistogram.pdf") 
+
+### Examples of histogram equalization and specification
+
+imagematrixPNG(normalize_indep(bright), name = "../Figures/BrightLinearized.png")
+imagematrixPNG(equalize_indep(bright), name = "../Figures/BrightEqualized.png")
+
+bright_rbeta <- qbeta(ecdf(bright[,,1])(bright[,,1]), shape1 = 8, shape2=8)
+bright_gbeta <- qbeta(ecdf(bright[,,2])(bright[,,2]), shape1 = 8, shape2=8)
+bright_bbeta <- qbeta(ecdf(bright[,,3])(bright[,,3]), shape1 = 8, shape2=8)
+
+imagematrixPNG(
+  imagematrix(
+    array(c(bright_rbeta, bright_gbeta, bright_bbeta), dim = dim(bright)
+    )
+  ), name="../Figures/BetaBright.png"
+)

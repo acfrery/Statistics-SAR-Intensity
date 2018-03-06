@@ -1,1 +1,129 @@
-\chapter{A brief introduction to R}\label{Chapter:ElementsR}
+\chapter{Elements of Image Processing with \texttt{R}}\label{Chapter:ElementsR}
+
+A nice example of what can be accomplished with \texttt R is a very useful operation which is a commodity in image processing: histogram equalization.
+More often than not, the images we deal with have a huge dynamic range.
+Consider, for instance Listing~\ref{Code:SummaryStatistics} (page~\pageref{Code:SummaryStatistics}).
+The ranges are 
+$(1,526287)$, $(0.004,15723.672) $, and $(0.17,134204.69)$ for the HH, HV and VV bands, respectively.
+As seen in Fig.~\ref{Fig:BoxplotDark} (page~\pageref{Fig:BoxplotDark}), the values are fairly concentrated in the lower part.
+If we simply map the minima and maxima to black and white, and linearly the intermediate values into gray levels, both individual bands and any composite image will look black.
+We wonder if we can improve visualization by better distributing the values, and in order to do so we will rely on a result from probability theory.
+
+\begin{theorem}\label{Theo:FZ}
+Consider the continuous random variable $Z\colon \Omega\to\mathbbm R$ with cumulative distribution function $F_Z$.
+The random variable $W=F_Z(Z)$ has uniform distribution.
+\end{theorem}
+
+\begin{proof}
+The cumulative distribution function of $W$ is $F_W(w)=\Pr(W\leq w)=\Pr(F_Z(Z)\leq w)$.
+Since $Z$ is continuous, there exists the inverse of its cumulative distribution function, $F^{-1}_Z$.
+We can then write 
+$F_W(w)=\Pr(F_Z(Z)\leq w) = \Pr(F^{-1}_Z(F_Z(Z)) \leq F^{-1}(w)) = \Pr(Z\leq F^{-1}_Z(w))$, 
+which is exactly the cumulative distribution function of $Z$ at $F^{-1}_Z(w)$, so $F_W(w)=F_Z(F^{-1}_Z(w))=w$, which characterizes a uniform random variable on $(0,1)$; cf.\ Eq.~\eqref{eq:CDFUniform}, Section~\ref{Sec:UnifDistribution}.
+\end{proof}
+
+So we only need to apply the cumulative distribution function of the random variable that produced the data to the data themselves and we will obtain samples from the Uniform distribution.
+But do we have this function?
+Usually we don't, but we can estimate it.
+
+One of the simplest manners to estimate a cumulative distribution function from data $\bm z=(z_1,\dots,z_n)$ is with the empirical cumulative distribution function, or just \textit{empirical function}.
+It is just the finite approximation of the definition of a cumulative distribution function, and is given by
+\begin{equation}
+\widehat{F}(t) = \frac1n \#\{j \text{ such that } z_j\leq t\} ,
+\end{equation}
+where $\#$ denotes the number of elements in the set.
+
+Let's see an example.
+Consider the real part of the HH band of Fig.~\ref{Im:Oberpfaffenhofen_RGB}, whose histogram is the top leftmost of Fig.~\ref{Fig:FittedDarkRegion}; assume it is stored in the \verb|HH_Complex| variable.
+These data are clearly not uniformly distributed.
+We will randomly sample (fixing the pseudorandom number generator and the seed for reproducibility) one hundred observations, and then proceed to build its empirical function.
+
+\begin{lstlisting}
+set.seed(1234567890, kind="Mersenne-Twister")
+
+Z <- sample(as.vector(Re(HH_Complex)), size = 100, replace = FALSE)
+W <- ecdf(Z)(Z)
+
+HistogramEqualization <- data.frame(Z,W)
+ 
+ggplot(data=HistogramEqualization, aes(x=Z)) +
+  geom_histogram(aes(y = ..density..), col="black", fill="white") +
+  xlab("Observations") +
+  ylab("Histogram") + 
+  theme_few() +
+  theme(text = element_text(size=20))
+
+ggplot(data=HistogramEqualization, aes(x=Z)) +
+  stat_ecdf(geom="step", pad=FALSE) +
+  xlab("Observations") +
+  ylab("Empirical Function") + 
+  theme_few() +
+  theme(text = element_text(size=20))
+
+ggplot(data=HistogramEqualization, aes(x=W)) +
+  geom_histogram(aes(y = ..density..), col="black", fill="white") +
+  xlab("Equalized Observations") +
+  ylab("Histogram") + 
+  theme_few() +
+  theme(text = element_text(size=20))
+\end{lstlisting}
+
+\begin{figure*}[hbt]
+\centering
+\includegraphics[width=.32\linewidth]{Histogram}
+\includegraphics[width=.32\linewidth]{ECDF}
+\includegraphics[width=.32\linewidth]{EqualizedHistogram}
+\caption{Histogram of the original data, empirical function, and histogram of the equalized data}
+\end{figure*}
+
+The \verb|ecdf| function computes the empirical function, and returns a function that can be applied to data.
+The histogram of the equalized data is fairly close to what one would expect from uniformly distributed data.
+Deviations from the theoretical straight line are due to the fact that we are working with a finite sample.
+
+But what if we do not want an image with equalized histogram?
+In practice, one may find that equalized images are a bit unrealistic.
+There is another theorem that nicely complements Theorem~\ref{Theo:FZ} and yields any possible distribution from a uniform law.
+We will need the notion of \textit{generalized inverse functions} in order to deal equally with continuous and discrete random variables.
+
+Assume $g\colon \mathbbm R \to \mathbbm R$ is a nondecreasing function, e.g. a cumulative distribution function.
+If $g$ is continuous and strictly increasing it has an inverse $g^{-1}$.
+Otherwise, define its generalized inverse function as $g^- (y) = \inf\{ x \in \mathbbm R : g(x)\geq y\}$.
+If $g$ is continuous and strictly increasing, $g^{-1}$ and $g^-$ coincide.
+
+\begin{theorem}[Inversion Theorem]\label{Theo:Inversion}
+Consider the random variable $U$ uniformly distributed in $(0,1)$, and the random variable $V$ whose distribution is characterized by the cumulative distribution function $F_V$.
+The random variable defined by $Y=F^-_V(U)$ has the same distribution of $V$.
+\end{theorem}
+
+\begin{proof}
+The distribution of $Y$ is characterized by its cumulative distribution function $F_Y(t) = \Pr(Y \leq t)$.
+But $\Pr(Y \leq t) = \Pr(F^-_V(U) \leq t)$, and applying $F_V$ to both sides of the inequality we have
+$ \Pr\big(F_V(F^-_V(U)) \leq F_V(t)\big) = \Pr(U \leq F_V(t))$.
+Since $U$ is uniformly distributed on the unit interval, $\Pr(U \leq F_V(t)) = F_V(t)$, so $F_Y(t) = F_V(t)$ therefore the distributions coincide.
+\end{proof}
+
+Theorems~\ref{Theo:FZ} and~\ref{Theo:Inversion} provide a powerful tool to stipulate (approximately) the marginal distribution of data.
+Schematically, if we have observations from $Z$ and we want to transform them into observations of $Y$, the procedure consists of first estimating $F_Z$ by $\widehat F_Z$, and applying it to the original data.
+These data will then be approximately uniform, and applying $F_Y^-$ the new observations will have the desired histogram.
+
+Notice that $F_Y$ does not need to be specified theoretically.
+It can be also computed from data.
+With this, we can match the histogram of an image to that of another image;
+this operation is called ``histogram matching'', and it is useful for making two data sets visually comparable.
+
+We will use as example the bright rectangle outlined in red in Fig.~\ref{Im:Oberpfaffenhofen_RGB}.
+It corresponds to an urban area and, as such, it has extreme variability in the three channels.
+Figs.~\ref{Fig:LinEqSpec}\subref{Fig:Linearized} and~\ref{Fig:LinEqSpec}\subref{Fig:Equalized} show the linearized and equalized versions of the data.
+There is little visible in the former, and the colors are exaggerated in the latter.
+
+\begin{figure*}[hbt]
+\centering
+\subfloat[Linearized data\label{Fig:Linearized}]{\includegraphics[width=.32\linewidth]{BrightLinearized}}\ 
+\subfloat[Equalized data\label{Fig:Equalized}]{\includegraphics[width=.32\linewidth]{BrightEqualized}}\ 
+\subfloat[Bands with Beta histograms\label{Fig:BetaHistograms}]{\includegraphics[width=.32\linewidth]{BetaBright}}
+\caption{Examples of linearization, equalization and histogram specification of data from an urban area}\label{Fig:LinEqSpec}
+\end{figure*}
+
+The Beta distribution (see Sec.~\ref{Sec:BetaDistribution}, page~\pageref{Sec:BetaDistribution}) is a good candidate for stipulating image histograms, as it has the same support ($(0,1)$) many color models impose and is quite flexible.
+Fig.~\ref{Fig:LinEqSpec}\subref{Fig:BetaHistograms} shows the result of specifying the histogram of each band as a $\mathcal B(8,8)$ distribution.
+The result is more visible than the linear transformation, and less dramatic than the equalized version.

@@ -29,7 +29,7 @@ dark_data.frame <- data.frame(HH=as.vector(dark[,,1]),
 \end{lstlisting}
 
 And now we can apply the \texttt{summary} function:
-\begin{lstlisting}
+\begin{lstlisting}[caption={Summary statistics},label=Code:SummaryStatistics]
 > summary(dark_data.frame)
              HH                  HV                  VV
  Min.   :     1   Min.   :    0.004   Min.   :     0.17  
@@ -71,6 +71,7 @@ ggplot(dark_DF, aes(x=variable, y=value)) +
 
 Fig.~\ref{Fig:BoxplotDark} depicts what the \texttt{summary} command had revealed already, but it also provides strong evidence in favor of highly skewed data.
 We were aware of this from Fig.~\ref{Fig:FittedDarkRegion}.
+The notches are barely visible due to the large sample size.
 
 \section{Visualization}
 
