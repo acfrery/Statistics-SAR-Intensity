@@ -50,12 +50,16 @@ Fig.~\ref{Fig:ComplexScattering} illustrates an example with $N=10$ backscattere
 \end{marginfigure}
 
 We have to make some assumptions in order to have a statistical description of the complex return $S$.
-First, we are using microwaves whose typical wavelength is of the order of centimeters, and spatial resolutions of the order decimeters.
-This leads to the first assumption: $N\to\infty$ if we are observing backscatterers whose size is smaller than the wavelength; think, for instance, of the case of imaging a grass field.
-Second, there is no reason to expect that one or a few of these backscatterers dominate the return of the rest; there is no ``mirror'' in our resolution cell.
-Third, the (non-negative) amplitudes $A_i$ are independent.
-Fourth, there is no reason to expect any particular organization or phase dominance; with this, we may assume that the phases $\phi_i$ are outcomes of independent identically distributed Uniform random variables with support $(-\pi,\pi]$.
-Fifth, there is no association between phases and amplitudes.
+These assumptions stem from the fact that we are using microwaves whose typical wavelength is of the order of centimeters, and spatial resolutions of the order decimeters.
+This leads to the 
+\begin{itemize}
+\item[First assumption:] we are observing backscatterers whose size is smaller than the wavelength, so $N\to\infty$; think, for instance, of the case of imaging a grass field.
+\item[Second assumption:] there is no reason to expect that one or a few of these backscatterers dominate the return of the rest; there is no ``mirror'' in our resolution cell.
+\item[Third assumption:] the (non-negative) amplitudes $A_i$ are independent.
+\item[Fourth assumption:] there is no reason to expect any particular organization or phase dominance; with this, we may assume that the phases $\phi_i$ are outcomes of independent identically distributed Uniform random variables with support $(-\pi,\pi]$.
+\item[Fifth assumption:] there is no association between phases and amplitudes.
+\end{itemize}
+ 
 
 With these hypotheses it is possible to prove that the real and imaginary parts of $S$ are independent Gaussian random variables with zero mean and the same variance $\sigma^2/2$; $\sigma^2$ is often referred to as backscatter.
 Two targets with different backscatter only differ in the variance of their complex return $S$.

@@ -111,6 +111,8 @@ It can be also computed from data.
 With this, we can match the histogram of an image to that of another image;
 this operation is called ``histogram matching'', and it is useful for making two data sets visually comparable.
 
+Another important notice is that if $F$ is a cumulative distribution function, then $F^-$ is called \textit{quantile function}.
+
 We will use as example the bright rectangle outlined in red in Fig.~\ref{Im:Oberpfaffenhofen_RGB}.
 It corresponds to an urban area and, as such, it has extreme variability in the three channels.
 Figs.~\ref{Fig:LinEqSpec}\subref{Fig:Linearized} and~\ref{Fig:LinEqSpec}\subref{Fig:Equalized} show the linearized and equalized versions of the data.
@@ -127,3 +129,11 @@ There is little visible in the former, and the colors are exaggerated in the lat
 The Beta distribution (see Sec.~\ref{Sec:BetaDistribution}, page~\pageref{Sec:BetaDistribution}) is a good candidate for stipulating image histograms, as it has the same support ($(0,1)$) many color models impose and is quite flexible.
 Fig.~\ref{Fig:LinEqSpec}\subref{Fig:BetaHistograms} shows the result of specifying the histogram of each band as a $\mathcal B(8,8)$ distribution.
 The result is more visible than the linear transformation, and less dramatic than the equalized version.
+
+The following code illustrates how the three bands with specified Beta histograms are obtained.
+Notice the use of \verb|qbeta|; this function computes the quantiles of a Beta distribution.
+\begin{lstlisting}
+bright_rbeta <- qbeta(ecdf(bright[,,1])(bright[,,1]), shape1=8, shape2=8)
+bright_gbeta <- qbeta(ecdf(bright[,,2])(bright[,,2]), shape1=8, shape2=8)
+bright_bbeta <- qbeta(ecdf(bright[,,3])(bright[,,3]), shape1=8, shape2=8)
+\end{lstlisting}
