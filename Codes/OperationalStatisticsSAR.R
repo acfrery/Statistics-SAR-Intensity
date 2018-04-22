@@ -1,6 +1,7 @@
 require(ggplot2)
 require(ggthemes)
 require(reshape2)
+require(maxLik)
 source("/Users/acfrery/Dropbox (Personal)/upper_outliers/codigos/GammaSAR.R")
 source("/Users/acfrery/Documents/Programas/R/GI0Project/GI0distribution.R")
 source("/Users/acfrery/Documents/Programas/R/myread.ENVI.R")
@@ -44,7 +45,7 @@ ggplot(data=data.frame(x=c(0, 7)), aes(x=x)) +
   xlab("x") + ylab("Exponential Densities")
 ggsave(file="../Figures/ExponentialDensities.pdf")  
 
-ggplot(data=data.frame(x=c(0, 7)), aes(x=x)) +
+ggplot(data=data.frame(x=seq(0, 7, length.out = 500)), aes(x=x)) +
   stat_function(fun=pexp, geom = "line", size=2, col="black", args = (mean=1)) +
   stat_function(fun=pexp, geom = "line", size=2, col="red", args = (mean=.5)) +
   stat_function(fun=pexp, geom = "line", size=2, col="blue", args = (mean=2)) +
@@ -53,7 +54,7 @@ ggplot(data=data.frame(x=c(0, 7)), aes(x=x)) +
   xlab("x") + ylab("Exponential Cumulative Distribution Functions")
 ggsave(file="../Figures/ExponentialCDFs.pdf")  
 
-ggplot(data=data.frame(x=c(0, 7)), aes(x=x)) +
+ggplot(data=data.frame(x=seq(0, 7, length.out = 500)), aes(x=x)) +
   stat_function(fun=dexp, geom = "line", size=2, col="black", args = (mean=1)) +
   stat_function(fun=dexp, geom = "line", size=2, col="red", args = (mean=.5)) +
   stat_function(fun=dexp, geom = "line", size=2, col="blue", args = (mean=2)) +
@@ -67,7 +68,7 @@ ggsave(file="../Figures/ExponentialDensitiesSemilog.pdf")
 ### Gamma Distributions
 
 ggplot(data=data.frame(x=seq(10^-3, 5, length.out = 500)), aes(x=x)) +
-  stat_function(fun=dgamma, geom = "line", size=2, col="q", args = list(shape=1, scale=1)) +
+  stat_function(fun=dgamma, geom = "line", size=2, col="black", args = list(shape=1, scale=1)) +
   stat_function(fun=dgamma, geom = "line", size=2, col="red", args = list(shape=3, scale=1/3)) +
   stat_function(fun=dgamma, geom = "line", size=2, col="blue", args = list(shape=8, scale=1/8)) +
   theme_classic() +
@@ -84,7 +85,7 @@ ggplot(data=data.frame(x=seq(10^-3, 5, length.out = 500)), aes(x=x)) +
   xlab("x") + ylab("Gamma Cumulative Distribution Functions")
 ggsave(file="../Figures/GammaCDFs.pdf")  
 
-ggplot(data=data.frame(x=seq(10^-3, 5, length.out = 500)), aes(x=x)) +
+ggplot(data=data.frame(x=seq(10^-4, 5, length.out = 1000)), aes(x=x)) +
   stat_function(fun=dgamma, geom = "line", size=2, col="black", args = list(shape=1, scale=1)) +
   stat_function(fun=dgamma, geom = "line", size=2, col="red", args = list(shape=3, scale=1/3)) +
   stat_function(fun=dgamma, geom = "line", size=2, col="blue", args = list(shape=8, scale=1/8)) +
@@ -409,5 +410,44 @@ imagematrixPNG(
   imagematrix(
     array(c(bright_rbeta, bright_gbeta, bright_bbeta), dim = dim(bright)
     )
-  ), name="../Figures/BetaBright.png"
+    ), name="../Figures/BetaBright.png"
 )
+
+### Analysis of BRIGHT[,,2] data
+
+bHV <- as.vector(bright[,,2]) -> z
+a <- -3
+gamma_for_1 <- 2
+L <- 1
+
+LogLikelihoodLknown <- function(params) {
+  
+  p_alpha <- -abs(params[1])
+  p_gamma <- abs(params[2])
+  p_L <- abs(params[3])
+  
+  n <- length(z)
+  
+  return(
+    n*(lgamma(p_L-p_alpha) - p_alpha*log(p_gamma) - lgamma(-p_alpha)) + 
+      (p_alpha-p_L)*sum(log(p_gamma + z*p_L)) 
+  )
+}
+
+estim1 <- maxNR(LogLikelihoodLknown, start=c(a,gamma_for_1,L), activePar=c(TRUE,TRUE,FALSE))$estimate[1:2]
+
+
+
+ggplot(data=data.frame(bHV), aes(x=bHV)) +
+  geom_histogram(aes(y = ..density..), bins=100, col="black", fill="white") +
+  stat_function(fun=dexp, args = list(rate=1/mean(bHV)), lwd=2, col="blue", alpha=.4) +
+  stat_function(fun=dGI0, args=list(p_alpha=estim1[1], p_gamma=estim1[2], p_Looks=1), lwd=3, col="red", alpha=.6) +
+  scale_x_continuous(limits = c(0, 300000)) + 
+  xlab("Exponential and GI0 densities") + 
+  ylab("Intensity observations HV channel") +
+  theme_few() + 
+  theme(text = element_text(size=20))
+  
+  
+  
+
