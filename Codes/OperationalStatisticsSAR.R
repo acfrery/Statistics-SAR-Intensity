@@ -4,6 +4,7 @@ require(reshape2)
 require(maxLik)
 source("/Users/acfrery/Dropbox (Personal)/upper_outliers/codigos/GammaSAR.R")
 source("/Users/acfrery/Documents/Programas/R/GI0Project/GI0distribution.R")
+source("/Users/acfrery/Documents/Programas/R/GI0Project/KI0distribution.R")
 source("/Users/acfrery/Documents/Programas/R/myread.ENVI.R")
 source("/Users/acfrery/Documents/Programas/R/imagematrix.R")
 
@@ -455,8 +456,9 @@ plot(imagematrix(equalize(UrbanHV)))
 
 vUrbanHV <- data.frame(UHV=as.vector(UrbanHV))
 ggplot(data=vUrbanHV, aes(x=UHV)) + 
-  geom_histogram(aes(y=..density..), bins=1000) + 
-  xlim(0,100000)
+  geom_histogram(aes(y=..density..), bins=100) + 
+  xlim(0,100000) +
+  theme_few()
 
 (media <- mean(vUrbanHV$UHV))
 segundo <- mean(vUrbanHV$UHV^2)
@@ -476,7 +478,7 @@ ggplot(data=vUrbanHV, aes(x=UHV)) +
                 col="blue", lwd=2, alpha=.7) +
   xlab("Intensidades Área Urbana") +
   ylab("Histograma y Ajustes Exponencial y G0") +
-  theme_tufte()
+  theme_few()
 
 ggplot(data.frame(x=seq(.1,10,length.out = 1000)), aes(x=x)) +
   stat_function(fun=dGI0, args = list(p_alpha=-30, p_gamma=29, p_Looks=1), col="yellow", lwd=2) +
