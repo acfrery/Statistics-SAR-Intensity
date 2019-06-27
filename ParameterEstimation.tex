@@ -562,7 +562,7 @@ est.median.bootstrap <- function(z, R) {		(*@\label{code:function_b}@*)
 }												(*@\label{code:function_e}@*)
 
 N <- c(3, 5, seq(10,100,by=10), 1000, 10000)	(*@\label{code:N}@*)
-BiasMQE <- matrix(nrow=14, ncol=7)				(*@\label{code:Output}@*)
+BiasMSE <- matrix(nrow=14, ncol=7)				(*@\label{code:Output}@*)
 
 start_time <- Sys.time()						(*@\label{code:t1}@*)
 
@@ -592,7 +592,7 @@ for(n in N){									(*@\label{code:for}@*)
   bias3 <- mean(v.mu3) - 1
   eqm3 <- mean((v.mu3 - 1)^2)
   
-  BiasMQE[i, ]  <- c(N[i], bias1, eqm1, bias2, eqm2, bias3, eqm3)	(*@\label{code:output.matrix}@*)
+  BiasMSE[i, ]  <- c(N[i], bias1, eqm1, bias2, eqm2, bias3, eqm3)	(*@\label{code:output.matrix}@*)
 }
 
 end_time <- Sys.time()							(*@\label{code:t2}@*)
@@ -624,11 +624,18 @@ We then calculate the bias and mean square error of each (lines~\ref{code:bias1}
 This is the output of the current state of \verb|r|, the sample size.
 These values are stored in line~\ref{code:output.matrix}, and the inner loop restarts with the next sample size, or ends if it reached the end.
 
-This code run in approximately \SI{3}{\hour}~\SI{16}{\minute}
+This code run in approximately \SI{3}{\hour}~\SI{20}{\minute}
 in a MacBook Pro~\SI{3.5}{\giga\hertz} Intel Core~i7 with \SI{16}{\giga\byte} of memory,
 running \texttt R version~3.6.0 on Mac~OS version~10.14.5.
 
-Now we have to analyze the data we produced and stored in \verb|BiasMQE|.
+Figure~\ref{Fig:MonteCarlo} shows the data we produced and stored in \verb|BiasMSE|: the estimated dependence of the bias on the sample size (left), and the estimated dependence of the mean square error on the sample size (right).
+
+\begin{figure*}
+\centering
+\includegraphics[width=.45\linewidth]{BiasMonteCarlo}
+\includegraphics[width=.45\linewidth]{MSEMonteCarlo}
+\caption{Bias and mean square error of $\widehat{\mu}$ (ML), $\breve{\mu}$ (Med), and $\widetilde{\mu}$ (BootMed).}\label{Fig:MonteCarlo}
+\end{figure*}
 
 \section*{Exercises}
 
