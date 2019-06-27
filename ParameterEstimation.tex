@@ -499,6 +499,137 @@ See details in \citet{busto92}.
 Variance and bias should be as small as possible.
 They must always be checked, either analytically (the ideal scenario), or by a well-designed Monte Carlo study.
 
+\section{An example}
+
+Consider the Exponential distribution, a particular case of the (SAR) Gamma law characterized by the density given in~\eqref{eq:SARGammaDensity}.
+Making $L=1$ one has
+\begin{equation}
+f_Z(z;\mu) = \frac{1}{\mu} \exp\{-z/\mu\},
+\label{eq:ExpDensity}
+\end{equation}
+with $\mu>0$.
+We denote this situation $Z\sim \text{Exp}(\mu)$.
+
+Consider the sample $\bm Z=(Z_1,\dots,Z_n)$ of independent random variables such that $Z_i\sim \text{Exp}(\mu)$.
+The reader is invited to verify that both the maximum likelihood and first moment estimators are the sample mean:
+\begin{equation}
+\widehat\mu = \frac{1}{n}\sum_{i=1}^n Z_i.
+\end{equation}
+We may obtain another analogy estimator noting that the median of $Z_i$ is $Q_{1/2}(Z_i)=\mu\ln 2$, therefore we may use
+\begin{equation}
+\breve{\mu} = \frac{1}{\ln 2} q_{1/2} (z_1,\dots,z_n)
+\end{equation}
+as an estimator, where $q_{1/2}(\bm z)$ denotes the sample median.
+Since we know that maximum likelihood estimators are optimal with large samples from the hypothesized model, we may consider an improvement of $\breve{\mu}$, its bootstrapped version $\widetilde{\mu}$.
+
+With this, we have three estimators, namely $\widehat{\mu}$, $\breve{\mu}$, and $\widetilde{\mu}$.
+We will now compare them with a Monte Carlo experiment.
+
+A well-designed Monte Carlo experiment consists of stipulating, at least, the following elements:
+\begin{enumerate}
+\item a model, in our case $Z_1,\dots,Z_n$ independent random variables such that $Z_i\sim \text{Exp}(\mu)$; we may extend this model by considering, for instance, several types of contamination;
+\item\label{Factors} the relevant factors which, for us, are the sample size $n$ and the mean $\mu$; we could have added the number of replications $R$ in the bootstrap. 
+We will fix it as $R=300$.
+\end{enumerate}
+
+The relevant factors (item~\ref{Factors}) impose the size of the data structure where we will collect the observations.
+Assume we will analyze $n\in\{3,5,10,20,\dots,100,1000,10000\}$ and, for the sake of simplicity, $\mu=1$, then our factor space size is $14\times1=14$.
+For each point in the factor space we will obtain the bias, and the mean quadratic error of each estimator, i.e., for each of the $14$ sample sizes we will collect six observations.
+We will store these observations as a $14\times 7$ matrix: one line for each sample size $n$, and the columns being the sample size $n$, followed by the sample bias and mean square error.
+
+\citet{busto92} suggest using a variable number of replications for each sample size in problems like this one.
+Their proposal aims at controlling the variability of the estimates of, e.g., the bias and the mean quadratic error, making them comparable along the study.
+We will follow this advice, and use $r=\lceil N/n\rceil$, 
+Since our largest sample is $n_{\max}=10^4$, and we would like $200$ replications in this case, we set $N=2\cdot 10^6$.
+With this, the maximum number of replications is $r_{\max}=666667$, corresponding to $n_{\min}=3$.
+
+The following code implements this Monte Carlo experiment.
+
+\begin{lstlisting}[frame=lines,numbers=left,numberblanklines=false,language=R,escapeinside={(*@}{@*)}]
+set.seed(1234567890)							(*@\label{code:set.seed}@*)
+
+est.median.bootstrap <- function(z, R) {		(*@\label{code:function_b}@*)
+  
+  t <- median(z) / log(2)
+  
+  v.Bootstrap <- rep(0, R)
+  for(b in 1:R) {
+    x <- sample(z, replace = TRUE)
+    v.Bootstrap[b] <- median(x) / log(2)
+  }
+  
+  return(2*t - mean(v.Bootstrap))
+}												(*@\label{code:function_e}@*)
+
+N <- c(3, 5, seq(10,100,by=10), 1000, 10000)	(*@\label{code:N}@*)
+BiasMQE <- matrix(nrow=14, ncol=7)				(*@\label{code:Output}@*)
+
+start_time <- Sys.time()						(*@\label{code:t1}@*)
+
+i <- 0											(*@\label{code:i}@*)
+for(n in N){									(*@\label{code:for}@*)
+  i <- i+1
+  
+  r <- ceiling(2*10^6/n)						(*@\label{code:r}@*)
+  v.mu1 <- array(rep(0, r))						(*@\label{code:v1}@*)
+  v.mu2 <- array(rep(0, r))						(*@\label{code:v2}@*)
+  v.mu3 <- array(rep(0, r))						(*@\label{code:v3}@*)
+  
+  for(j in 1:r){								(*@\label{code:loop_b}@*)
+    z <- rexp(n) # sample of size n from Exp(1)	(*@\label{code:sample}@*)
+    
+    v.mu1[j] <- mean(z)							(*@\label{code:est1}@*)
+    v.mu2[j] <- median(z) / log(2)				(*@\label{code:est2}@*)
+    v.mu3[j] <- est.median.bootstrap(z, 300)	(*@\label{code:est3}@*)
+  }												(*@\label{code:loop_e}@*)
+  
+  bias1 <- mean(v.mu1) - 1						(*@\label{code:bias1}@*)
+  eqm1 <- mean((v.mu1 - 1)^2)					(*@\label{code:eqm1}@*)
+  
+  bias2 <- mean(v.mu2) - 1
+  eqm2 <- mean((v.mu2 - 1)^2)
+  
+  bias3 <- mean(v.mu3) - 1
+  eqm3 <- mean((v.mu3 - 1)^2)
+  
+  BiasMQE[i, ]  <- c(N[i], bias1, eqm1, bias2, eqm2, bias3, eqm3)	(*@\label{code:output.matrix}@*)
+}
+
+end_time <- Sys.time()							(*@\label{code:t2}@*)
+end_time - start_time							(*@\label{code:t}@*)
+\end{lstlisting}
+
+Line~\ref{code:set.seed} is a fundamental step in every simulation study: setting the seed.
+This grants reproducibility, as every user will obtain the same results\sidenote{Never, ever, use a machine state to initialize the pseudorandom number generator.}.
+Always check the documentation for good seeds.
+Lines~\ref{code:t1} and~\ref{code:t2} store the initial and final times, used in line~\ref{code:t} to exhibit the total running time.
+
+Line~\ref{code:function_b} starts the definition of the median estimator improved by bootstrap.
+Notice that the number of bootstrap replications is a parameter.
+The definition ends at line~\ref{code:function_e}.
+
+Line~\ref{code:N} defines the factor space of our study, namely the set of all sample sizes.
+Line~\ref{code:Output} builds space for the output.
+Line~\ref{code:i} defines the variable which stores the position in the factor space; it will be used to index the matrix defined in the previous line.
+
+Line~\ref{code:for} starts the main loop; the variable \verb|n| will access each value of the factor space, which is stored in \verb|N|.
+
+Line~\ref{code:loop_b} begins the loop for the current sample size.
+Line~\ref{code:r} stores in \verb|r| the current sample size.
+Lines~\ref{code:v1}, \ref{code:v2} and~\ref{code:v3} create space for storing the \verb|r| observations of each estimator.
+The loop ends in line~\ref{code:loop_e}.
+
+When this inner loop ends, the variables \verb|v.mu1|, \verb|v.mu2| and \verb|v.mu3| store the \verb|r| observations of each estimator.
+We then calculate the bias and mean square error of each (lines~\ref{code:bias1} and~\ref{code:eqm1} for $\widehat{\mu}$, and the following four for $\breve{\mu}$ and $\widetilde{\mu}$)\sidenote{Notice that three estimators are computed with the same sample.}.
+This is the output of the current state of \verb|r|, the sample size.
+These values are stored in line~\ref{code:output.matrix}, and the inner loop restarts with the next sample size, or ends if it reached the end.
+
+This code run in approximately \SI{3}{\hour}~\SI{16}{\minute}
+in a MacBook Pro~\SI{3.5}{\giga\hertz} Intel Core~i7 with \SI{16}{\giga\byte} of memory,
+running \texttt R version~3.6.0 on Mac~OS version~10.14.5.
+
+Now we have to analyze the data we produced and stored in \verb|BiasMQE|.
+
 \section*{Exercises}
 
 All exercises must be solved as a report including a theoretical discussion, implementation details, careful (and visually appealing) plots, and conclusions.

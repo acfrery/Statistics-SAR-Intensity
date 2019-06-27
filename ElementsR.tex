@@ -1,4 +1,6 @@
-\chapter{Elements of Image Processing with \texttt{R}}\label{Chapter:ElementsR}
+\chapter[Elements of Image Processing with \texttt{{R}}]{Elements of Image Processing with \texttt{{R}}}\label{Chapter:ElementsR}
+
+\section{Statistics and Image Processing}
 
 A nice example of what can be accomplished with \texttt R is a very useful operation which is a commodity in image processing: histogram equalization.
 More often than not, the images we deal with have a huge dynamic range.
@@ -137,3 +139,59 @@ bright_rbeta <- qbeta(ecdf(bright[,,1])(bright[,,1]), shape1=8, shape2=8)
 bright_gbeta <- qbeta(ecdf(bright[,,2])(bright[,,2]), shape1=8, shape2=8)
 bright_bbeta <- qbeta(ecdf(bright[,,3])(bright[,,3]), shape1=8, shape2=8)
 \end{lstlisting}
+
+\section{The \texttt{imagematrix} package}
+
+There are a few packages in \verb|R| that ease the visualization of images.
+Among them, \verb|imagematrix| stands out for its simplicity.
+Although it has been deprecated, and is no longer supported, we provide it with a few additional features.
+
+The very basic rules for using \verb|imagematrix| are:
+\begin{itemize}
+\item image data should be in the form of a matrix of $m$ lines and $n$ columns, with either $1$ or $3$ slices; the former will be rendered as a gray-levels image, the latter as a color image;
+\item the data must be in the $[0,1]$ range, otherwise it will be clipped.
+\end{itemize}
+
+Let us see an example.
+\lstset{numbers=left, numberstyle=\tiny, numberblanklines=false, numbersep=5pt}
+\begin{lstlisting}[firstnumber=auto]
+source("imagematrix")
+require(plot3D)
+
+x <- 1:500
+y <- 1:100
+xy <- mesh(x, y)
+ramp <- (xy$x + xy$y) / 600
+plot(imagematrix(ramp))
+imagematrixPNG(imagematrix(ramp), "../Figures/ramp.png")
+\end{lstlisting}
+
+The first line loads your local version of \verb|imagematrix|, while the second makes the \verb|plot3D| package available.
+We will only use one function, namely \verb|mesh|, from the latter.
+Then we build the \verb|x| and \verb|y| coordinates, and with \verb|mesh| we create their Euclidean product.
+The variable \verb|ramp| stores the values of the function $(x+y)/600$, which is already bounded to $[0,1]$.
+We then set the properties of an \verb|imagematrix| object to these values, and plot them.
+Finally, the function \verb|imagematrixPNG| produces a PNG file tailored to the size of its input image.
+
+\begin{marginfigure}
+\centering
+\includegraphics[width=.3\linewidth]{ramp}
+\caption{Visualization of a ramp}\label{Fig:Ramp}
+\end{marginfigure}
+
+Fig.~\ref{Fig:Ramp} shows this ramp.
+We notice that $x\in\{1,\dots,500\}$ denotes the lines, displayed from top to bottom,
+while the lines are stored in $y\in\{1,\dots,100\}$ and displayed from left to right.
+
+Some other convenient functions available in \verb|imagematrix| are:
+\begin{itemize}
+\item \verb|clipping|: maps any real value $z$ into $[0,1]$ by $\max\{0,\min\{z, 1\}\}$;
+\item \verb|normalize|: maps all the values in the matrix $\bm z$ into $[0,1]$ by $(z - \min(\bm z))/(\max(\bm z) - \min(\bm z))$;
+\item \verb|rgb2grey|: converts a color image into a gray levels one;
+\item \verb|imagematrixEPS|: produces an EPS file tailored to the size of its input image;
+\item \verb|equalize|: equalizes all the values;
+\item \verb|equalize_indep|: equalizes the values independenty by band.
+\end{itemize}
+The reader is invited to browse through this code.
+
+The book by \citet{IntroImageProcessingR} is an introduction to image processing with \texttt{R}.
