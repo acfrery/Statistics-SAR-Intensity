@@ -497,5 +497,163 @@ ggplot(data.frame(x=seq(.1,10,length.out = 1000)), aes(x=x)) +
   stat_function(fun=dexp, col="black", lwd=2, alpha=.3) +
   scale_y_continuous(trans="log")
 
+### Code for the book
+## Monte Carlo experiment to assess ML, Med and Bootstrap Med estimators
+
+require(gtools)
+set.seed(1234567890)
+
+est.median.bootstrap <- function(z, R) {
+  
+  t <- median(z) / log(2)
+  
+  sample_size <- length(z)
+  pwr <- sample_size^sample_size
+  if(pwr < R) {
+    m.Bootstrap <- permutations(sample_size, sample_size, z, 
+                                set=TRUE, repeats.allowed=TRUE)
+    return(2*t - mean(unlist(lapply(m.Bootstrap, median))))
+  } else {
+    v.Bootstrap <- rep(0, R)
+    for(b in 1:R) {
+      x <- sample(z, replace = TRUE)
+      v.Bootstrap[b] <- median(x) / log(2)
+    }
+  }
+  
+  return(2*t - mean(v.Bootstrap))
+}
+
+N <- c(3, 5, seq(10,100,by=10), 1000, 10000)
+BiasMSE <- matrix(nrow=14, ncol=7)
+
+  start_time <- Sys.time()
+  
+  i <- 0
+  for(n in N){
+    i <- i+1
+    
+    r <- ceiling(2*10^6/n)
+    v.mu1 <- array(rep(0, r))
+    v.mu2 <- array(rep(0, r))
+    v.mu3 <- array(rep(0, r))
+    
+    for(j in 1:r){
+      z <- rexp(n) # sample of size n from Exp(1)
+      
+      v.mu1[j] <- mean(z)
+      v.mu2[j] <- median(z) / log(2)
+      v.mu3[j] <- est.median.bootstrap(z, 300)
+    }
+    
+    bias1 <- mean(v.mu1) - 1
+    eqm1 <- mean((v.mu1 - 1)^2)
+    
+    bias2 <- mean(v.mu2) - 1
+    eqm2 <- mean((v.mu2 - 1)^2)
+    
+    bias3 <- mean(v.mu3) - 1
+    eqm3 <- mean((v.mu3 - 1)^2)
+    
+    BiasMSE[i, ]  <- c(N[i], bias1, eqm1, bias2, eqm2, bias3, eqm3)
+    
+  }
+  
+  end_time <- Sys.time()
+  end_time - start_time
+
+BiasMSE <- data.frame(BiasMSE)
+names(BiasMSE) <- c("N", "Bias.ML", "MSE.ML", "Bias.Med", "MSE.Med", "Bias.BootMed", "MSE.BootMed")
+
+### Analysis of the Monte Carlo results
+require(reshape)
+require(reshape2)
+require(ggplot2)
+require(ggfortify)
+require(ggthemes)
+require(grid)
 
 
+Bias <- data.frame(BiasMSE$N, BiasMSE$Bias.ML, BiasMSE$Bias.Med, BiasMSE$Bias.BootMed)
+names(Bias) <- c("N", "ML", "Med", "BootMed")
+Bias.flat <- melt(Bias, measure.vars = c("ML", "Med", "BootMed"))
+names(Bias.flat) <- c("N", "Estimator", "value")
+
+
+
+##### INSET PLOTS
+
+### Bias
+
+alldata <- ggplot(Bias.flat, aes(x=N, y=value, col=Estimator)) + 
+  geom_line(size=1) +
+  geom_point(alpha=.7, size=3) + 
+  scale_x_continuous(trans='log10', 
+                     breaks=N[c(1,3,12:14)], 
+                     name ="Sample Size (logarithmic scale)") +
+  scale_y_continuous(name="Bias") +
+  theme_few() +
+  theme(text = element_text(size=16),
+        axis.text.x = element_text(angle = 90)) +
+  theme(legend.position = "right")
+print(alldata)
+
+fewdata <- ggplot(Bias.flat, aes(x=N, y=value, col=Estimator)) + 
+  geom_line(size=1) +
+  geom_point(alpha=.7, size=3) + 
+  scale_x_continuous(
+    trans="log10",
+    limits = c(3,1000),
+    breaks=N, 
+    name ="Sample Size (logarithic scale)"
+  ) +
+  scale_y_continuous(name="Bias") +
+  theme_few() +
+  theme(text = element_text(size=16),
+        axis.text.x = element_text(angle = 90),
+        legend.position = "none")
+
+print(fewdata)
+print(alldata, vp = viewport(width=.5, height=.5, just = c("left", "bottom")))
+
+### MSE
+
+MSE <- data.frame(BiasMSE$N, BiasMSE$MSE.ML, BiasMSE$MSE.Med, BiasMSE$MSE.BootMed)
+names(MSE) <- c("N", "ML", "Med", "BootMed")
+MSE.flat <- melt(MSE, measure.vars = c("ML", "Med", "BootMed"))
+names(MSE.flat) <- c("N", "Estimator", "value")
+
+alldata <- ggplot(MSE.flat, aes(x=N, y=value, col=Estimator)) + 
+  geom_line(size=1) +
+  geom_point(alpha=.7, size=3) + 
+  scale_x_continuous(trans='log10', 
+                     breaks=N[c(1,3,12:14)], 
+                     name ="Sample Size (logarithmic scale)") +
+  scale_y_continuous(name="MSE") +
+  theme_few() +
+  theme(text = element_text(size=16),
+        axis.text.x = element_text(angle = 90)) +
+  theme(legend.position = "right")
+print(alldata)
+
+fewdata <- ggplot(MSE.flat, aes(x=N, y=value, col=Estimator)) + 
+  geom_line(size=1) +
+  geom_point(alpha=.7, size=3) + 
+  scale_x_continuous(trans='log10', 
+                     breaks=N, 
+                     limits = c(3,1000),
+                     name ="Sample Size (logarithmic scale)") +
+  scale_y_continuous(name="MSE") +
+  theme_few() +
+  theme(text = element_text(size=16),
+        axis.text.x = element_text(angle = 90)) +
+  theme(legend.position = "none")
+
+print(fewdata)
+print(alldata, vp = viewport(width=.5, height=.5, just = c("left", "bottom")))
+
+### Analysis of MSE
+ggplot(MSE.flat, aes(x=N, y=value, col=Estimator)) +
+  geom_point() +
+  scale_x_continuous(limits = c(3,100)) + 
+  scale_y_continuous(trans="sqrt")

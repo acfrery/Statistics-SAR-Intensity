@@ -481,6 +481,13 @@ In spite of seeming na\"ive and ad hoc, it has solid theoretical foundations and
 VasconcellosFrerySilva:CompStat,%
 SilvaCribariFrery:ImprovedLikelihood:Environmetrics}.
 
+Notice that the number of possible permutations with repetitions of the sample $\bm X=(X_1,\dots,X_n)$ is $n^n$.
+Therefore, it is important to verify which is smaller: if $n^n$ or $R$.
+If $n^n < R$, then there is no need to sample from the $n!$ permutations; it is possible to make a deterministic bootstrap, with all of them.
+
+A final warning: it is important to know how the estimator $\widehat{\theta}$ is computed.
+If it involves dividing by the variance or the standard deviation, we cannot use those bootstrap samples with the same observation, otherwise we will have a division by zero.
+
 \section{Comparison of estimators}
 
 Assume you have two estimators, say $\widehat{\theta}$ and $\widetilde{\theta}$.
@@ -537,6 +544,9 @@ Assume we will analyze $n\in\{3,5,10,20,\dots,100,1000,10000\}$ and, for the sak
 For each point in the factor space we will obtain the bias, and the mean quadratic error of each estimator, i.e., for each of the $14$ sample sizes we will collect six observations.
 We will store these observations as a $14\times 7$ matrix: one line for each sample size $n$, and the columns being the sample size $n$, followed by the sample bias and mean square error.
 
+Notice that $3^3=27$, and $4^4=256$ are smaller than $R=300$, and that $n^n>300$ for every $n\geq5$.
+So, if we want to make an efficient Monte Carlo study, we should opt for using all the $n^n$ permutations with repetitions in these two cases.
+
 \citet{busto92} suggest using a variable number of replications for each sample size in problems like this one.
 Their proposal aims at controlling the variability of the estimates of, e.g., the bias and the mean quadratic error, making them comparable along the study.
 We will follow this advice, and use $r=\lceil N/n\rceil$, 
@@ -550,16 +560,26 @@ set.seed(1234567890)							(*@\label{code:set.seed}@*)
 
 est.median.bootstrap <- function(z, R) {		(*@\label{code:function_b}@*)
   
-  t <- median(z) / log(2)
-  
-  v.Bootstrap <- rep(0, R)
-  for(b in 1:R) {
-    x <- sample(z, replace = TRUE)
-    v.Bootstrap[b] <- median(x) / log(2)
-  }
-  
-  return(2*t - mean(v.Bootstrap))
-}												(*@\label{code:function_e}@*)
+    t <- median(z) / log(2)
+    
+    sample_size <- length(z)
+    pwr <- sample_size^sample_size
+    
+    if(pwr < R) {													(*@\label{code:deterministic_b}@*)
+      m.Bootstrap <- permutations(sample_size, sample_size, z, 
+                                  set=TRUE, repeats.allowed=TRUE)
+      return(2*t - mean(unlist(lapply(m.Bootstrap, median))))
+    } 																(*@\label{code:deterministic_e}@*)
+    else {
+      v.Bootstrap <- rep(0, R)
+      for(b in 1:R) {
+        x <- sample(z, replace = TRUE)
+        v.Bootstrap[b] <- median(x) / log(2)
+      }
+    }
+    
+    return(2*t - mean(v.Bootstrap))
+  }												(*@\label{code:function_e}@*)
 
 N <- c(3, 5, seq(10,100,by=10), 1000, 10000)	(*@\label{code:N}@*)
 BiasMSE <- matrix(nrow=14, ncol=7)				(*@\label{code:Output}@*)
@@ -606,6 +626,7 @@ Lines~\ref{code:t1} and~\ref{code:t2} store the initial and final times, used in
 
 Line~\ref{code:function_b} starts the definition of the median estimator improved by bootstrap.
 Notice that the number of bootstrap replications is a parameter.
+Lines~\ref{code:deterministic_b} to~\ref{code:deterministic_e} define the deterministic bootstrap.
 The definition ends at line~\ref{code:function_e}.
 
 Line~\ref{code:N} defines the factor space of our study, namely the set of all sample sizes.
@@ -624,7 +645,7 @@ We then calculate the bias and mean square error of each (lines~\ref{code:bias1}
 This is the output of the current state of \verb|r|, the sample size.
 These values are stored in line~\ref{code:output.matrix}, and the inner loop restarts with the next sample size, or ends if it reached the end.
 
-This code run in approximately \SI{3}{\hour}~\SI{20}{\minute}
+This code run in approximately \SI{2}{\hour}~\SI{45}{\minute}
 in a MacBook Pro~\SI{3.5}{\giga\hertz} Intel Core~i7 with \SI{16}{\giga\byte} of memory,
 running \texttt R version~3.6.0 on Mac~OS version~10.14.5.
 
@@ -632,10 +653,30 @@ Figure~\ref{Fig:MonteCarlo} shows the data we produced and stored in \verb|BiasM
 
 \begin{figure*}
 \centering
-\includegraphics[width=.45\linewidth]{BiasMonteCarlo}
-\includegraphics[width=.45\linewidth]{MSEMonteCarlo}
+{\includegraphics[width=.48\linewidth]{BiasMonteCarlo}}
+{\includegraphics[width=.48\linewidth]{MSEMonteCarlo}}
 \caption{Bias and mean square error of $\widehat{\mu}$ (ML), $\breve{\mu}$ (Med), and $\widetilde{\mu}$ (BootMed).}\label{Fig:MonteCarlo}
 \end{figure*}
+
+From Fig.~\ref{Fig:MonteCarlo} we may conclude, among other things, that under the current model:
+\begin{itemize}
+\item There seems to be no need to consider samples of size $n=10000$, since the bias of the three estimators is very close with $n=1000$, and the same holds for the mean square error even for smaller samples.
+\item The bias of $\widehat \mu$ is almost constant for every sample size, while the bias of $\breve{\mu}$ starts large, and decreases with the sample size.
+\item The effect of bootstrap over the median estimator is evident with samples of at least size $n=5$; the case $n=3$ is hopeless.
+\item[\NibSolidRight] Regarding the bias only, the bootstrap-corrected median and maximum likelihood estimators behave alike with samples of at least five observations.
+\item The mean square error shows a very smooth decrease with respect to the sample size in the three estimators, but with different scales. The smallest MSE is, consistently, due to $\widehat{\mu}$, followed by $\breve{\mu}$, and by $\widehat{\mu}$.
+\item[\NibSolidRight] If the only criterion is the mean square error, the safest choice is the maximum likelihood estimator.
+\end{itemize}
+
+So, why one should consider alternative estimators to maximum likelihood?
+Because this family of estimators is know to have the best performance under the hypothesized model, but they may be catastrophic when the observations are contaminated.
+
+The reader is referred to the textbooks by
+\citet{Huber81},
+\citet{RobustStatisticsHuberRonchetti}, and
+\citet{MaronnaMartinYohai:book:2006}.
+\citet{BustosFreryLucini:Mestimators:2001} and \citet{AllendeFreryetal:JSCS:05} discuss the use of robust estimators in the analysis of SAR data.
+
 
 \section*{Exercises}
 
