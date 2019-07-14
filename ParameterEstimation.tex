@@ -169,6 +169,7 @@ The $k$-order moment of $Z$ is given by
 \operatorname{E}Z^k = \Big(\frac{\gamma}{L}\Big)^k
 \frac{\Gamma(-\alpha-k)}{\Gamma(-\alpha)}
 \frac{\Gamma(L+k)}{\Gamma(L)},
+\label{eq:MomGI0}
 \end{equation}
 provided $k>-\alpha$ and infinite otherwise.
 
@@ -677,6 +678,43 @@ The reader is referred to the textbooks by
 \citet{MaronnaMartinYohai:book:2006}.
 \citet{BustosFreryLucini:Mestimators:2001} and \citet{AllendeFreryetal:JSCS:05} discuss the use of robust estimators in the analysis of SAR data.
 
+\section{Another example}
+
+We will conclude this chapter with the analysis of data from an urban area.
+Fig.~\ref{Image:UrbanArea} shows, to the left, a $200\times 300$ pixel sample from a densely urbanized area, as seen in the HV polarization, single look.
+We will analyze the smaller sample to the right, which consists of $111\times 51$ pixels.
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=.6\linewidth]{Urban}\quad
+\includegraphics[width=.185\linewidth]{SampleUrban}
+\caption{Urban area after equalization, and smaller sample under analysis}\label{Image:UrbanArea}
+\end{figure}
+
+The summary of this sample is as follows, showing (as expected) a great deal of variability.
+\begin{lstlisting}[frame=lines,numbers=left,numberblanklines=false,language=R,escapeinside={(*@}{@*)}]
+> summary(vUrbanHV)
+      UHV         
+ Min.   :      0  
+ 1st Qu.:   7156  
+ Median :  22345  
+ Mean   :  69428  
+ 3rd Qu.:  69577  
+ Max.   :3266496  
+\end{lstlisting}
+
+The usual histogram (to the left) is barely informative, as a few large observations make all the rest concentrate to the left; cf.\ Fig.~\ref{Fig:HistogramsUrbanAreas}.
+The bin width ($w$) was calculated with the Freedman-Diaconis rule-of-the-thumb: $w=2n^{-1/3}\text{IQR}(\bm z)$, where $\text{IQR}$ denotes the inter-quartile range, and $n$ is the number of observations\cite{OntheHistogramAsaDensityEstimatorL2Theory1981}.
+When we restrict the histogram to those values below $10^5$ (right), we notice an exponential-like shape.
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=.48\linewidth]{HistogramFullUrban}
+\includegraphics[width=.48\linewidth]{HistogramRestrictedUrban}
+\caption{Histograms of data from the urban area: full and restricted, with fitted densities}\label{Fig:HistogramsUrbanAreas}
+\end{figure}
+
+We will use the result given in~\eqref{eq:MomGI0} to build an estimator based on the first and second moments.
 
 \section*{Exercises}
 

@@ -448,54 +448,6 @@ ggplot(data=data.frame(bHV), aes(x=bHV)) +
   ylab("Intensity observations HV channel") +
   theme_few() + 
   theme(text = element_text(size=20))
-  
-
-### Analysis of urban area
-
-plot(imagematrix(equalize(UrbanHV)))
-
-vUrbanHV <- data.frame(UHV=as.vector(UrbanHV))
-ggplot(data=vUrbanHV, aes(x=UHV)) + 
-  geom_histogram(aes(y=..density..), bins=100) + 
-  xlim(0,100000) +
-  theme_few()
-
-(media <- mean(vUrbanHV$UHV))
-segundo <- mean(vUrbanHV$UHV^2)
-
-cociente <- segundo / media^2
-
-(a <- 2 * (1-cociente) / (cociente-2))
-(g <- media * (-a-1))
-
-ggplot(data=vUrbanHV, aes(x=UHV)) + 
-  geom_histogram(aes(y=..density..), 
-                 binwidth = 2*IQR(vUrbanHV$UHV)*length(vUrbanHV$UHV)^(-1/3)) + 
-  xlim(0,100000) +
-  stat_function(fun=dexp, args=list(rate=1/media), 
-                col="red", lwd=2, alpha=.7) +
-  stat_function(fun=dGI0, args = list(p_alpha=a, p_gamma=g, p_Looks=1),
-                col="blue", lwd=2, alpha=.7) +
-  xlab("Intensidades Área Urbana") +
-  ylab("Histograma y Ajustes Exponencial y G0") +
-  theme_few()
-
-ggplot(data.frame(x=seq(.1,10,length.out = 1000)), aes(x=x)) +
-  stat_function(fun=dGI0, args = list(p_alpha=-30, p_gamma=29, p_Looks=1), col="yellow", lwd=2) +
-  stat_function(fun=dGI0, args = list(p_alpha=-10, p_gamma=9, p_Looks=1), col="brown", lwd=2) +
-  stat_function(fun=dGI0, args = list(p_alpha=-5, p_gamma=4, p_Looks=1), col="blue", lwd=2) +
-  stat_function(fun=dGI0, args = list(p_alpha=-3, p_gamma=2, p_Looks=1), col="green", lwd=2) +
-  stat_function(fun=dGI0, args = list(p_alpha=-1.5, p_gamma=.5, p_Looks=1), col="red", lwd=2) +
-  stat_function(fun=dexp, col="black", lwd=2, alpha=.3) 
-                
-ggplot(data.frame(x=seq(.1,10,length.out = 1000)), aes(x=x)) +
-  stat_function(fun=dGI0, args = list(p_alpha=-30, p_gamma=29, p_Looks=1), col="yellow", lwd=2) +
-  stat_function(fun=dGI0, args = list(p_alpha=-10, p_gamma=9, p_Looks=1), col="brown", lwd=2) +
-  stat_function(fun=dGI0, args = list(p_alpha=-5, p_gamma=4, p_Looks=1), col="blue", lwd=2) +
-  stat_function(fun=dGI0, args = list(p_alpha=-3, p_gamma=2, p_Looks=1), col="green", lwd=2) +
-  stat_function(fun=dGI0, args = list(p_alpha=-1.5, p_gamma=.5, p_Looks=1), col="red", lwd=2) +
-  stat_function(fun=dexp, col="black", lwd=2, alpha=.3) +
-  scale_y_continuous(trans="log")
 
 ### Code for the book
 ## Monte Carlo experiment to assess ML, Med and Bootstrap Med estimators
@@ -657,3 +609,51 @@ ggplot(MSE.flat, aes(x=N, y=value, col=Estimator)) +
   geom_point() +
   scale_x_continuous(limits = c(3,100)) + 
   scale_y_continuous(trans="sqrt")
+
+### Analysis of urban area
+
+plot(imagematrix(equalize(UrbanHV)))
+imagematrixPNG(name = "../Figures/Urban.png", imagematrix(equalize(UrbanHV)))
+
+## Now we select a region
+plot(imagematrix(equalize(UrbanHV[90:200,50:100])))
+imagematrixPNG(name = "../Figures/SampleUrban.png", imagematrix(equalize(UrbanHV[90:200,50:100])))
+
+vUrbanHV <- data.frame(UHV=as.vector(UrbanHV[90:200,50:100]))
+summary(vUrbanHV)
+
+binwidth_complete <- 2*IQR(vUrbanHV$UHV)*length(vUrbanHV$UHV)^(-1/3)
+ggplot(data=vUrbanHV, aes(x=UHV)) + 
+  geom_histogram(aes(y=..density..), binwidth = binwidth_complete) + 
+  xlab("Intensities") +
+  ylab("Proportions") +
+  ggtitle("Complete Histogram") +
+  theme_few()
+ggsave(filename = "../Figures/HistogramFullUrban.pdf")
+
+Intensity_restricted <- subset(vUrbanHV$UHV, subset = vUrbanHV$UHV <= 100000)
+binwidth_restricted <- 2*IQR(Intensity_restricted)*length(Intensity_restricted)^(-1/3)
+
+## Estimation with all the data
+(meanUHV <- mean(vUrbanHV$UHV))
+(secondUHV <- mean(vUrbanHV$UHV^2))
+
+CoeffVariation2 <- secondUHV / meanUHV^2
+
+(a <- 2 * (1-CoeffVariation2) / (CoeffVariation2-2))
+(g <- meanUHV * (-a-1))
+
+ggplot(data=vUrbanHV, aes(x=UHV)) + 
+  geom_histogram(aes(y=..density..), 
+                 binwidth = binwidth_restricted) + 
+  xlim(0,100000) +
+  stat_function(fun=dexp, args=list(rate=1/meanUHV), 
+                col="red", lwd=2, alpha=.7) +
+  stat_function(fun=dGI0, args = list(p_alpha=a, p_gamma=g, p_Looks=1),
+                col="blue", lwd=2, alpha=.7) +
+  xlab("Intensities from the Urban Area") +
+  ylab("Histogram, and fitted Exponential and G0 Laws") +
+  ggtitle("Restricted Histogram") +
+  theme_few()
+ggsave(filename = "../Figures/HistogramRestrictedUrban.pdf")
+
