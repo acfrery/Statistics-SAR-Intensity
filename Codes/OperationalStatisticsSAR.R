@@ -1,4 +1,5 @@
 require(ggplot2)
+require(scales)
 require(ggthemes)
 require(reshape2)
 require(maxLik)
@@ -75,7 +76,7 @@ ggplot(data=data.frame(x=seq(10^-3, 5, length.out = 500)), aes(x=x)) +
   theme_classic() +
   theme(text = element_text(size=20)) +
   xlab("x") + ylab("Gamma Densities")
-ggsave(file="../Figures/GammaDensities.pdf")  
+  ggsave(file="../Figures/GammaDensities.pdf")  
 
 ggplot(data=data.frame(x=seq(10^-3, 5, length.out = 500)), aes(x=x)) +
   stat_function(fun=pgamma, geom = "line", size=2, col="black", args = list(shape=1, scale=1)) +
@@ -234,7 +235,8 @@ save(file="../Data/dark.Rdata", dark)
 bright <- Intensity_RGB[1398:1506,1308:1521,]
 save(file="../Data/bright.Rdata", bright)
 
-plot(imagematrix(equalize(bright)))
+plot(imagematrix(normalize_indep(bright)))
+plot(imagematrix(equalize_indep(bright)))
 
 #### Remover - sólo para dibujar áreas
 #dim(HH_Intensity)
@@ -623,29 +625,42 @@ vUrbanHV <- data.frame(UHV=as.vector(UrbanHV[90:200,50:100]))
 summary(vUrbanHV)
 
 binwidth_complete <- 2*IQR(vUrbanHV$UHV)*length(vUrbanHV$UHV)^(-1/3)
+
 ggplot(data=vUrbanHV, aes(x=UHV)) + 
-  geom_histogram(aes(y=..density..), binwidth = binwidth_complete) + 
+  geom_histogram(aes(y=..density..), 
+                 binwidth = binwidth_complete) + 
   xlab("Intensities") +
   ylab("Proportions") +
   ggtitle("Complete Histogram") +
   theme_few()
 ggsave(filename = "../Figures/HistogramFullUrban.pdf")
 
-Intensity_restricted <- subset(vUrbanHV$UHV, subset = vUrbanHV$UHV <= 100000)
-binwidth_restricted <- 2*IQR(Intensity_restricted)*length(Intensity_restricted)^(-1/3)
+ggplot(data=vUrbanHV, aes(x=UHV)) + 
+  geom_histogram(aes(y=..density..), 
+                 binwidth = binwidth_complete) + 
+  xlab("Intensities") +
+  xlim(0, 200000) +
+  ylab("Proportions") +
+  ggtitle("Restricted Histogram") +
+  theme_few()
+ggsave(filename = "../Figures/HistogramRestrictedUrban.pdf")
 
-## Estimation with all the data
-(meanUHV <- mean(vUrbanHV$UHV))
-(secondUHV <- mean(vUrbanHV$UHV^2))
+## Estimation
 
-CoeffVariation2 <- secondUHV / meanUHV^2
-
-(a <- 2 * (1-CoeffVariation2) / (CoeffVariation2-2))
-(g <- meanUHV * (-a-1))
+GI0.Estimator.m1m2 <- function(z, L) {
+  m1 <- mean(z)
+  m2 <- mean(z^2)
+  m212 <- m2/m1^2
+    
+  a <- -2 - (L+1) / (L * m212)
+  g <- m1 * (2 + (L+1) / (L * m212))
+  
+  return(list("alpha"=a, "gamma"=g))
+}
 
 ggplot(data=vUrbanHV, aes(x=UHV)) + 
   geom_histogram(aes(y=..density..), 
-                 binwidth = binwidth_restricted) + 
+                 binwidth = binwidth_complete) + 
   xlim(0,100000) +
   stat_function(fun=dexp, args=list(rate=1/meanUHV), 
                 col="red", lwd=2, alpha=.7) +

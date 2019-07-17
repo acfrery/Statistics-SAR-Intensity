@@ -119,7 +119,7 @@ $\operatorname{Var}X = \sum_{j=1}^{p} p_j^2\sigma^2_j$.
 
 \subsection{The (SAR) Gamma distribution}
 
-The Gamma distribution, in the usual parametrization for SAR data $Z\sim\Gamma(L,\mu)$, with $L,\mu>0$ is characterized by the density
+The Gamma distribution, in the usual parametrization for SAR data $Z\sim\Gamma(\mu,L)$, with $L,\mu>0$ is characterized by the density
 \begin{equation}
 f_\Gamma(z;L,\mu) = \frac{L^L}{\mu^{L}\Gamma(L)} z^{L-1} 
 	\exp\big\{ -L z / \mu
@@ -414,7 +414,7 @@ The maximum likelihood estimator of $(L,\mu)$ is then any point in $\mathbbm R_+
 This problem can be solved in two ways: either deriving, equating to zero and solving, or by direct maximization.
 Each case must be studied from a computational viewpoint to choose the most suitable option.
 
-\section{The $\mathcal G^0$ distribution}
+\subsection{The $\mathcal G^0$ distribution}
 
 Recall that the $\mathcal G^0$ distribution was proposed as a means to model data from textured and extremely textured areas.
 Assume that some textureless areas have been identified and that, with these data, it was possible to obtain a dependable estimate of $L$, say $\widehat L$.
@@ -711,10 +711,43 @@ When we restrict the histogram to those values below $10^5$ (right), we notice a
 \centering
 \includegraphics[width=.48\linewidth]{HistogramFullUrban}
 \includegraphics[width=.48\linewidth]{HistogramRestrictedUrban}
-\caption{Histograms of data from the urban area: full and restricted, with fitted densities}\label{Fig:HistogramsUrbanAreas}
+\caption{Histograms of data from the urban area: full and restricted}\label{Fig:HistogramsUrbanAreas}
 \end{figure}
 
 We will use the result given in~\eqref{eq:MomGI0} to build an estimator based on the first and second moments.
+With this, one has that if $Z\sim\mathcal{G}^0(\alpha,\gamma,L)$, then
+\begin{align}
+\operatorname{E}Z	&= \frac{\gamma}{-\alpha-1}, \text{ and } \label{eq:Mom1G0} \\
+\operatorname{E}Z^2	&= \frac{\gamma^2}{L}\frac{L+1}{(-\alpha-1)(-\alpha-2)}. \label{eq:Mom2G0}
+\end{align}
+Now using the fist and second sample moments, $m_1$ and $m_2$, respectively, and equating with~\eqref{eq:Mom1G0} and~\ref{eq:Mom2G0} indexed by estimators of $\alpha$ and $\gamma$, $\breve{\alpha}$ and $\breve{\gamma}$, resp., we obtain
+\begin{align}
+m_1	&= \frac{\breve\gamma}{-\breve\alpha-1}, \text{ and } \label{eq:SMom1G0} \\
+m_2	&= \frac{\breve\gamma^2}{L}\frac{L+1}{(-\breve\alpha-1)(-\breve\alpha-2)}. \label{eq:SMom2G0}
+\end{align}
+With this, we may obtain the estimators as
+\begin{align}
+\breve{\alpha}	& = -2-\frac{L+1}{L\, m_2/m_1^2}, \text{ and} \label{Eq:EstMoma}\\
+\breve\gamma		& = m_1 \Big(2+\frac{L+1}{L\, m_2/m_1^2}\Big).\label{Eq:EstMomb}
+\end{align}
+
+Using the urban data we are analyzing, we obtain
+$\breve{\alpha}=-2.20801$ and $\breve\gamma=100105.9$.
+
+
+Fig.~\ref{Fig:UrbanFitted} shows the restricted histogram of the urban data, with the fitted densities of the Exponential and $\mathcal G^0$ densities.
+The estimators $\breve{\alpha}$ and $\breve{\gamma}$ were computed with~\eqref{Eq:EstMoma} and~\eqref{Eq:EstMomb}, respectively.
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=.8\linewidth]{HistogramRestrictedUrbanWFitted}
+\caption{Restricted histogram of the urban area data, with fitted exponential (red) and $\mathcal G^0$ (blue) densities}\label{Fig:UrbanFitted}
+\end{figure}
+
+The better quality of the fit with the $\mathcal G^0$ model is noticeable.
+Besides this, this model provides valuable information about the target.
+
+We already have in~\eqref{Eq:ReducedLogLikGI0} the expression of the maximum likelihood estimator for $(\alpha,\gamma)$.
 
 \section*{Exercises}
 

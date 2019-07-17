@@ -8,7 +8,7 @@
 
 \usepackage[T1]{fontenc}
 \usepackage{newpxtext,eulerpx}
-%\setsansfont[BoldFont={Fira Sans SemiBold}]{Fira Sans Book}
+\setsansfont[BoldFont={Fira Sans SemiBold}]{Fira Sans Book}
 
 \usepackage{url}
 
@@ -17,7 +17,6 @@
 
 
 \usepackage{texnames}
-\usepackage{epigraph}
 \usepackage{amsmath,amsfonts,amssymb,amsthm}
 \usepackage{bm,bbm}
 \usepackage[]{subfig}
@@ -36,23 +35,10 @@
 
 \newcommand{\monthyear}{\ifcase\month\or January\or February\or March\or April\or May\or June\or July\or August\or September\or October\or November\or December\fi\space\number\year} % A command to print the current month and year
 
-\newcommand{\openepigraph}[2]{ % This block sets up a command for printing an epigraph with 2 arguments - the quote and the author
-\begin{fullwidth}
-\sffamily\large
-\begin{doublespace}
-\noindent\allcaps{#1}\\ % The quote
-\noindent\allcaps{#2} % The author
-\end{doublespace}
-\end{fullwidth}
-}
-
 \setcounter{secnumdepth}{2}
 \setcounter{tocdepth}{2}
 
 \newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage} % Command to insert a blank page
-
-\usepackage{makeidx} % Used to generate the index
-\makeindex % Generate the index which is printed at the end of the document
 
 %%
 % Configure math typesetting
@@ -75,9 +61,9 @@
   \nointerlineskip%
 }
 
-\title{Statistics for SAR Image Analysis}
-\subtitle{An Introduction}
-\date{17 September 2018}
+\title{Operational Statistics for SAR Imagery}
+\subtitle{A hands-on summer course}
+\date{July 2019}
 \author{Alejandro C.\ Frery}
 \institute{%
 Laborat\'orio de Computa\c c\~ao Cient\'ifica e An\'alise Num\'erica\\
@@ -95,6 +81,60 @@ Universidade Federal de Alagoas
 \mode*  % ignore text outside frame in presentation mode
 
 This is your lecture abstract. It should contain a short description of the lecture contents, what its goals are, and preferably not exceed a few dozen words.\marginnote{Do not forget to use margin notes to add more context to your material.}
+
+\section{Introduction}
+
+\begin{frame}{Before we start}
+\begin{alertblock}{The course}
+{\scriptsize Synthetic Aperture Sensors are a basilar tool in Remote Sensing because of their ability to operate day and night, and under unfavorable atmospheric conditions. Moreover, they provide information about the interaction between the target and microwaves. The physics of such imaging is known to yield data with unique statistical properties. Understanding such features is at the core of SAR Remote Sensing. We will see the basic models for these data, along with estimators and their properties. The focus will be in both analytic and graphical tools. We will use the R platform, which has excellent numerical properties and is well-suited for the task of extracting information from the data. Among the topics to be covered are the multiplicative model (Gamma, G, G0 and K distributions), estimation by analogy and maximum likelihood, model checking, data visualization, comparison of estimators, contamination, and classification. All participants are required to use a computer with a connection to the Internet, R, and RStudio (\textit{Free/Libre Open Source Software}).}
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{What are we supposed to learn in this course?}
+Although the application and \textit{leitmotif} is SAR image analysis, the most important message can be split in the following topics:
+\begin{itemize}
+\item The importance of \textbf{understanding} the problem at hand
+\item Which are the basic underlying hypothesis of the processes that turn into the \textbf{data} I have?
+\item What can I know about the \textbf{models} I will be dealing with?
+\item How can I turn such knowledge into \textbf{tools}?
+\item How can I use these tools to extract \textbf{information}?
+\item How can I \textbf{communicate} this information?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Basic knowledge and tools}
+
+\begin{alertblock}{Concepts}
+\begin{itemize}
+\item Elements of Probability: distribution, expected value, Central Limit Theorem
+\item Elements of Statistics: sample, inference, tests
+\item Elements of Programming
+\end{itemize}
+\end{alertblock}
+
+\begin{alertblock}{Tools}
+\begin{itemize}
+\item Github and \LaTeX (if you want to have access to the book, code and data)
+\item \texttt R and \texttt{RStudio}
+\end{itemize}
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Evaluation}
+I will give assignments during the course, and I expect you to produce a report in \LaTeX, with references managed with \BibTeX, and code in \texttt R for the plots and analyses.
+
+The report will be made available through Git, for instance Github or Bitbucket.
+\end{frame}
+
+\begin{frame}{Before we start\dots\ really}
+Let's make this more a conversation than a course.
+
+I need you to participate!
+
+acfrery@laccan.ufal.br\\
+WeChat ID: alex0x0x0x (naught, not ``o'')
+\end{frame}
+
 
 \section{Intensity SAR Data}
 
@@ -274,6 +314,7 @@ The quality of the fit is remarkable, in particular for such large number of obs
 This is an empirical indication that the model we are considering is adequate.
 \end{frame}
 
+
 \section{The Multiplicative Model}
 
 \begin{frame}[allowframebreaks]
@@ -298,6 +339,7 @@ f_Z(z;L,\sigma^2) = \frac{L^L}{\sigma^{2L}\Gamma(L)} z^{L-1}
 \end{equation}
 As previously said, the Gamma distribution is scale-invariant, so we may pose this model as the product between the constant backscatter $X=\sigma^2$ and the multilook speckle $Y\sim\Gamma(1,L)$.
 \end{frame}
+
 
 \begin{frame}[allowframebreaks]
 But, are there situations were we cannot assume a constant backscatter?
@@ -341,7 +383,7 @@ Fig.~\ref{Fig:KIDistribution} shows the densities in linear and semilogarithmic 
 They all have unitary mean, and the latter is shown with different degrees of roughness ($\alpha\in\{1,3,8\}$).
 It is noticeable that the larger the value of $\alpha$ is, the closer the $\mathcal K$ and $\text{E}$ densities become.
 In fact, there is convergence in distribution of the latter to the former.
-
+\end{frame}
 \begin{figure}[hbt]
 \centering
 \subfloat[Densities]{\includegraphics[width=.48\linewidth]{KIDensities}}
