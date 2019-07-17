@@ -658,17 +658,20 @@ GI0.Estimator.m1m2 <- function(z, L) {
   return(list("alpha"=a, "gamma"=g))
 }
 
+estim.Urban <- GI0.Estimator.m1m2(UrbanHV, 1)
+
 ggplot(data=vUrbanHV, aes(x=UHV)) + 
   geom_histogram(aes(y=..density..), 
                  binwidth = binwidth_complete) + 
-  xlim(0,100000) +
+  xlim(0,200000) +
   stat_function(fun=dexp, args=list(rate=1/meanUHV), 
                 col="red", lwd=2, alpha=.7) +
-  stat_function(fun=dGI0, args = list(p_alpha=a, p_gamma=g, p_Looks=1),
+  stat_function(fun=dGI0, 
+                args = list(p_alpha=estim.Urban$a, p_gamma=estim.Urban$g, p_Looks=1),
                 col="blue", lwd=2, alpha=.7) +
   xlab("Intensities from the Urban Area") +
   ylab("Histogram, and fitted Exponential and G0 Laws") +
-  ggtitle("Restricted Histogram") +
+  ggtitle("Restricted Histogram and fitted densities") +
   theme_few()
-ggsave(filename = "../Figures/HistogramRestrictedUrban.pdf")
+ggsave(filename = "../Figures/HistogramRestrictedUrbanWFitted.pdf")
 
