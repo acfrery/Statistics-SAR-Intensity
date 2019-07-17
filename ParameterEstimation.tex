@@ -751,20 +751,44 @@ GI0.Estimator.m1m2 <- function(z, L) {
 Using the urban data we are analyzing, we obtain
 $\breve{\alpha}=-2.20801$ and $\breve\gamma=100105.9$.
 
+We already have in~\eqref{Eq:ReducedLogLikGI0} the expression of the maximum likelihood estimator for $(\alpha,\gamma)$.
+The following code shows its implementation and usage with the function \verb|maxNR| from the \verb|maxLik| package\cite{maxLik}.
+Notice that use the moments estimates as starting points for the algorithm, and we assume $L=1$ known.
+
+\begin{lstlisting}[frame=lines]
+LogLikelihoodLknown <- function(params) {
+  
+  p_alpha <- -abs(params[1])
+  p_gamma <- abs(params[2])
+  p_L <- abs(params[3])
+  
+  n <- length(z)
+  
+  return(
+    n*(lgamma(p_L-p_alpha) - p_alpha*log(p_gamma) - lgamma(-p_alpha)) + 
+      (p_alpha-p_L)*sum(log(p_gamma + z*p_L)) 
+  )
+}
+
+z <- vUrbanHV$UHV
+estim.UrbanML <- maxNR(LogLikelihoodLknown, start=c(estim.Urban$alpha, estim.Urban$gamma,1), 
+      activePar=c(TRUE,TRUE,FALSE))$estimate[1:2]
+\end{lstlisting}
+
+With this approach, we obtain $\widehat{\alpha}=-2.614646$ and $\widehat\gamma=99277.01$.
 
 Fig.~\ref{Fig:UrbanFitted} shows the restricted histogram of the urban data, with the fitted densities of the Exponential and $\mathcal G^0$ densities.
-The estimators $\breve{\alpha}$ and $\breve{\gamma}$ were computed with~\eqref{Eq:EstMoma} and~\eqref{Eq:EstMomb}, respectively.
+The latter is shown with the moments and maximum likelihood estimates.
 
 \begin{figure}[hbt]
 \centering
-\includegraphics[width=.8\linewidth]{HistogramRestrictedUrbanWFitted}
-\caption{Restricted histogram of the urban area data, with fitted exponential (red) and $\mathcal G^0$ (blue) densities}\label{Fig:UrbanFitted}
+\includegraphics[width=\linewidth]{HistogramRestrictedUrbanWFitted}
+\caption{Restricted histogram of the urban area data, with fitted exponential (red) and $\mathcal G^0$ densities; the latter is shown with the parameters estimated by the moments (blue) and maximum likelihood (green) methods.}\label{Fig:UrbanFitted}
 \end{figure}
 
 The better quality of the fit with the $\mathcal G^0$ model is noticeable.
-Besides this, this model provides valuable information about the target.
-
-We already have in~\eqref{Eq:ReducedLogLikGI0} the expression of the maximum likelihood estimator for $(\alpha,\gamma)$.
+There seems to be evidence that the maximum likelihood estimates provide a better fit than that with the moments estimates.
+Besides this, the $\mathcal G^0$ model provides valuable information about the target.
 
 \section*{Exercises}
 
