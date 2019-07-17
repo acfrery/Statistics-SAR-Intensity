@@ -667,7 +667,7 @@ ggplot(data=vUrbanHV, aes(x=UHV)) +
   stat_function(fun=dexp, args=list(rate=1/meanUHV), 
                 col="red", lwd=2, alpha=.7) +
   stat_function(fun=dGI0, 
-                args = list(p_alpha=estim.Urban$a, p_gamma=estim.Urban$g, p_Looks=1),
+                args = list(p_alpha=estim.Urban$alpha, p_gamma=estim.Urban$gamma, p_Looks=1),
                 col="blue", lwd=2, alpha=.7) +
   xlab("Intensities from the Urban Area") +
   ylab("Histogram, and fitted Exponential and G0 Laws") +

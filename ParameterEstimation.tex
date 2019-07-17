@@ -731,6 +731,23 @@ With this, we may obtain the estimators as
 \breve\gamma		& = m_1 \Big(2+\frac{L+1}{L\, m_2/m_1^2}\Big).\label{Eq:EstMomb}
 \end{align}
 
+The following code implements this estimator.
+It requires the sample and the number of looks as input,
+and provides the estimators with their names as a list.
+
+\begin{lstlisting}[frame=lines]
+GI0.Estimator.m1m2 <- function(z, L) {
+  m1 <- mean(z)
+  m2 <- mean(z^2)
+  m212 <- m2/m1^2
+    
+  a <- -2 - (L+1) / (L * m212)
+  g <- m1 * (2 + (L+1) / (L * m212))
+  
+  return(list("alpha"=a, "gamma"=g))
+}
+\end{lstlisting}
+
 Using the urban data we are analyzing, we obtain
 $\breve{\alpha}=-2.20801$ and $\breve\gamma=100105.9$.
 
