@@ -158,7 +158,8 @@ We denote this situation $Y\sim \Gamma^{-1}(\alpha,\gamma)$.
 \subsection{The GI0 distribution}
 
 Assuming that the backscatter is $X\sim\Gamma^{-1}(\alpha,\gamma)$,
-the speckle is $Y\sim\Gamma(1,L)$, and that they are independent random variables, we have that the return follows a GI0 distribution\cite{GeodesicDistanceGI0JSTARS,ParameterEstimationSARStochasticDistancesKernels}, denoted $Z\sim\mathcal G_I^0(\alpha,\gamma,L)$, whose density is
+the speckle is $Y\sim\Gamma(1,L)$, and that they are independent random variables, we have that the return follows a GI0 distribution\cite{GeodesicDistanceGI0JSTARS}%
+\cite{ParameterEstimationSARStochasticDistancesKernels}, denoted $Z\sim\mathcal G_I^0(\alpha,\gamma,L)$, whose density is
 \begin{equation}
 f_Z(z;\alpha,\gamma,L) = \frac{L^L \Gamma(L-\alpha)}{\gamma^\alpha \Gamma(L) \Gamma(\alpha)}
 \frac{z^L}{(\gamma+Lz)^\alpha}.
@@ -478,13 +479,13 @@ So we propose the following estimator
 \end{align}
 where $\bm X^{(r)}$ is the result of resampling $\bm X$ with replacement.
 
-In spite of seeming na\"ive and ad hoc, it has solid theoretical foundations and, more often than not, the bootstrap estimator is excellent, specially for relatively small samples\cite{CribariFrerySilva:CSDA,%
-VasconcellosFrerySilva:CompStat,%
-SilvaCribariFrery:ImprovedLikelihood:Environmetrics}.
+In spite of seeming na\"ive and ad hoc, it has solid theoretical foundations and, more often than not, the bootstrap estimator is excellent, specially for relatively small samples\cite{CribariFrerySilva:CSDA}%
+\cite{VasconcellosFrerySilva:CompStat}%
+\cite{SilvaCribariFrery:ImprovedLikelihood:Environmetrics}.
 
 Notice that the number of possible permutations with repetitions of the sample $\bm X=(X_1,\dots,X_n)$ is $n^n$.
 Therefore, it is important to verify which is smaller: if $n^n$ or $R$.
-If $n^n < R$, then there is no need to sample from the $n!$ permutations; it is possible to make a deterministic bootstrap, with all of them.
+If $n^n < R$, then there is no need to sample from the $n^n$ permutations; it is possible to make a deterministic bootstrap, with all of them.
 
 A final warning: it is important to know how the estimator $\widehat{\theta}$ is computed.
 If it involves dividing by the variance or the standard deviation, we cannot use those bootstrap samples with the same observation, otherwise we will have a division by zero.
@@ -771,8 +772,9 @@ LogLikelihoodLknown <- function(params) {
 }
 
 z <- vUrbanHV$UHV
-estim.UrbanML <- maxNR(LogLikelihoodLknown, start=c(estim.Urban$alpha, estim.Urban$gamma,1), 
-      activePar=c(TRUE,TRUE,FALSE))$estimate[1:2]
+estim.UrbanML <- maxNR(LogLikelihoodLknown, 
+                         start=c(estim.Urban$alpha, estim.Urban$gamma,1), 
+                         activePar=c(TRUE,TRUE,FALSE))$estimate[1:2]
 \end{lstlisting}
 
 With this approach, we obtain $\widehat{\alpha}=-2.614646$ and $\widehat\gamma=99277.01$.
