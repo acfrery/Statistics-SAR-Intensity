@@ -217,7 +217,7 @@ We already have an estimator for $\mu$, and also for $\mu^2$, then one estimator
 
 Other estimators could be formed with higher-order moments $k=3,4\dots$, but we will always need two linearly independent equations to estimate $\bm\theta=(\mu,\sigma^2)$.
 
-\subsection{Mixture of Gaussian distributions}
+\subsection{Mixture of Gaussian distributions}\label{Sec:MixtureGaussian}
 
 We need $(p-1)p^2$ linearly independent equations to estimate $\bm{\theta} = (\bm p, \bm \mu, \bm \sigma^2)$.
 This approach is not very effective, because results in serious numerical problems.
@@ -508,7 +508,7 @@ See details in \citet{busto92}.
 Variance and bias should be as small as possible.
 They must always be checked, either analytically (the ideal scenario), or by a well-designed Monte Carlo study.
 
-\section{An example}
+\section{An example}\label{Sec:ExampleExponentialDistribution}
 
 Consider the Exponential distribution, a particular case of the (SAR) Gamma law characterized by the density given in~\eqref{eq:SARGammaDensity}.
 Making $L=1$ one has
@@ -558,16 +558,19 @@ With this, the maximum number of replications is $r_{\max}=666667$, correspondin
 The following code implements this Monte Carlo experiment.
 
 \begin{lstlisting}[frame=lines,numbers=left,numberblanklines=false,language=R,escapeinside={(*@}{@*)}]
+require(gtools)
+require(purrr)
+require(gtools)
+
 set.seed(1234567890)							(*@\label{code:set.seed}@*)
 
 est.median.bootstrap <- function(z, R) {		(*@\label{code:function_b}@*)
-  
     t <- median(z) / log(2)
     
     sample_size <- length(z)
     pwr <- sample_size^sample_size
     
-    if(pwr < R) {													(*@\label{code:deterministic_b}@*)
+    if(pwr < R) {(*@\label{code:deterministic_b}@*)
       m.Bootstrap <- permutations(sample_size, sample_size, z, 
                                   set=TRUE, repeats.allowed=TRUE)
       return(2*t - mean(unlist(lapply(m.Bootstrap, median))))
@@ -589,7 +592,7 @@ BiasMSE <- matrix(nrow=14, ncol=7)				(*@\label{code:Output}@*)
 start_time <- Sys.time()						(*@\label{code:t1}@*)
 
 i <- 0											(*@\label{code:i}@*)
-for(n in N){									(*@\label{code:for}@*)
+for(n in N){(*@\label{code:for}@*)
   i <- i+1
   
   r <- ceiling(2*10^6/n)						(*@\label{code:r}@*)
@@ -597,13 +600,13 @@ for(n in N){									(*@\label{code:for}@*)
   v.mu2 <- array(rep(0, r))						(*@\label{code:v2}@*)
   v.mu3 <- array(rep(0, r))						(*@\label{code:v3}@*)
   
-  for(j in 1:r){								(*@\label{code:loop_b}@*)
+  for(j in 1:r){(*@\label{code:loop_b}@*)
     z <- rexp(n) # sample of size n from Exp(1)	(*@\label{code:sample}@*)
     
     v.mu1[j] <- mean(z)							(*@\label{code:est1}@*)
     v.mu2[j] <- median(z) / log(2)				(*@\label{code:est2}@*)
     v.mu3[j] <- est.median.bootstrap(z, 300)	(*@\label{code:est3}@*)
-  }												(*@\label{code:loop_e}@*)
+  }	(*@\label{code:loop_e}@*)
   
   bias1 <- mean(v.mu1) - 1						(*@\label{code:bias1}@*)
   eqm1 <- mean((v.mu1 - 1)^2)					(*@\label{code:eqm1}@*)
@@ -678,6 +681,44 @@ The reader is referred to the textbooks by
 \citet{RobustStatisticsHuberRonchetti}, and
 \citet{MaronnaMartinYohai:book:2006}.
 \citet{BustosFreryLucini:Mestimators:2001} and \citet{AllendeFreryetal:JSCS:05} discuss the use of robust estimators in the analysis of SAR data.
+
+\section{The same example, revisited}
+
+So, what is \textit{robustness} about?
+
+Every statistical analysis relies on explicit or implicit assumptions.
+The most widespread of these is the Gaussian distribution, followed by the independence.
+Estimators are tailored to the assumptions, and if the underlying system departs from them, the consequences may be catastrophic.
+
+Imagine, for instance, that the observations are being registered by hand on a spreadsheet.
+Even if the process is careful, it is prone to errors, e.g., missing or misplacing the decimal point.
+
+If all possible errors could be described with precision, a careful statistician could, in principle, include them in the model.
+This would, in principle, solve the problem although it may lead to very complicated estimators.
+But, in practice, the analyst can hardly foresee all types of errors.
+
+Then, robustness comes in.
+The idea of devising robust procedures is, essentially, pessimistic, but in a good sense.
+A robust estimator should prepared to handle several types of departures from the classical or basic hypotheses, but not at the cost of being too complicated or too ineffective when, alas, the data obey them.
+
+In this example we will see the effect of contamination on the three estimators we assessed in Section~\ref{Sec:ExampleExponentialDistribution}.
+We will consider that each observation may or may not be contaminated by a factor of $100$ (missing the decimal point would have this kind of effect) with a very small probability $\varepsilon=10^{-3}$ (our operator misses, in mean, one every one thousand decimal points).
+
+Our model becomes
+\begin{equation}
+Z_i \sim \left\{
+	\begin{array}{cl}
+		\text{Exp}(\mu) & \text{with probability } 1-\varepsilon,\\
+		\text{Exp}(100\mu) & \text{with probability } \varepsilon.
+	\end{array}
+\right.
+\end{equation}
+This is a mixture model, but instead of treating it as in Section~\ref{Sec:MixtureGaussian}, we will see how the estimators presented in Section~\ref{Sec:ExampleExponentialDistribution} behave.
+
+The only change required is the line that produces the samples, cf.~line~\ref{code:sample}, by the following:
+\begin{lstlisting}[frame=lines,numbers=none,language=R]
+z <- rexp(n) * 100^rbernoulli(n, .001)
+\end{lstlisting}
 
 \section{Another example}
 
