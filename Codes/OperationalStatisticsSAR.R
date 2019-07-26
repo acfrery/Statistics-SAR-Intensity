@@ -455,6 +455,8 @@ ggplot(data=data.frame(bHV), aes(x=bHV)) +
 ## Monte Carlo experiment to assess ML, Med and Bootstrap Med estimators
 
 require(gtools)
+require(purrr)
+require(gtools)
 set.seed(1234567890)
 
 est.median.bootstrap <- function(z, R) {
@@ -493,7 +495,8 @@ BiasMSE <- matrix(nrow=14, ncol=7)
     v.mu3 <- array(rep(0, r))
     
     for(j in 1:r){
-      z <- rexp(n) # sample of size n from Exp(1)
+#      z <- rexp(n) # sample of size n from Exp(1)
+      z <- rexp(n) * 100^rbernoulli(n, .001) # sample of size n from the mixed model
       
       v.mu1[j] <- mean(z)
       v.mu2[j] <- median(z) / log(2)
@@ -605,12 +608,6 @@ fewdata <- ggplot(MSE.flat, aes(x=N, y=value, col=Estimator)) +
 
 print(fewdata)
 print(alldata, vp = viewport(width=.5, height=.5, just = c("left", "bottom")))
-
-### Analysis of MSE
-ggplot(MSE.flat, aes(x=N, y=value, col=Estimator)) +
-  geom_point() +
-  scale_x_continuous(limits = c(3,100)) + 
-  scale_y_continuous(trans="sqrt")
 
 ### Analysis of urban area
 

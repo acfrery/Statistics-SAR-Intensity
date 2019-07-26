@@ -720,6 +720,24 @@ The only change required is the line that produces the samples, cf.~line~\ref{co
 z <- rexp(n) * 100^rbernoulli(n, .001)
 \end{lstlisting}
 
+The results are presented in Figure~\ref{Fig:MonteCarloContaminated}.
+
+\begin{figure*}
+	\centering
+	{\includegraphics[width=.48\linewidth]{BiasContaminatedMonteCarlo}}
+	{\includegraphics[width=.48\linewidth]{MSEContaminatedMonteCarlo}}
+	\caption{Bias and mean square error of $\widehat{\mu}$ (ML), $\breve{\mu}$ (Med), and $\widetilde{\mu}$ (BootMed) with contaminated data.}\label{Fig:MonteCarloContaminated}
+\end{figure*}
+
+The most striking difference between the results presented in Figures~\ref{Fig:MonteCarlo} and~\ref{Fig:MonteCarloContaminated} is the behavior of $\widehat\mu$, the maximum likelihood estimator.
+Whereas with ``pure'' samples it was consistently the best estimator in terms of bias and mean square error, it becomes the worst one with a relatively small departure from such hypothesis.
+The maximum likelihood estimator is consistently biased, and it has the largest mean square error.
+In terms of bias, the bootstrap-improved median is the best option, and it pairs the mean square error of the median with samples of at least ten observations.
+
+This example concludes with a general recommendation:
+whenever possible, use two estimators, namely maximum likelihood and a robust one.
+If they provide significantly different results, consider making a deep analysis of the data, revise your hypotheses, and, ultimately, rely on the robust one for your subsequent interpretation.
+
 \section{Another example}
 
 We will conclude this chapter with the analysis of data from an urban area.
