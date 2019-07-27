@@ -678,6 +678,21 @@ estim.UrbanML <- maxNR(LogLikelihoodLknown,
                        start=c(estim.Urban$alpha, estim.Urban$gamma,1), 
                        activePar=c(TRUE,TRUE,FALSE))$estimate[1:2]
 
+### Bootstrap improved ML for the GI0 model
+a.g.bootstrap <- matrix(nrow = 300, ncol = 2)
+n <- 5661
+z <- permutations(300, n, vUrbanHV$UHV, 
+                  set=TRUE, repeats.allowed=TRUE) 
+for(r in 1:300) {
+  
+  estim.Urban.r <- GI0.Estimator.m1m2(z, 1)
+  a.g.bootstrap[r,] <- maxNR(LogLikelihoodLknown, 
+                         start=c(estim.Urban$alpha, estim.Urban$gamma,1), 
+                         activePar=c(TRUE,TRUE,FALSE))$estimate[1:2]
+}
+ML.bootstrap.improved <- 2 * estim.UrbanML - colMeans(a.g.bootstrap)
+### Bootstrap improved ML for the GI0 model
+
 ggplot(data=vUrbanHV, aes(x=UHV)) + 
   geom_histogram(aes(y=..density..), col="white",
                  binwidth = binwidth_complete) + 

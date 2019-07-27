@@ -832,7 +832,7 @@ LogLikelihoodLknown <- function(params) {
 
 z <- vUrbanHV$UHV
 estim.UrbanML <- maxNR(LogLikelihoodLknown, 
-                         start=c(estim.Urban$alpha, estim.Urban$gamma,1), 
+                         start=c(estim.Urban$alpha, estim.Urban$gamma, 1), 
                          activePar=c(TRUE,TRUE,FALSE))$estimate[1:2]
 \end{lstlisting}
 
@@ -850,6 +850,10 @@ The latter is shown with the moments and maximum likelihood estimates.
 The better quality of the fit with the $\mathcal G^0$ model is noticeable.
 There seems to be evidence that the maximum likelihood estimates provide a better fit than that with the moments estimates.
 Besides this, the $\mathcal G^0$ model provides valuable information about the target.
+
+We also computed a bootstrap-improved maximum likelihood estimate:
+$\widehat\alpha=-2.623166$ and $\widehat\gamma=99896.75$.
+The difference between it and the maximum likelihood one is so small that the curves overlap.
 
 \section*{Exercises}
 
