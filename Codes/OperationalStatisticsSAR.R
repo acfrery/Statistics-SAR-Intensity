@@ -634,7 +634,8 @@ ggsave(filename = "../Figures/HistogramFullUrban.pdf")
 
 ggplot(data=vUrbanHV, aes(x=UHV)) + 
   geom_histogram(aes(y=..density..), 
-                 binwidth = binwidth_complete) + 
+                 binwidth = binwidth_complete,
+                 col="white") + 
   xlab("Intensities") +
   xlim(0, 200000) +
   ylab("Proportions") +
@@ -643,6 +644,7 @@ ggplot(data=vUrbanHV, aes(x=UHV)) +
 ggsave(filename = "../Figures/HistogramRestrictedUrban.pdf")
 
 ## Estimation
+require(maxLik)
 
 GI0.Estimator.m1m2 <- function(z, L) {
   m1 <- mean(z)
@@ -657,11 +659,30 @@ GI0.Estimator.m1m2 <- function(z, L) {
 
 estim.Urban <- GI0.Estimator.m1m2(UrbanHV, 1)
 
+LogLikelihoodLknown <- function(params) {
+  
+  p_alpha <- -abs(params[1])
+  p_gamma <- abs(params[2])
+  p_L <- abs(params[3])
+  
+  n <- length(z)
+  
+  return(
+    n*(lgamma(p_L-p_alpha) - p_alpha*log(p_gamma) - lgamma(-p_alpha)) + 
+      (p_alpha-p_L)*sum(log(p_gamma + z*p_L)) 
+  )
+}
+
+z <- vUrbanHV$UHV
+estim.UrbanML <- maxNR(LogLikelihoodLknown, 
+                       start=c(estim.Urban$alpha, estim.Urban$gamma,1), 
+                       activePar=c(TRUE,TRUE,FALSE))$estimate[1:2]
+
 ggplot(data=vUrbanHV, aes(x=UHV)) + 
   geom_histogram(aes(y=..density..), col="white",
                  binwidth = binwidth_complete) + 
   xlim(0,200000) +
-  stat_function(fun=dexp, args=list(rate=1/meanUHV), 
+  stat_function(fun=dexp, args=list(rate=1/mean(vUrbanHV$UHV)), 
                 col="red", lwd=2, alpha=.7) +
   stat_function(fun=dGI0, 
                 args = list(p_alpha=estim.Urban$alpha, p_gamma=estim.Urban$gamma, p_Looks=1),
