@@ -691,24 +691,27 @@ for(r in 1:300) {
 (ML.bootstrap.improved <- 2 * estim.UrbanML - colMeans(a.g.bootstrap))
 ### Bootstrap improved ML for the GI0 model
 
+### Attempt to plot with melt
+intensity <- seq(.001, 200000, length.out = 5000)
+dExp <- dexp(intensity, rate=1/mean(vUrbanHV$UHV))
+dGI0Mom <- dGI0(intensity, estim.Urban$alpha, estim.Urban$gamma, 1)
+dGI0ML <- dGI0(intensity, estim.UrbanML[1], estim.UrbanML[2], 1)
+df.densities <- data.frame(intensity, dExp, dGI0Mom, dGI0ML)
+densities.flat <- melt(df.densities, 
+                       measure.vars = c("dExp", "dGI0Mom", "dGI0ML"),
+                       variable_name = c("Intensity", "dExp", "dGI0Mom", "dGI0ML"))
+names(densities.flat) <- c("Intensity", "Density", "value")
+
 ggplot(data=vUrbanHV, aes(x=UHV)) + 
   geom_histogram(aes(y=..density..), col="white",
                  binwidth = binwidth_complete) + 
   xlim(0,200000) +
-  stat_function(fun=dexp, args=list(rate=1/mean(vUrbanHV$UHV)), 
-                col="red", lwd=2, alpha=.7) +
-  stat_function(fun=dGI0, 
-                args = list(p_alpha=estim.Urban$alpha, p_gamma=estim.Urban$gamma, p_Looks=1),
-                col="blue", lwd=2, alpha=.7) +
-  stat_function(fun=dGI0, 
-                args = list(p_alpha=estim.UrbanML[1], p_gamma=estim.UrbanML[2], p_Looks=1),
-                col="green", lwd=2, alpha=.7) +
-#  stat_function(fun=dGI0, 
-#                args = list(p_alpha=ML.bootstrap.improved[1], p_gamma=ML.bootstrap.improved[2], p_Looks=1),
-#                col="yellow", lwd=2, alpha=.7) +
+  geom_line(data=densities.flat, aes(x=Intensity, y=value, col=Density),
+            lwd=2, alpha=.7) +
   xlab("Intensities from the Urban Area") +
   ylab("Histogram, and fitted Exponential and G0 Laws") +
   ggtitle("Restricted Histogram and fitted densities") +
   theme_few()
+  
 ggsave(filename = "../Figures/HistogramRestrictedUrbanWFitted.pdf")
 
