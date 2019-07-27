@@ -681,16 +681,14 @@ estim.UrbanML <- maxNR(LogLikelihoodLknown,
 ### Bootstrap improved ML for the GI0 model
 a.g.bootstrap <- matrix(nrow = 300, ncol = 2)
 n <- 5661
-z <- permutations(300, n, vUrbanHV$UHV, 
-                  set=TRUE, repeats.allowed=TRUE) 
 for(r in 1:300) {
-  
+  z <- sample(vUrbanHV$UHV, n, replace=TRUE) 
   estim.Urban.r <- GI0.Estimator.m1m2(z, 1)
   a.g.bootstrap[r,] <- maxNR(LogLikelihoodLknown, 
                          start=c(estim.Urban$alpha, estim.Urban$gamma,1), 
                          activePar=c(TRUE,TRUE,FALSE))$estimate[1:2]
 }
-ML.bootstrap.improved <- 2 * estim.UrbanML - colMeans(a.g.bootstrap)
+(ML.bootstrap.improved <- 2 * estim.UrbanML - colMeans(a.g.bootstrap))
 ### Bootstrap improved ML for the GI0 model
 
 ggplot(data=vUrbanHV, aes(x=UHV)) + 
@@ -705,6 +703,9 @@ ggplot(data=vUrbanHV, aes(x=UHV)) +
   stat_function(fun=dGI0, 
                 args = list(p_alpha=estim.UrbanML[1], p_gamma=estim.UrbanML[2], p_Looks=1),
                 col="green", lwd=2, alpha=.7) +
+#  stat_function(fun=dGI0, 
+#                args = list(p_alpha=ML.bootstrap.improved[1], p_gamma=ML.bootstrap.improved[2], p_Looks=1),
+#                col="yellow", lwd=2, alpha=.7) +
   xlab("Intensities from the Urban Area") +
   ylab("Histogram, and fitted Exponential and G0 Laws") +
   ggtitle("Restricted Histogram and fitted densities") +
