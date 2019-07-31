@@ -2,6 +2,8 @@ source("imagematrix.R")
 require(png)
 require(ggplot2)
 require(ggthemes)
+require(reshape)
+require(reshape2)
 
 strips <- readPNG("../Figures/strips.png")
 strips <- normalize(strips)
@@ -47,3 +49,103 @@ ggplot(as.data.frame(strips.Exp), aes(x=1:256)) +
   scale_y_continuous(breaks=c(5,10,60)) +
   theme_few()
 
+### Filters
+
+SkeletonMean <- function(y, s) {
+  
+  # Input: the image and the side of the squared support
+  
+  # Output: filtered image z
+  
+  # Input image dimensions
+  m <- dim(y)[1]
+  n <- dim(y)[2]
+  
+  # Make space for the output image
+  z <- y
+  
+  # Main loop
+  margin <- (s+1)/2
+  marginm1 <- margin-1
+  for(k in margin:(m-margin)) {
+    for(ele in margin:(n-margin)) {
+      
+      values <- y[(k-marginm1):(k+marginm1),(ele-marginm1):(ele+marginm1)]
+      
+      z[k,ele] = mean(values)
+    }
+  }
+  
+  return(z)
+}
+
+SkeletonMedian <- function(y, s) {
+  
+  # Input: the image and the side of the squared support
+  
+  # Output: filtered image z
+  
+  # Input image dimensions
+  m <- dim(y)[1]
+  n <- dim(y)[2]
+  
+  # Make space for the output image
+  z <- y
+  
+  # Main loop
+  margin <- (s+1)/2
+  marginm1 <- margin-1
+  for(k in margin:(m-margin)) {
+    for(ele in margin:(n-margin)) {
+      
+      values <- y[(k-marginm1):(k+marginm1),(ele-marginm1):(ele+marginm1)]
+      
+      z[k,ele] = median(values)
+    }
+  }
+  
+  return(z)
+}
+
+## Mean
+zMean3 <- SkeletonMean(strips.Exp, 3)
+zMean7 <- SkeletonMean(strips.Exp, 7)
+
+plot(imagematrix(equalize(zMean3)))
+imagematrixPNG(imagematrix(equalize(zMean3)), "../Figures/Exp1Mean3.png")
+
+plot(imagematrix(equalize(zMean7)))
+imagematrixPNG(imagematrix(equalize(zMean7)), "../Figures/Exp1Mean7.png")
+
+## Median
+zMedian3 <- SkeletonMedian(strips.Exp, 3)
+zMedian7 <- SkeletonMedian(strips.Exp, 7)
+
+plot(imagematrix(equalize(zMedian3)))
+imagematrixPNG(imagematrix(equalize(zMedian3)), "../Figures/Exp1Median3.png")
+
+plot(imagematrix(equalize(zMedian7)))
+imagematrixPNG(imagematrix(equalize(zMedian7)), "../Figures/Exp1Median7.png")
+
+### Transects after filters
+
+transects.7 <- data.frame(
+  Line = 4:252,
+  Strips = as.vector(((strips + 1) * 5)[128,4:252]),
+  Mean = as.vector(zMean7[128,4:252]),
+  Median = as.vector(zMedian7[128,4:252]*sqrt(2))
+)
+
+transects.7.flat <- melt(transects.7, 
+    measure.vars = c("Strips", "Mean", "Median"))
+names(transects.7.flat) <- c("Line", "Data", "Observations")
+
+###WHY???
+ggplot(transects.7.flat, aes(x=Line, y=Observations, col=Data)) + 
+    geom_line() +
+  geom_hline(yintercept = 5, linetype="longdash", col="cornsilk3") +
+  geom_hline(yintercept = 10, linetype="longdash", col="cornsilk3") +
+  xlab("Line") + ylab("Observation") + ggtitle("Horizontal transect") +
+  scale_x_continuous(breaks=c(4, 128, 252)) +
+  scale_y_continuous(breaks=c(5,10,60)) +
+  theme_few()
