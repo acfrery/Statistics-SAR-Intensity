@@ -85,18 +85,26 @@ The noise in the new images has been reduced, but at the expense of blocking eff
 
 \begin{figure*}[hbt]
 	\includegraphics[width=.48\linewidth]{Exp1Mean3}
-	\includegraphics[width=.48\linewidth]{Exp1Mean7}
-	\caption{Speckled strips filtered with the mean and windows of sizes $3\times3$ (left) and $7\times7$ (right)}\label{Image:Exp1Mean}
+	\includegraphics[width=.48\linewidth]{Exp1Mean15}
+	\caption{Speckled strips filtered with the mean and windows of sizes $3\times3$ (left) and $15\times15$ (right)}\label{Image:Exp1Mean}
 \end{figure*}
 
-Figure~\ref{Image:Exp1Median} shows the results of applying the median filter to the image shown in Fig.~\ref{Image:Strips1LookExp} with windows of sizes $3\times3$ and $7\times7$.
+Figure~\ref{Image:Exp1Median} shows the results of applying the median filter to the image shown in Fig.~\ref{Image:Strips1LookExp} with windows of sizes $3\times3$ and $15\times15$.
 The noise has also been reduced, also at the expense of blocking effect and loss of small details.
 
 \begin{figure*}[hbt]
 	\includegraphics[width=.48\linewidth]{Exp1Median3}
-	\includegraphics[width=.48\linewidth]{Exp1Median7}
-	\caption{Speckled strips filtered with the median and windows of sizes $3\times3$ (left) and $7\times7$ (right)}\label{Image:Exp1Median}
+	\includegraphics[width=.48\linewidth]{Exp1Median15}
+	\caption{Speckled strips filtered with the median and windows of sizes $3\times3$ (left) and $15\times15$ (right)}\label{Image:Exp1Median}
 \end{figure*}
 
-The reader may notice that the blurring effect is smaller with the median than with the mean, mostly when applying the $7\times7$ window.
+The reader may notice that the blurring effect is smaller with the median than with the mean, mostly when applying the $15\times15$ window.
 This desirable effect comes at a price: the noise is less reduced by the median than by the mean.
+
+Figure~\ref{Image:TransectsFiltered} shows a horizontal transect after applying the mean and median filters of sizes $3\times3$ (left) and $15\times15$ (right).
+
+\begin{figure*}[hbt]
+	\includegraphics[width=.48\linewidth]{FilteredTransectMeanMedian3}
+	\includegraphics[width=.48\linewidth]{FilteredTransectMeanMedian15}
+	\caption{Horizontal transect of the speckled strips filtered with the median and windows of sizes $3\times3$ (left) and $15\times15$ (right)}\label{Image:TransectsFiltered}
+\end{figure*}

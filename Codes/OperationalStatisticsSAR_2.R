@@ -140,7 +140,6 @@ transects.7.flat <- melt(transects.7,
     measure.vars = c("Strips", "Mean", "Median"))
 names(transects.7.flat) <- c("Line", "Data", "Observations")
 
-###WHY???
 ggplot(transects.7.flat, aes(x=Line, y=Observations, col=Data)) + 
     geom_line() +
   geom_hline(yintercept = 5, linetype="longdash", col="cornsilk3") +
