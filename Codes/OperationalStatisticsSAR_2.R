@@ -109,42 +109,67 @@ SkeletonMedian <- function(y, s) {
 
 ## Mean
 zMean3 <- SkeletonMean(strips.Exp, 3)
-zMean7 <- SkeletonMean(strips.Exp, 7)
+zMean15 <- SkeletonMean(strips.Exp, 15)
 
 plot(imagematrix(equalize(zMean3)))
 imagematrixPNG(imagematrix(equalize(zMean3)), "../Figures/Exp1Mean3.png")
 
-plot(imagematrix(equalize(zMean7)))
-imagematrixPNG(imagematrix(equalize(zMean7)), "../Figures/Exp1Mean7.png")
+plot(imagematrix(equalize(zMean15)))
+imagematrixPNG(imagematrix(equalize(zMean15)), "../Figures/Exp1Mean15.png")
 
 ## Median
 zMedian3 <- SkeletonMedian(strips.Exp, 3)
-zMedian7 <- SkeletonMedian(strips.Exp, 7)
+zMedian15 <- SkeletonMedian(strips.Exp, 15)
 
 plot(imagematrix(equalize(zMedian3)))
 imagematrixPNG(imagematrix(equalize(zMedian3)), "../Figures/Exp1Median3.png")
 
-plot(imagematrix(equalize(zMedian7)))
-imagematrixPNG(imagematrix(equalize(zMedian7)), "../Figures/Exp1Median7.png")
+plot(imagematrix(equalize(zMedian15)))
+imagematrixPNG(imagematrix(equalize(zMedian15)), "../Figures/Exp1Median15.png")
 
 ### Transects after filters
 
-transects.7 <- data.frame(
-  Line = 4:252,
-  Strips = as.vector(((strips + 1) * 5)[128,4:252]),
-  Mean = as.vector(zMean7[128,4:252]),
-  Median = as.vector(zMedian7[128,4:252]*sqrt(2))
+transects.3 <- data.frame(
+  Line = 7:249,
+  Strips = as.vector(((strips + 1) * 5)[128,7:249]),
+  Mean = as.vector(zMean3[128,7:249]),
+  Median = as.vector(zMedian3[128,7:249]*sqrt(2))
 )
 
-transects.7.flat <- melt(transects.7, 
-    measure.vars = c("Strips", "Mean", "Median"))
-names(transects.7.flat) <- c("Line", "Data", "Observations")
+transects.3.flat <- melt(transects.3, 
+                          measure.vars = c("Strips", "Mean", "Median"))
+names(transects.3.flat) <- c("Line", "Data", "Observations")
 
-ggplot(transects.7.flat, aes(x=Line, y=Observations, col=Data)) + 
-    geom_line() +
+ggplot(transects.3.flat, 
+       aes(x=Line, y=Observations, col=Data)) + 
+  geom_line() +
   geom_hline(yintercept = 5, linetype="longdash", col="cornsilk3") +
   geom_hline(yintercept = 10, linetype="longdash", col="cornsilk3") +
-  xlab("Line") + ylab("Observation") + ggtitle("Horizontal transect") +
+  xlab("Line") + ylab("Observation") + 
+  ggtitle("Horizontal transect, 3x3 windows") +
+  scale_x_continuous(breaks=c(4, 128, 252)) +
+  scale_y_continuous(breaks=c(5,10,60)) +
+  theme_few()
+
+
+transects.15 <- data.frame(
+  Line = 7:249,
+  Strips = as.vector(((strips + 1) * 5)[128,7:249]),
+  Mean = as.vector(zMean15[128,7:249]),
+  Median = as.vector(zMedian15[128,7:249]*sqrt(2))
+)
+
+transects.15.flat <- melt(transects.15, 
+    measure.vars = c("Strips", "Mean", "Median"))
+names(transects.15.flat) <- c("Line", "Data", "Observations")
+
+ggplot(transects.15.flat, 
+       aes(x=Line, y=Observations, col=Data)) + 
+  geom_line() +
+  geom_hline(yintercept = 5, linetype="longdash", col="cornsilk3") +
+  geom_hline(yintercept = 10, linetype="longdash", col="cornsilk3") +
+  xlab("Line") + ylab("Observation") + 
+  ggtitle("Horizontal transect, 15x15 windows") +
   scale_x_continuous(breaks=c(4, 128, 252)) +
   scale_y_continuous(breaks=c(5,10,60)) +
   theme_few()
