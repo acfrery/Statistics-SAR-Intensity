@@ -13,7 +13,7 @@ We will use two data sets: \texttt{dark.Rdata} and \texttt{bright.Rdata}, which 
 Each data set is comprised of three bands: HH, HV and VV.
 
 The first operation should always consist in checking the size and type of data:
-\begin{lstlisting}
+\begin{lstlisting}[frame=tb]
 > dim(dark)
 [1]  63 247   3
 > typeof(dark)
@@ -22,14 +22,14 @@ The first operation should always consist in checking the size and type of data:
 With this we know the data are arranged in three bands of \num{63} lines and \num{247} columns each, and that these are double precision floating records.
 
 It is convenient to organize the data as a \texttt{data.frame}
-\begin{lstlisting}
+\begin{lstlisting}[frame=tb]
 dark_data.frame <- data.frame(HH=as.vector(dark[,,1]),
  HV=as.vector(dark[,,2]), 
  VV=as.vector(dark[,,3]))
 \end{lstlisting}
 
 And now we can apply the \texttt{summary} function:
-\begin{lstlisting}[caption={Summary statistics},label=Code:SummaryStatistics]
+\begin{lstlisting}[caption={Summary statistics,frame=tb},label=Code:SummaryStatistics]
 > summary(dark_data.frame)
              HH                  HV                  VV
  Min.   :     1   Min.   :    0.004   Min.   :     0.17  
@@ -52,7 +52,7 @@ It may also contain notches that represent approximate interval confidence for t
 In order to draw boxplots using our library of choice \texttt{ggplot2}, we need to ``melt'' the data frame structure.
 The listing below produces Fig.~\ref{Fig:BoxplotDark}, in semilogarithmic scale.
 
-\begin{lstlisting}
+\begin{lstlisting}[frame=tb]
 dark_DF <- melt(dark_data.frame)
 ggplot(dark_DF, aes(x=variable, y=value)) + 
   geom_boxplot(notch = TRUE) + 

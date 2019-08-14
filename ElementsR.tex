@@ -40,7 +40,7 @@ Consider the real part of the HH band of Fig.~\ref{Im:Oberpfaffenhofen_RGB}, who
 These data are clearly not uniformly distributed.
 We will randomly sample (fixing the pseudorandom number generator and the seed for reproducibility) one hundred observations, and then proceed to build its empirical function.
 
-\begin{lstlisting}
+\begin{lstlisting}[frame=tb]
 set.seed(1234567890, kind="Mersenne-Twister")
 
 Z <- sample(as.vector(Re(HH_Complex)), size = 100, replace = FALSE)
@@ -134,7 +134,7 @@ The result is more visible than the linear transformation, and less dramatic tha
 
 The following code illustrates how the three bands with specified Beta histograms are obtained.
 Notice the use of \verb|qbeta|; this function computes the quantiles of a Beta distribution.
-\begin{lstlisting}
+\begin{lstlisting}[frame=tb]
 bright_rbeta <- qbeta(ecdf(bright[,,1])(bright[,,1]), shape1=8, shape2=8)
 bright_gbeta <- qbeta(ecdf(bright[,,2])(bright[,,2]), shape1=8, shape2=8)
 bright_bbeta <- qbeta(ecdf(bright[,,3])(bright[,,3]), shape1=8, shape2=8)
@@ -154,7 +154,7 @@ The very basic rules for using \verb|imagematrix| are:
 
 Let us see an example.
 \lstset{numbers=left, numberstyle=\tiny, numberblanklines=false, numbersep=5pt}
-\begin{lstlisting}[firstnumber=auto]
+\begin{lstlisting}[firstnumber=auto,frame=tb]
 source("imagematrix")
 require(plot3D)
 

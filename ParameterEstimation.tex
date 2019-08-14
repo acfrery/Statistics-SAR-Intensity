@@ -326,7 +326,7 @@ and the preferred model is the one that minimizes AIC.
 In the following, we will see the analysis of the \verb|rms_hist75| data set.
 %We assume we are familiar with these data after performing all the steps discussed in our previous meeting.
 
-\begin{lstlisting}[frame=lines]
+\begin{lstlisting}[frame=tb]
 require(mclust)
 
 Cluster_rms <- Mclust(rms_hist75)
@@ -557,7 +557,7 @@ With this, the maximum number of replications is $r_{\max}=666667$, correspondin
 
 The following code implements this Monte Carlo experiment.
 
-\begin{lstlisting}[frame=lines,numbers=left,numberblanklines=false,language=R,escapeinside={(*@}{@*)}]
+\begin{lstlisting}[frame=tb,numbers=left,numberblanklines=false,language=R,escapeinside={(*@}{@*)}]
 require(gtools)
 require(purrr)
 require(gtools)
@@ -716,7 +716,7 @@ Z_i \sim \left\{
 This is a mixture model, but instead of treating it as in Section~\ref{Sec:MixtureGaussian}, we will see how the estimators presented in Section~\ref{Sec:ExampleExponentialDistribution} behave.
 
 The only change required is the line that produces the samples, cf.~line~\ref{code:sample}, by the following:
-\begin{lstlisting}[frame=lines,numbers=none,language=R]
+\begin{lstlisting}[frame=tb,numbers=none,language=R]
 z <- rexp(n) * 100^rbernoulli(n, .001)
 \end{lstlisting}
 
@@ -752,7 +752,7 @@ We will analyze the smaller sample to the right, which consists of $111\times 51
 \end{figure}
 
 The summary of this sample is as follows, showing (as expected) a great deal of variability.
-\begin{lstlisting}[frame=lines,numbers=left,numberblanklines=false,language=R,escapeinside={(*@}{@*)}]
+\begin{lstlisting}[frame=tb,numbers=left,numberblanklines=false,language=R,escapeinside={(*@}{@*)}]
 > summary(vUrbanHV)
       UHV         
  Min.   :      0  
@@ -795,7 +795,7 @@ The following code implements this estimator.
 It requires the sample and the number of looks as input,
 and provides the estimators with their names as a list.
 
-\begin{lstlisting}[frame=lines]
+\begin{lstlisting}[frame=tb]
 GI0.Estimator.m1m2 <- function(z, L) {
   m1 <- mean(z)
   m2 <- mean(z^2)
@@ -815,7 +815,7 @@ We already have in~\eqref{Eq:ReducedLogLikGI0} the expression of the maximum lik
 The following code shows its implementation and usage with the function \verb|maxNR| from the \verb|maxLik| package\cite{maxLik}.
 Notice that use the moments estimates as starting points for the algorithm, and we assume $L=1$ known.
 
-\begin{lstlisting}[frame=lines]
+\begin{lstlisting}[frame=tb]
 LogLikelihoodLknown <- function(params) {
   
   p_alpha <- -abs(params[1])
