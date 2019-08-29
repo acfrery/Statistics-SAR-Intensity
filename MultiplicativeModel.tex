@@ -19,7 +19,7 @@ f_Z(z;L,\sigma^2) = \frac{L^L}{\sigma^{2L}\Gamma(L)} z^{L-1}
 \end{equation}
 As previously said, the Gamma distribution is scale-invariant, so we may pose this model as the product between the constant backscatter $X=\sigma^2$ and the multilook speckle $Y\sim\Gamma(1,L)$.
 
-But, are there situations were we cannot assume a constant backscatter?
+But, are there situations that we cannot assume a constant backscatter?
 Yes, there are.
 
 A constant backscatter results from infinitely many elementary backscatterers, i.e.\ from the assumption that $N\to\infty$ in~\eqref{Eq:ComplexBackscatter} (page~\pageref{Eq:ComplexBackscatter}).
@@ -97,7 +97,7 @@ The authors then proposed a different model for the backscatter $X$: the Recipro
 We say that $X\sim{\Gamma^{-1}}(\alpha,\gamma)$, with $\alpha<0$ and $\gamma>0$ follows a 
 Reciprocal Gamma distribution is characterized by the density
 \begin{equation}
-f_X(x;\alpha,\gamma) = \frac{1}{\gamma^\alpha} x^{\alpha-1} \exp\{-\gamma/x\},
+f_X(x;\alpha,\gamma) = \frac{\gamma^{-\alpha}}{\Gamma(-\alpha)} x^{\alpha-1} \exp\{-\gamma/x\},
 \label{Eq:IGdensity}
 \end{equation}
 for $x>0$ and zero otherwise.

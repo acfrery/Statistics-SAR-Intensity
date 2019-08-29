@@ -55,13 +55,13 @@ This leads to the
 \begin{itemize}
 \item[First assumption:] we are observing backscatterers whose size is smaller than the wavelength, so $N\to\infty$; think, for instance, of the case of imaging a grass field.
 \item[Second assumption:] there is no reason to expect that one or a few of these backscatterers dominate the return of the rest; there is no ``mirror'' in our resolution cell.
-\item[Third assumption:] the (non-negative) amplitudes $A_i$ are independent.
+\item[Third assumption:] the (non-negative) amplitudes $A_i(i\in\{1,2,\cdots,N\})$ are independent to each other.
 \item[Fourth assumption:] there is no reason to expect any particular organization or phase dominance; with this, we may assume that the phases $\phi_i$ are outcomes of independent identically distributed Uniform random variables with support $(-\pi,\pi]$.
 \item[Fifth assumption:] there is no association between phases and amplitudes.
 \end{itemize}
  
 
-With these hypotheses it is possible to prove that the real and imaginary parts of $S$ are independent Gaussian random variables with zero mean and the same variance $\sigma^2/2$; $\sigma^2$ is often referred to as backscatter.
+With these hypotheses it is possible to prove that the real and imaginary parts of $S$ are both independent Gaussian random variables with zero mean and the same variance $\sigma^2/2$; $\sigma^2$ is often referred to as backscatter.
 Two targets with different backscatter only differ in the variance of their complex return $S$.
 
 More often than not, instead of dealing directly with the complex scattering $S$ one prefers to handle its amplitude $A=|S|$ or intensity $I=|S|^2$.
@@ -124,7 +124,7 @@ Fig.~\ref{Fig:GammaDistribution} shows three cases of the Gamma distribution wit
 \subfloat[Densities]{\includegraphics[width=.32\linewidth]{GammaDensities}}
 \subfloat[Cumulative Distribution Functions]{\includegraphics[width=.32\linewidth]{GammaCDFs}}
 \subfloat[Densities in semilog scale\label{Fig:DensGammaSemilog}]{\includegraphics[width=.32\linewidth]{GammaDensitiesSemilog}}
-\caption[Densities, cumulative distribution functions, and densities in semilogarithmic scale of the Gamma distribution with unitary mean and shape parameters $1$, $3$ and $8$]{Densities, cumulative distribution functions, and densities in semilogarithmic scale of the Gamma distribution with unitary mean and shape parameters $1$, $3$ and $8$ (red, black, blue, resp.)}\label{Fig:GammaDistribution}
+\caption[Densities, cumulative distribution functions, and densities in semilogarithmic scale of the Gamma distribution with unitary mean and shape parameters $1$, $3$ and $8$]{Densities, cumulative distribution functions, and densities in semilogarithmic scale of the Gamma distribution with unitary mean and shape parameters $1$, $3$ and $8$ (black, red, blue, resp.)}\label{Fig:GammaDistribution}
 \end{figure}
 
 Fig.~\ref{Fig:GammaDistribution}\subref{Fig:DensGammaSemilog} is important, as this scale shows that the larger the number of looks, the less probable extreme events are.
@@ -134,7 +134,7 @@ As we mentioned before, the intensity format is not the only possibility.
 Assume $Z\sim\Gamma(\sigma^2,L)$ and that $g\colon\mathbbm R_+ \to \mathbbm R$ is a monotonic function with inverse $g^{-1}$.
 The density of the random variable $W = g(Z)$ is given by 
 \begin{equation}
-f_W(w;L,\sigma^2) = \frac{L^L}{\sigma^{2L}\Gamma(L)} (g^{-1}(w)\big)' \big(g^{-1}(w)\big)^{L-1} 
+f_W(w;L,\sigma^2) = \frac{L^L}{\sigma^{2L}\Gamma(L)} \big|(g^{-1}(w))'\big| \big(g^{-1}(w)\big)^{L-1} 
 	\exp\big\{ -L g^{-1}(w) / \sigma^2
 	\big\},
 	\label{eq:GammmaTransformed}

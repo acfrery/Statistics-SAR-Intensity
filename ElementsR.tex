@@ -20,7 +20,7 @@ The random variable $W=F_Z(Z)$ has uniform distribution.
 The cumulative distribution function of $W$ is $F_W(w)=\Pr(W\leq w)=\Pr(F_Z(Z)\leq w)$.
 Since $Z$ is continuous, there exists the inverse of its cumulative distribution function, $F^{-1}_Z$.
 We can then write 
-$F_W(w)=\Pr(F_Z(Z)\leq w) = \Pr(F^{-1}_Z(F_Z(Z)) \leq F^{-1}(w)) = \Pr(Z\leq F^{-1}_Z(w))$, 
+$F_W(w)=\Pr(F_Z(Z)\leq w) = \Pr(F^{-1}_Z(F_Z(Z)) \leq F_Z^{-1}(w)) = \Pr(Z\leq F^{-1}_Z(w))$, 
 which is exactly the cumulative distribution function of $Z$ at $F^{-1}_Z(w)$, so $F_W(w)=F_Z(F^{-1}_Z(w))=w$, which characterizes a uniform random variable on $(0,1)$; cf.\ Eq.~\eqref{eq:CDFUniform}, Section~\ref{Sec:UnifDistribution}.
 \end{proof}
 
