@@ -43,8 +43,6 @@
 % Configure math typesetting
 \usefonttheme{professionalfonts}  % required for mathspec
 \usepackage{mathspec}
-\setsansfont[Numbers={OldStyle}]{Fira Sans}
-\setmathsfont(Digits)[Numbers={Lining, Proportional}]{Times}
 
 %%
 % Configure colors
@@ -80,6 +78,14 @@ Universidade Federal de Alagoas
 \mode*  % ignore text outside frame in presentation mode
 
 This is your lecture abstract. It should contain a short description of the lecture contents, what its goals are, and preferably not exceed a few dozen words.\marginnote{Do not forget to use margin notes to add more context to your material.}
+
+\begin{frame}{Thanks!}
+	This course happens thanks to the kind invitation of Prof.\ Xiangrong Zhang, and to the hospitality of her team.
+	
+	\centering
+	\includegraphics[width=\linewidth]{/Users/acfrery/Documents/Transparencias/Figuras/mcz-gru-doh-hkg-xmn-hnd-pek-xiy.png}
+\end{frame}
+
 
 \section{Introduction}
 
@@ -206,7 +212,7 @@ This leads to:
 \item[A5:] there is no association between phases and amplitudes.
 \end{itemize}
 \end{small}
-With these hypotheses, and using the Central Limit Theorem, it is possible to prove that the real and imaginary parts of $S$ are independent Gaussian random variables with zero mean and the same variance $\sigma^2/2$; $\sigma^2$ is often referred to as backscatter.
+With these hypotheses, and using the Central Limit Theorem,	 it is possible to prove that the real and imaginary parts of $S$ are independent Gaussian random variables with zero mean and the same variance $\sigma^2/2$; $\sigma^2$ is often referred to as backscatter.
 Two targets with different backscatter only differ in the variance of their complex return $S$.
 
 \end{frame} 
@@ -248,14 +254,13 @@ Fig.~\ref{Fig:ExponentialDistribution} shows the densities, cumulative distribut
 \subfloat[Densities in semilog scale]{\includegraphics[width=.32\linewidth]{ExponentialDensitiesSemilog}}
 \caption{Densities, cumulative distribution functions, and densities in semilogarithmic scale of the exponential distribution with means $1/2$, $1$ and $2$ (red, black, blue, resp.)}\label{Fig:ExponentialDistribution}
 \end{figure}
-\end{frame}
-
-\begin{frame}[allowframebreaks]
 
 The semilogarithmic scale is particularly useful at revealing the tail behavior of distributions: this one is linear.
-%\end{frame}
+\end{frame}
 
-%\begin{frame}
+\subsection{Multilook processing}
+\begin{frame}
+
 Multilook processing is often applied in order to improve the signal-to-noise ratio, which can be measured as the reciprocal of the coefficient of variation.
 It consists of using the mean of $L$ independent observations:
 \begin{equation}
@@ -272,9 +277,7 @@ f_Z(z;L,\sigma^2) = \frac{L^L}{\sigma^{2L}\Gamma(L)} z^{L-1}
 where $\Gamma(\nu)$ is the Gamma function given by $\Gamma(\nu)=\int_{\mathbbm R_+} t^{\nu-1} e^{-t} dt$.
 We denote this situation $Z\sim\Gamma(\sigma^2,L)$
 This is also a scale-invariant distribution, in the sense that if $Z'\sim\Gamma(1,L)$, then $Z=\sigma^2 Z'\sim \Gamma(\sigma^2,L)$.
-%\end{frame}
 
-%\begin{frame}[allowframebreaks]
 Fig.~\ref{Fig:GammaDistribution} shows three cases of the Gamma distribution with unitary mean and shape parameters (Looks) equal to $1$ (the Exponential distribution), $3$ and $8$.
 
 
@@ -372,13 +375,13 @@ f_Z(z;L,\sigma^2) = \frac{L^L}{\sigma^{2L}\Gamma(L)} z^{L-1}
 	\big\}.
 \end{equation}
 As previously said, the Gamma distribution is scale-invariant, so we may pose this model as the product between the constant backscatter $X=\sigma^2$ and the multilook speckle $Y\sim\Gamma(1,L)$.
+
+But, are there situations were we cannot assume a constant backscatter?
+Yes, there are.
 \end{frame}
 
 
 \begin{frame}[allowframebreaks]
-But, are there situations were we cannot assume a constant backscatter?
-Yes, there are.
-
 A constant backscatter results from infinitely many elementary backscatterers, i.e.\ from the assumption that $N\to\infty$ in~\eqref{Eq:ComplexBackscatter} (page~\pageref{Eq:ComplexBackscatter}).
 Such assumption makes the particular choice of the sensed area irrelevant.
 But this may not be the case always.
@@ -567,7 +570,30 @@ Then, $Z=X/Y'$ has the desired $\mathcal G^0(\alpha,\gamma,L)$ distribution.
 \item An operational viewpoint requires a good statistical culture, and tools.
 \item Work driven by your questions, rather than by the answers you already have.
 \end{itemize}
+\end{frame}
 
+\section{Starting with R}
+
+\begin{frame}{Why R?}
+	\begin{itemize}
+		\item Multiplatform
+		\item Interplatform
+		\item Numerically dependable
+		\item Thousands of libraries
+		\item Active and supportive community
+		\item Promotes reproducibility
+		\item It is free
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Resources}
+	\begin{itemize}
+		\item \url{http://www.r-project.org}
+		\item \url{http://	www.rstudio.com}
+		\item \url{https://ggplot2.tidyverse.org/}
+		\item \url{http://www.ggplot2-exts.org/gallery/}
+	\end{itemize}
+	
 \end{frame}
 
 \end{document}
