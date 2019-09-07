@@ -8,7 +8,6 @@
 
 \usepackage[T1]{fontenc}
 \usepackage{newpxtext,eulerpx}
-\setsansfont[BoldFont={Fira Sans SemiBold}]{Fira Sans Book}
 
 \usepackage{url}
 
@@ -62,8 +61,8 @@
 }
 
 \title{Operational Statistics for SAR Imagery}
-\subtitle{A hands-on summer course}
-\date{July 2019}
+\subtitle{A hands-on autumn course}
+\date{September 2019}
 \author{Alejandro C.\ Frery}
 \institute{%
 Laborat\'orio de Computa\c c\~ao Cient\'ifica e An\'alise Num\'erica\\
@@ -132,7 +131,41 @@ Let's make this more a conversation than a course.
 I need you to participate!
 
 acfrery@laccan.ufal.br\\
-WeChat ID: alex0x0x0x (naught, not ``o'')
+WeChat ID: \texttt{alex0x0x0x} (naught, not ``o'')
+\end{frame}
+
+\section{SAR Sensors}
+
+\begin{frame}{What is SAR?}
+	\centering
+	\includegraphics[width=.99\linewidth]{/Users/acfrery/Documents/Transparencias/Figuras/bat}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Basic Characteristics}
+	%
+	\begin{itemize}%[<+-| alert@+>]
+		
+		\item Synthetic Aperture Radar (SAR) and Polarimetric SAR (PolSAR) sensors have been successfully used  in remote sensing.
+		\begin{itemize}
+			\item data can be captured independently of weather conditions, because the sensor is active, 
+			\item they measure mostly geometry and dielectric constant, as they work in the microwaves region of the spectrum,
+			\item depending on the sensor and target characteristics, the signal penetrates through soil, canopies etc.
+		\end{itemize}
+		
+		\item SAR and PolSAR systems can provide images with high spacial resolution but contaminated by an interference pattern, called \alert{speckle}. 
+		%Figure~\ref{fig:Flevoland} exhibits AIRSAR image of Flevoland (Netherlands).
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{SAR image over a Landsat image}
+	\centering
+	\includegraphics[angle=-90,width=\linewidth]{/Users/acfrery/Documents/Transparencias/Figuras/SARSaara.jpg}
+\end{frame}
+
+\begin{frame}{SAR Image}
+	\centering
+	\includegraphics[width=\linewidth]{/Users/acfrery/Documents/Pessoas/AbraaoNascimento/ImgFig/speckle000}
 \end{frame}
 
 
@@ -173,11 +206,12 @@ This leads to:
 \item[A5:] there is no association between phases and amplitudes.
 \end{itemize}
 \end{small}
+With these hypotheses, and using the Central Limit Theorem, it is possible to prove that the real and imaginary parts of $S$ are independent Gaussian random variables with zero mean and the same variance $\sigma^2/2$; $\sigma^2$ is often referred to as backscatter.
+Two targets with different backscatter only differ in the variance of their complex return $S$.
+
 \end{frame} 
 
 \begin{frame}[allowframebreaks]
-With these hypotheses it is possible to prove that the real and imaginary parts of $S$ are independent Gaussian random variables with zero mean and the same variance $\sigma^2/2$; $\sigma^2$ is often referred to as backscatter.
-Two targets with different backscatter only differ in the variance of their complex return $S$.
 
 More often than not, instead of dealing directly with the complex scattering $S$ one prefers to handle its amplitude $A=|S|$ or intensity $I=|S|^2$.
 Without loss of generality, we will prefer the latter.
@@ -378,38 +412,50 @@ E(Z^k) = (\lambda L)^{-k} \frac{\Gamma(L+k)\Gamma(\alpha+k)}{\Gamma(L)\Gamma(\al
 \label{Eq:MomentKI}
 \end{equation}
 Eq.~\eqref{Eq:MomentKI} is useful, among other applications, for finding $\lambda^*=\alpha$, the scale parameter that yields a unitary mean distribution for each $\alpha$ and any $L$.
+\end{frame}
 
+\begin{frame}
 Fig.~\ref{Fig:KIDistribution} shows the densities in linear and semilogarithmic scales of the Exponential and $\mathcal K$ distributions.
 They all have unitary mean, and the latter is shown with different degrees of roughness ($\alpha\in\{1,3,8\}$).
 It is noticeable that the larger the value of $\alpha$ is, the closer the $\mathcal K$ and $\text{E}$ densities become.
 In fact, there is convergence in distribution of the latter to the former.
 \end{frame}
+
+\begin{frame}
 \begin{figure}[hbt]
 \centering
 \subfloat[Densities]{\includegraphics[width=.48\linewidth]{KIDensities}}
 \subfloat[Densities in semilog scale\label{Fig:DensKISemilog}]{\includegraphics[width=.48\linewidth]{KIDensitiesSemilog}}
 \caption[Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal K$ distributions]{Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal K$ distributions with unitary mean ($\alpha\in\{1,3,8\}$ in red, blue, and black, resp.)}\label{Fig:KIDistribution}
 \end{figure}
+\end{frame}
 
+\begin{frame}
 The difference between these distributions is noteworthy, c.f.\ Fig.~\ref{Fig:KIDistribution}\subref{Fig:DensKISemilog}.
 The green straight line is the density of the Exponential distribution, while the red one is that of the $\mathcal K(1,1,1)$ law.
 The latter assigns larger probabilities to both small and large values, when compared with the former.
 This leads, as will be seen later, to very contrasted data.
 
 Fig.~\ref{Fig:KIDistributionLooks} shows the effect of varying the number of looks, for the same $\alpha=2$ and $\lambda=2$.
+\end{frame}
 
+\begin{frame}
 \begin{figure}[hbt]
 \centering
 \subfloat[Densities]{\includegraphics[width=.48\linewidth]{KIDensitiesLooks}}
 \subfloat[Densities in semilog scale\label{KIDensitiesSemilog}]{\includegraphics[width=.48\linewidth]{KIDensitiesSemilogLooks}}
 \caption[Densities in linear and semilogarithmic scale $\mathcal K(2,2,L)$ distributions with unitary mean and $L\in\{1,3,8\}$]{Densities in linear and semilogarithmic scale $\mathcal K(2,2,L)$ distributions with unitary mean and $L\in\{1,3,8\}$ in red, blue, and black, resp.)}\label{Fig:KIDistributionLooks}
 \end{figure}
+\end{frame}
 
+\begin{frame}
 Notice in Fig~\ref{Fig:KIDistributionLooks}\subref{KIDensitiesSemilog} the dramatic effect multilook processing has mostly on the distribution of very small values.
 This, along with the reduced probability very large values have with multilook processing, yields less contrasted images.
 
 Although the basic construction, and physical explanation, of the $\mathcal K$ distribution stems from letting fluctuate the number of elementary backscatters, we are interested in an equivalent derivation.
+\end{frame}
 
+\begin{frame}
 As previously said, the basic model for observations without roughness is~\eqref{eq:SARGammaDensity}.
 The mean $X=\sigma^2$ can be seen as multiplying $Y$, a $\Gamma(1,L)$ random variable, which describes the speckle.
 As we are interested in letting the mean fluctuate, $X$ can be described by any distribution with positive support.
@@ -417,9 +463,10 @@ If we choose a Gamma random variable with mean $\alpha/\lambda>0$ and shape para
 This \textit{multiplicative} construction is not only useful for sampling from this distribution, but also for obtaining other models for the return.
 \end{frame}
 
+
 \section{The $\mathcal G^0$ distribution}
 
-\begin{frame}[allowframebreaks]
+\begin{frame}
 The $\mathcal{K}$ distribution fails at describing data from extremely textured areas as, for instance, urban targets.
 The authors then proposed a different model for the backscatter $X$: the Reciprocal Gamma distribution.
 
@@ -430,7 +477,10 @@ f_X(x;\alpha,\gamma) = \frac{1}{\gamma^\alpha} x^{\alpha-1} \exp\{-\gamma/x\},
 \label{Eq:IGdensity}
 \end{equation}
 for $x>0$ and zero otherwise.
+\end{frame}
 
+
+\begin{frame}
 Now introducing the Reciprocal Gamma model for the backscatter in the multiplicative model, i.e. by multiplying the independent random variables $X\sim{\Gamma^{-1}}(\alpha,\gamma)$ and $Y\sim\Gamma(1,L)$, one obtains the $\mathcal{G}^0$ distribution for the return $Z=XY$, which is characterized by the density
 \begin{equation}
 f_Z(z; \alpha,\gamma,L) = \frac{L^L \Gamma(L-\alpha)}{\gamma^\alpha \Gamma(L)\Gamma(-\alpha)} \frac{z^{L-1}}{(\gamma+L z)^{L-\alpha}},
@@ -447,34 +497,52 @@ E(Z^k) = (\gamma / L)^{k} \frac{\Gamma(L+k)\Gamma(-\alpha-k)}{\Gamma(L)\Gamma(-\
 \end{equation}
 provided $-\alpha>k$, and infinite otherwise.
 Eq.~\eqref{Eq:MomentGI0} is useful, among other applications, for finding $\gamma^*=-\alpha-1$, the scale parameter that yields a unitary mean distribution for each $\alpha$ and any $L$.
+\end{frame}
 
+
+\begin{frame}
 Fig.~\ref{Fig:GI0Distribution} shows the $\text{E}(1)$ and $\mathcal G^0(\alpha,\gamma^*, 1)$ densities.
 The differences in tail behavior are clearly exhibited in the semilogarithmic scale; cf.\ Fig.~\ref{Fig:GI0Distribution}\subref{Fig:DensGI0Semilog}.
 Whereas the exponential distribution decreases linearly, the $\mathcal G^0$ law assigns more probability to larger events increasing, thus, the variability of the return.
+\end{frame}
 
+
+\begin{frame}
 \begin{figure}[hbt]
 \centering
 \subfloat[Densities]{\includegraphics[width=.48\linewidth]{GI0Densities}}
 \subfloat[Densities in semilog scale\label{Fig:DensGI0Semilog}]{\includegraphics[width=.48\linewidth]{GI0DensitiesSemilog}}
 \caption[Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal G^0$ distributions with unitary mean]{Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal G^0$ distributions with unitary mean and $\alpha\in\{-1.5,-3,-8\}$ in red, blue, and black, resp.}\label{Fig:GI0Distribution}
 \end{figure}
+\end{frame}
 
+
+\begin{frame}
 Fig.~\ref{Fig:GI0DistributionLooks} shows the effect of varying the number of looks, for the same $\alpha=5$ and $\gamma=4$.
 
 Notice, again, in Fig~\ref{Fig:GI0DistributionLooks}\subref{GI0DensitiesSemilog} the effect multilook processing has mostly on the distribution of very small values.
 This, along with the reduced probability very large values have with multilook processing, yields less contrasted images.
+\end{frame}
 
+
+\begin{frame}
 \begin{figure}[hbt]
 \centering
 \subfloat[Densities]{\includegraphics[width=.48\linewidth]{GI0DensitiesLooks}}
 \subfloat[Densities in semilog scale\label{GI0DensitiesSemilog}]{\includegraphics[width=.48\linewidth]{GI0DensitiesSemilogLooks}}
 \caption[Densities in linear and semilogarithmic scale $\mathcal G^0(-5,4,L)$ distributions with unitary mean and $L\in\{1,3,8\}$]{Densities in linear and semilogarithmic scale $\mathcal G^0(-5,4,L)$ distributions with unitary mean and $L\in\{1,3,8\}$ in red, blue, and black, resp.)}\label{Fig:GI0DistributionLooks}
 \end{figure}
+\end{frame}
 
+
+\begin{frame}
 The $\mathcal{G}^0$ distribution has the same number of parameters as the $\mathcal{K}$ law, but it has been shown to be more apt at modeling return with extreme variability.
-Moreover, it is also able to describe the same kind of return from textured areas for which the latter was proposed; \citet{MejailJacoboFreryBustos:IJRS} showed that, with proper choices of parameters, the $\mathcal G^0$ law can approximate with any error any $\mathcal K$ distribution.
-For these reasons, the $\mathcal G^0$ distribution is called \textit{Universal Model} for SAR data.
+Moreover, it is also able to describe the same kind of return from textured areas for which the latter was proposed.
+It has been shown that, with proper choices of parameters, the $\mathcal G^0$ law can approximate with any error any $\mathcal K$ distribution.
+For these reasons, the $\mathcal G^0$ distribution is called \textit{``Universal Model''} for SAR data.
+\end{frame}
 
+\begin{frame}
 The $\mathcal G^0$ distribution relates to the well-known Fisher-Snedekor law in the following manner:
 \begin{equation}
 F_{G^0(\alpha,\gamma,L)}(t) = \Upsilon_{2L,- 2\alpha}(- \alpha t/\gamma),
@@ -482,7 +550,9 @@ F_{G^0(\alpha,\gamma,L)}(t) = \Upsilon_{2L,- 2\alpha}(- \alpha t/\gamma),
 where $\Upsilon_{u,v}$ is the cumulative distribution function of a Fisher-Snedekor distribution with $u$ and $v$ degrees of freedom, and $F_{G^0(\alpha,\gamma,L)}$ is the cumulative distribution function of a $F_{G^0(\alpha,\gamma,L)}$ random variable.
 Notice that $\Upsilon$ is readily available in most software platforms for statistical computing.
 Since such platforms usually also provide implementations of the inverse of cumulative distribution functions, the Inversion Theorem can be used to sample from the $\mathcal G^0$ law.
+\end{frame}
 
+\begin{frame}
 Arguably, the most popular way of sampling from the $\mathcal G^0$ distribution is through its multiplicative nature.
 Obtaining deviates from $X\sim\Gamma(1,L)$ is immediate.
 In order to sample from $Y\sim\Gamma^{-1}(\alpha,\gamma)$, one may use the fact that if $Y'\sim\Gamma(-\alpha,\gamma)$, then $Y=1/Y'$ has $\Gamma^{-1}(\alpha,\gamma)$ distribution.
