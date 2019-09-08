@@ -277,7 +277,9 @@ f_Z(z;L,\sigma^2) = \frac{L^L}{\sigma^{2L}\Gamma(L)} z^{L-1}
 where $\Gamma(\nu)$ is the Gamma function given by $\Gamma(\nu)=\int_{\mathbbm R_+} t^{\nu-1} e^{-t} dt$.
 We denote this situation $Z\sim\Gamma(\sigma^2,L)$
 This is also a scale-invariant distribution, in the sense that if $Z'\sim\Gamma(1,L)$, then $Z=\sigma^2 Z'\sim \Gamma(\sigma^2,L)$.
+\end{frame}
 
+\begin{frame}
 Fig.~\ref{Fig:GammaDistribution} shows three cases of the Gamma distribution with unitary mean and shape parameters (Looks) equal to $1$ (the Exponential distribution), $3$ and $8$.
 
 
@@ -288,12 +290,13 @@ Fig.~\ref{Fig:GammaDistribution} shows three cases of the Gamma distribution wit
 \subfloat[Densities in semilog scale\label{Fig:DensGammaSemilog}]{\includegraphics[width=.32\linewidth]{GammaDensitiesSemilog}}
 \caption[Densities, cumulative distribution functions, and densities in semilogarithmic scale of the Gamma distribution with unitary mean and shape parameters $1$, $3$ and $8$]{Densities, cumulative distribution functions, and densities in semilogarithmic scale of the Gamma distribution with unitary mean and shape parameters $1$, $3$ and $8$ (red, black, blue, resp.)}\label{Fig:GammaDistribution}
 \end{figure}
+\end{frame}
 
-
+\begin{frame} 
 Fig.~\ref{Fig:GammaDistribution}\subref{Fig:DensGammaSemilog} is important, as this scale shows that the larger the number of looks, the less probable extreme events are.
 The Exponential density, being linear
 
-As we mentioned before, the intensity format is not the only possibility.
+The intensity format is not the only possibility.
 Assume $Z\sim\Gamma(\sigma^2,L)$ and that $g\colon\mathbbm R_+ \to \mathbbm R$ is a monotonic function with inverse $g^{-1}$.
 The density of the random variable $W = g(Z)$ is given by 
 \begin{equation}
@@ -307,7 +310,9 @@ Some authors prefer the amplitude format $W=\sqrt{Z}$, while others opt for a lo
 The model for the former is known as \textit{Square Root of Gamma} or \textit{Nakagami} distribution,
 while the one for the latter is know as the \textit{Fisher-Tippet} distribution when $L=1$.
 The reader is invited to obtain these densities using~\eqref{eq:GammmaTransformed}.
+\end{frame}
 
+\begin{frame} 
 In the following we illustrate the adequacy of this model with data from an actual sensor.
 
 Fig.~\ref{Im:Oberpfaffenhofen_RGB} shows a color composition of the intensity bands obtained on the surroundings of Oberpfaffenhofen by the ESAR sensor.
@@ -318,11 +323,15 @@ The raw intensity HH, HV and VV bands were first equalized independently, and th
 \includegraphics[width=\linewidth]{ESAR_RGB_Annot}
 \caption{Color composition of the equalized intensity bands of an ESAR image over Oberpfaffenhofen}\label{Im:Oberpfaffenhofen_RGB}
 \end{figure}
+\end{frame}
 
+\begin{frame}
 The image shown in Fig.~\ref{Im:Oberpfaffenhofen_RGB} has $1599\times4000$ pixels.
 We selected $15561$ positions within the dark area in the upper part of the image, and extracted the observations both in the complex and intensity channels (without equalization).
 This area, which is shown as a yellow rectangle, was chosen because there is no visual clue of texture in it.
+\end{frame}
 
+\begin{frame} 
 Fig.~\ref{Fig:FittedDarkRegion_Complex} shows the histograms and fitted Gaussian densities of the six data sets corresponding to the real and imaginary parts of each polarization.
 Notice that there is no evidence of either skewness or lack/excess of dispersion with respect to the hypothesized model.
 
@@ -336,7 +345,9 @@ Notice that there is no evidence of either skewness or lack/excess of dispersion
 \includegraphics[width=.32\linewidth]{dark_VV_Im}
 \caption{Histograms and fitted Gaussian densities over the dark region of Fig.~\ref{Im:Oberpfaffenhofen_RGB}}\label{Fig:FittedDarkRegion_Complex}
 \end{figure}
+\end{frame}
 
+\begin{frame} 
 Fig.~\ref{Fig:FittedDarkRegion} shows the histograms and fitted Exponential densities of these three data sets.
 
 \begin{figure}
@@ -422,9 +433,9 @@ Fig.~\ref{Fig:KIDistribution} shows the densities in linear and semilogarithmic 
 They all have unitary mean, and the latter is shown with different degrees of roughness ($\alpha\in\{1,3,8\}$).
 It is noticeable that the larger the value of $\alpha$ is, the closer the $\mathcal K$ and $\text{E}$ densities become.
 In fact, there is convergence in distribution of the latter to the former.
-\end{frame}
-
-\begin{frame}
+%\end{frame}
+%
+%\begin{frame}
 \begin{figure}[hbt]
 \centering
 \subfloat[Densities]{\includegraphics[width=.48\linewidth]{KIDensities}}
@@ -438,11 +449,10 @@ The difference between these distributions is noteworthy, c.f.\ Fig.~\ref{Fig:KI
 The green straight line is the density of the Exponential distribution, while the red one is that of the $\mathcal K(1,1,1)$ law.
 The latter assigns larger probabilities to both small and large values, when compared with the former.
 This leads, as will be seen later, to very contrasted data.
-
-Fig.~\ref{Fig:KIDistributionLooks} shows the effect of varying the number of looks, for the same $\alpha=2$ and $\lambda=2$.
 \end{frame}
 
 \begin{frame}
+Fig.~\ref{Fig:KIDistributionLooks} shows the effect of varying the number of looks, for the same $\alpha=2$ and $\lambda=2$.
 \begin{figure}[hbt]
 \centering
 \subfloat[Densities]{\includegraphics[width=.48\linewidth]{KIDensitiesLooks}}
@@ -505,30 +515,24 @@ Eq.~\eqref{Eq:MomentGI0} is useful, among other applications, for finding $\gamm
 
 \begin{frame}
 Fig.~\ref{Fig:GI0Distribution} shows the $\text{E}(1)$ and $\mathcal G^0(\alpha,\gamma^*, 1)$ densities.
-The differences in tail behavior are clearly exhibited in the semilogarithmic scale; cf.\ Fig.~\ref{Fig:GI0Distribution}\subref{Fig:DensGI0Semilog}.
-Whereas the exponential distribution decreases linearly, the $\mathcal G^0$ law assigns more probability to larger events increasing, thus, the variability of the return.
-\end{frame}
+The exponential density decreases linearly, while the $\mathcal G^0$ law assigns more probability to larger events increasing, thus, the return variability.
 
-
-\begin{frame}
 \begin{figure}[hbt]
 \centering
 \subfloat[Densities]{\includegraphics[width=.48\linewidth]{GI0Densities}}
 \subfloat[Densities in semilog scale\label{Fig:DensGI0Semilog}]{\includegraphics[width=.48\linewidth]{GI0DensitiesSemilog}}
-\caption[Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal G^0$ distributions with unitary mean]{Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal G^0$ distributions with unitary mean and $\alpha\in\{-1.5,-3,-8\}$ in red, blue, and black, resp.}\label{Fig:GI0Distribution}
+\caption[Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal G^0$ distributions]{Densities in linear and semilogarithmic scale of the $\text{E}(1)$ (green) and $\mathcal G^0$ distributions with unitary mean and $\alpha\in\{-1.5,-3,-8\}$ in red, blue, and black, resp.}\label{Fig:GI0Distribution}
 \end{figure}
 \end{frame}
 
 
 \begin{frame}
-Fig.~\ref{Fig:GI0DistributionLooks} shows the effect of varying the number of looks, for the same $\alpha=5$ and $\gamma=4$.
-
-Notice, again, in Fig~\ref{Fig:GI0DistributionLooks}\subref{GI0DensitiesSemilog} the effect multilook processing has mostly on the distribution of very small values.
-This, along with the reduced probability very large values have with multilook processing, yields less contrasted images.
-\end{frame}
-
-
-\begin{frame}
+Fig.~\ref{Fig:GI0DistributionLooks} shows the effect of varying the number of looks.
+Notice in Fig~\ref{Fig:GI0DistributionLooks}\subref{GI0DensitiesSemilog} the effect multilook processing has on the distribution of very small and very large values, yielding less contrasted images.
+%\end{frame}
+%
+%
+%\begin{frame}
 \begin{figure}[hbt]
 \centering
 \subfloat[Densities]{\includegraphics[width=.48\linewidth]{GI0DensitiesLooks}}
@@ -582,16 +586,17 @@ Then, $Z=X/Y'$ has the desired $\mathcal G^0(\alpha,\gamma,L)$ distribution.
 		\item Thousands of libraries
 		\item Active and supportive community
 		\item Promotes reproducibility
-		\item It is free
+		\item It is FLOSS (\textit{Free/Libre Open Source Software})
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Resources}
 	\begin{itemize}
 		\item \url{http://www.r-project.org}
-		\item \url{http://	www.rstudio.com}
+		\item \url{http://www.rstudio.com}
 		\item \url{https://ggplot2.tidyverse.org/}
 		\item \url{http://www.ggplot2-exts.org/gallery/}
+		\item \url{https://www.r-bloggers.com/}
 	\end{itemize}
 	
 \end{frame}
