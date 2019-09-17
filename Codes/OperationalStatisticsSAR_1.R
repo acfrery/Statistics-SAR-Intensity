@@ -3,11 +3,11 @@ require(scales)
 require(ggthemes)
 require(reshape2)
 require(maxLik)
-source("/Users/acfrery/Dropbox (Personal)/upper_outliers/codigos/GammaSAR.R")
-source("/Users/acfrery/Documents/Programas/R/GI0Project/GI0distribution.R")
-source("/Users/acfrery/Documents/Programas/R/GI0Project/KI0distribution.R")
-source("/Users/acfrery/Documents/Programas/R/myread.ENVI.R")
-source("/Users/acfrery/Documents/Programas/R/imagematrix.R")
+source("../Codes/GammaSAR.R")
+source("../Codes/GI0distribution.R")
+source("../Codes/KI0distribution.R")
+source("../Codes/myread.ENVI.R")
+source("../Codes/imagematrix.R")
 
 
 ### Complex Scattering
@@ -42,7 +42,7 @@ ggplot(data=data.frame(x=c(0, 7)), aes(x=x)) +
   stat_function(fun=dexp, geom = "line", size=2, col="black", args = (mean=1)) +
   stat_function(fun=dexp, geom = "line", size=2, col="red", args = (mean=.5)) +
   stat_function(fun=dexp, geom = "line", size=2, col="blue", args = (mean=2)) +
-  theme_classic() +
+  theme_economist() +
   theme(text = element_text(size=20)) +
   xlab("x") + ylab("Exponential Densities")
 ggsave(file="../Figures/ExponentialDensities.pdf")  
@@ -60,7 +60,7 @@ ggplot(data=data.frame(x=seq(0, 7, length.out = 500)), aes(x=x)) +
   stat_function(fun=dexp, geom = "line", size=2, col="black", args = (mean=1)) +
   stat_function(fun=dexp, geom = "line", size=2, col="red", args = (mean=.5)) +
   stat_function(fun=dexp, geom = "line", size=2, col="blue", args = (mean=2)) +
-  theme_classic() +
+  theme_economist() +
   theme(text = element_text(size=20)) +
   xlab("x") + ylab("Exponential Densities") +
   coord_trans(y="log10")
