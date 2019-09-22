@@ -250,6 +250,7 @@ This approach is not very effective, because results in serious numerical proble
 
 \subsection{The (SAR) Gamma distribution}
 
+Remember that this distribution is characterized by the density presented in~\eqref{eq:SARGammaDensity}.
 Using $\E(Z)=\mu$ we propose $\widehat{\mu}=n^{-1}\sum_{i=1}^n Z_i$,
 and with 
 $\operatorname{Var}(Z)=\mu^2/L$, we can estimate $\widehat L=\widehat{\mu}^2 / (n^{-1}\sum_{i=1}^n (Z_i - \widehat{\mu})^2)$.
@@ -261,7 +262,7 @@ The principle of likelihood was formalized by R.\ A.\ Fisher.
 In most practical situations it produces unique estimators, and has good and well-known properties.
 It should be used whenever possible.
 
-Consider again the sample independent of random variables $\bm = (X_1,X_2,\dots,X_n)$ each with the same distribution characterized (without lack of generality) by the density $f(X_i;\bm \theta)$.
+Consider again the sample independent of random variables $\bm X = (X_1,X_2,\dots,X_n)$ each with the same distribution characterized (without lack of generality) by the density $f(X_i;\bm \theta)$.
 The likelihood function is
 \begin{equation}
 \mathcal L(\bm \theta;\bm X) = \prod_{i=1}^{n} f(\bm \theta;X_i).
