@@ -41,10 +41,9 @@ qgammaSAR <- function(p, Looks, mean) {
 
 rgammaSAR <- function(n, Looks, mean) {
   
-  rgamma(x, shape=Looks, rate=Looks/mean)
+  rgamma(n, shape=Looks, rate=Looks/mean)
   
 }
-
 
 
 #### Função cuja raíz é o estimador de MV de L baseado na amostra z ##### 
