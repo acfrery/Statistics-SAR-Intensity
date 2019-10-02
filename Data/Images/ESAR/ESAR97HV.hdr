@@ -1,0 +1,14 @@
+ENVI
+description = {
+  HH}
+samples = 4000
+lines   = 1599
+bands   = 1
+header offset = 4
+file type = ENVI Standard
+data type = 6
+interleave = bsq
+sensor type = Unknown
+byte order = 1
+wavelength units = Unknown
+complex function = Power
