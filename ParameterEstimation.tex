@@ -121,27 +121,27 @@ We don't know explicit expressions for its cumulative distribution function, but
 
 \subsection{Mixture of Gaussian distributions}
 
-A mixture of $p$ Gaussian models is characterized by the density
+A mixture of $n$ Gaussian models is characterized by the density
 \begin{equation}
 f_{\text{MG}}(x;\bm p,\bm \mu, \bm \sigma^2) = 
-\sum_{j=1}^{p}
+\sum_{j=1}^{n}
 \frac{p_j}{\sqrt{2\pi}\sigma_j} \exp\Big\{
 -\frac{1}{2\sigma_j^2} \big(x - \mu_j)^2 \Big\},
 \label{eq:DensMixtureGaussian}
 \end{equation}
-where $\bm p=(p_1,p_2, \dots, p_p)$ is the vector of probabilities,
-$\bm \mu = (\mu_1, \mu_2,\dots, \mu_p)$ is the vector of means,
+where $\bm p=(p_1,p_2, \dots, p_n)$ is the vector of probabilities,
+$\bm \mu = (\mu_1, \mu_2,\dots, \mu_n)$ is the vector of means,
 and
-$\bm \sigma^2 = (\sigma^2_1, \sigma^2_2,\dots, \sigma^2_ p)$ is the vector of variances.
+$\bm \sigma^2 = (\sigma^2_1, \sigma^2_2,\dots, \sigma^2_n)$ is the vector of variances.
 In this way, the parameter space is $\bm \Theta =
-\mathcal S^p\times \mathbbm R^p \times \mathbbm R_+^p$, where
-$\mathcal S^p$ is the surface of the $p$-dimensional simplex.
-This space is a subset of $\mathbbm R^{(p-1)p^2}$. 
+\mathcal S^n\times \mathbbm R^n \times \mathbbm R_+^n$, where
+$\mathcal S^n$ is the surface of the $n$-dimensional simplex.
+This space is a subset of $\mathbbm R^{(n-1)n^2}$. 
 We denote this situation $X\sim \text{MG}(\bm p, \bm \mu, \bm \sigma^2)$.
 
 Using the fact that the random components are independent, it is immediate that
-$\operatorname{E}X = \sum_{j=1}^{p} p_j\mu_j$ and that
-$\operatorname{Var}X = \sum_{j=1}^{p} p_j^2\sigma^2_j$.
+$\operatorname{E}X = \sum_{j=1}^{n} p_j\mu_j$ and that
+$\operatorname{Var}X = \sum_{j=1}^{n} p_j\sigma^2_j$.
 
 \subsection{The (SAR) Gamma distribution}
 
@@ -181,14 +181,14 @@ where $\alpha<0$ is the texture, and
 $\gamma>0$ is the scale.
 We denote this situation $Y\sim \Gamma^{-1}(\alpha,\gamma)$.
 
-\subsection{The GI0 distribution}
+\subsection{The $\mathcal{G}_I^0$ distribution}
 
 Assuming that the backscatter is $X\sim\Gamma^{-1}(\alpha,\gamma)$,
-the speckle is $Y\sim\Gamma(1,L)$, and that they are independent random variables, we have that the return follows a GI0 distribution\cite{GeodesicDistanceGI0JSTARS}%
+the speckle is $Y\sim\Gamma(1,L)$, and that they are independent random variables, we have that the return follows a $\mathcal{G}_I^0$ distribution\cite{GeodesicDistanceGI0JSTARS}%
 \cite{ParameterEstimationSARStochasticDistancesKernels}, denoted $Z\sim\mathcal G_I^0(\alpha,\gamma,L)$, whose density is
 \begin{equation}
-f_Z(z;\alpha,\gamma,L) = \frac{L^L \Gamma(L-\alpha)}{\gamma^\alpha \Gamma(L) \Gamma(\alpha)}
-\frac{z^L}{(\gamma+Lz)^\alpha}.
+f_Z(z;\alpha,\gamma,L) = \frac{L^L \Gamma(L-\alpha)}{\gamma^\alpha \Gamma(L) \Gamma(-\alpha)}
+\frac{z^L}{(\gamma+Lz)^{L-\alpha}}.
 \end{equation}
 
 The $k$-order moment of $Z$ is given by
@@ -198,7 +198,7 @@ The $k$-order moment of $Z$ is given by
 \frac{\Gamma(L+k)}{\Gamma(L)},
 \label{eq:MomGI0}
 \end{equation}
-provided $k>-\alpha$ and infinite otherwise.
+provided $k<-\alpha$ and infinite otherwise.
 
 \section{Inference by analogy}
 
@@ -218,7 +218,7 @@ When we have $p$ parameters, i.e. $\bm \theta\in\Theta\subset\mathbbm R^p$, we n
 
 Using~\eqref{eq:MomentsUniform} with we can set, for instance, $k=1$ and obtain $\operatorname{E}U=\theta/2$.
 With this, our first-order moment estimator for $\theta$ is $\widehat{\theta}_1=2n^{-1}\sum_{i=1}^n U_i$.
-But we can also set $k=2$ and obtain a second-order moment estimator, using $\operatorname{E}U^2=\theta^3$ it is immediate that
+But we can also set $k=2$ and obtain a second-order moment estimator, using $\operatorname{E}U^2=\frac{1}{3}\theta^2$ it is immediate that
 $\widehat{\theta}_2=\sqrt{3n^{-1}\sum_{i=1}^{n} U_i^2}$.
 In fact, the $k$-order moment estimator of $\theta$ based on a sample of size $n$ is
 \begin{equation}
@@ -245,16 +245,16 @@ Other estimators could be formed with higher-order moments $k=3,4\dots$, but we 
 
 \subsection{Mixture of Gaussian distributions}\label{Sec:MixtureGaussian}
 
-We need $(p-1)p^2$ linearly independent equations to estimate $\bm{\theta} = (\bm p, \bm \mu, \bm \sigma^2)$.
+We need $(n-1)n^2$ linearly independent equations to estimate $\bm{\theta} = (\bm p, \bm \mu, \bm \sigma^2)$.
 This approach is not very effective, because results in serious numerical problems.
 
 \subsection{The (SAR) Gamma distribution}
 
 Remember that this distribution is characterized by the density presented in~\eqref{eq:SARGammaDensity}.
-Using $\E(Z)=\mu$ we propose $\widehat{\mu}=n^{-1}\sum_{i=1}^n Z_i$,
+Using $\E(Z)=\mu$, we propose $\widehat{\mu}=n^{-1}\sum_{i=1}^n Z_i$,
 and with 
 $\operatorname{Var}(Z)=\mu^2/L$, we can estimate $\widehat L=\widehat{\mu}^2 / (n^{-1}\sum_{i=1}^n (Z_i - \widehat{\mu})^2)$.
-This is the well-now estimator for the number of looks (equivalent number of looks) which consists of the reciprocal of the squared coefficient of variation.
+This is the well-known estimator for the number of looks (equivalent number of looks) which consists of the reciprocal of the squared coefficient of variation.
 
 \section{Inference by maximum likelihood}
 
@@ -308,20 +308,20 @@ The ML estimator poses a difficult optimization problem.
 It consists of finding
 \begin{equation}
 \widehat{(\bm p,\mu,\sigma^2)}_{\text{ML}} = \arg\max_{(\bm p,\mu,\sigma^2)\in\bm{\Theta}}
-\sum_{j=1}^{p}
+\sum_{j=1}^{n}
 \frac{1}{\sqrt{2\pi}\sigma_j} \exp\Big\{
 -\frac{1}{2\sigma_j^2} \big(x - \mu_j)^2 \Big\}.
 \end{equation}
 This is so difficult and numerically unstable, that it is often solved by using the EM (Expectation-Maximization) algorithm.
 It is highly recommended to use the \texttt{mclust} package\cite{mclust4} available in \texttt{R}\cite{Rmanual}.
 
-Since we assume no knowledge about the number of components $p$, it is important to use a balance between the number of parameters and the likelihood, otherwise we may end with a model with the largest possible $p$.
+Since we assume no knowledge about the number of components $n$, it is important to use a balance between the number of parameters and the likelihood, otherwise we may end with a model with the largest possible $n$.
 
 There are many measures of the quality of models, among them BIC -- Bayesian Information Criterion, and AIC -- Akaike Information Criterion.
 The latter is defined as
 $$
 \text{AIC} = 2\big(\#\bm\Theta - \log \mathcal L(\widehat{\bm{\theta}};\bm X)\big),
-$$
+$$[it seems strange that the equation of AIC is given here, while BIC is adopted in the following codes.]
 and the preferred model is the one that minimizes AIC.
 
 In the following, we will see the analysis of the \verb|rms_hist75| data set.
@@ -427,10 +427,10 @@ The unknown parameter $\theta=(\alpha,\gamma)$ lies in $\Theta=\mathbbm R_- \tim
 
 The maximum likelihood estimator of $(\alpha,\gamma)$, is any point that maximizes the reduced log-likelihood:
 \begin{equation}
-\ell(\alpha,\gamma;\widehat L, \bm Z) = 
+\ell(\alpha,\gamma;\widehat L, \bm Z) =\log
 \frac{\Gamma(\widehat L-\alpha)}{\gamma^\alpha \Gamma(-\alpha)} +
-\widehat L \sum_{n=1}^N \log\frac{Z_n}{\gamma+\widehat L Z_n} + 
-\alpha \sum_{n=1}^N \log(\gamma + \widehat L Z_n),
+\widehat L \sum_{i=1}^n \log\frac{Z_i}{\gamma+\widehat L Z_i} + 
+\alpha \sum_{i=1}^n \log(\gamma + \widehat L Z_i),
 \label{Eq:ReducedLogLikGI0}
 \end{equation}
 provided it lies in $\Theta$.
